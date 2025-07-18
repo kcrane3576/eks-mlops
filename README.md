@@ -6,9 +6,16 @@ Minimal 3-layer Terraform layout with GitHub Actions CI.
 ## Local Setup
 
 ### 1. Create your `.env` file
-At the root of the repo:
+At the root of the repo, create a `.env` file with the following variables:
 ```env
+AWS_ACCOUNT_ID=your_aws_account_id
 AWS_REGION=your_aws_region
+S3_BUCKET_NAME=your_s3_bucket_name
+S3_BUCKET_KEY=your_s3_bucket_key
+S3_ACCESS_SID=your_s3_access_sid
+DYNAMODB_TABLE_NAME=your_dynamodb_table_name
+DYNAMODB_ACCESS_SID=your_dynamodb_access_sid
+VPC_ACCESS_SID=your_vpc_access_sid
 ```
 This file is ignored via `.gitignore`.
 
