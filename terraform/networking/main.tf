@@ -25,7 +25,7 @@ module "vpc" {
   enable_flow_log                      = true
   create_flow_log_cloudwatch_log_group = true
   create_flow_log_cloudwatch_iam_role  = true
-  flow_log_max_aggregation_interval    = 60
+  flow_log_cloudwatch_log_group_name_prefix = "/aws/vpc-flow-log/"
 
   tags = merge(var.tags, {
     "kubernetes.io/cluster/${var.cluster_name}" = "shared"
