@@ -2,14 +2,21 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "$CLOUDWATCH_LOGS_ACCESS_SID",
+            "Sid": "$CLOUDWATCH_LOGS_DESCRIBE_SID",
+            "Effect": "Allow",
+            "Action": [
+                "logs:DescribeLogGroups",
+                "logs:DescribeLogStreams"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "$CLOUDWATCH_LOGS_CREATE_PUT_TAG_SID",
             "Effect": "Allow",
             "Action": [
                 "logs:CreateLogGroup",
                 "logs:CreateLogStream",
                 "logs:PutLogEvents",
-                "logs:DescribeLogGroups",
-                "logs:DescribeLogStreams",
                 "logs:TagResource",
                 "logs:UntagResource",
                 "logs:ListTagsForResource"
