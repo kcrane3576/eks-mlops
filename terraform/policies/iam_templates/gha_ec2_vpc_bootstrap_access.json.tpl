@@ -40,7 +40,9 @@
                 "ec2:CreateFlowLogs",
                 "ec2:DeleteFlowLogs",
                 "ec2:DescribeFlowLogs",
-                "ec2:DescribeAvailabilityZones"
+                "ec2:DescribeAvailabilityZones",
+                "ec2:CreateNatGateway",
+                "ec2:RevokeSecurityGroupIngress"
             ],
             "Resource": "*"
         }

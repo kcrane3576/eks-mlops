@@ -19,7 +19,8 @@
                 "logs:PutLogEvents",
                 "logs:TagResource",
                 "logs:UntagResource",
-                "logs:ListTagsForResource"
+                "logs:ListTagsForResource",
+                "logs:DeleteLogGroup"
             ],
             "Resource": "arn:aws:logs:$REGION:$AWS_ACCOUNT_ID:log-group:/aws/vpc-flow-log/*"
         }
