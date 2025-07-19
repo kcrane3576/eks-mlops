@@ -44,7 +44,8 @@
                 "ec2:CreateNatGateway",
                 "ec2:DescribeNatGateways",
                 "ec2:DeleteNatGateway",
-                "ec2:RevokeSecurityGroupIngress"
+                "ec2:RevokeSecurityGroupIngress",
+                "ec2:DescribeNetworkInterfaces"
             ],
             "Resource": "*"
         }
