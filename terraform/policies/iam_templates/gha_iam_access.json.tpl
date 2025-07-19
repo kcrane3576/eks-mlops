@@ -13,10 +13,13 @@
         "iam:DetachRolePolicy",
         "iam:PassRole",
         "iam:PutRolePolicy",
+        "iam:DeleteRolePolicy",
         "iam:GetRole",
         "iam:GetPolicy",
         "iam:ListRolePolicies",
-        "iam:ListAttachedRolePolicies"
+        "iam:ListAttachedRolePolicies",
+        "iam:TagRole",
+        "iam:TagPolicy"
       ],
       "Resource": "*"
     }
