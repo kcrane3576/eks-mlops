@@ -7,6 +7,7 @@ Simple eks / mlops setup
 
 ### 1. Create your `.env` file
 At the root of the repo, create a `.env` file with the following variables:
+`AWARENESS`: single quotes (') are used in the .env file, but must be removed for secret values in github.
 ```env
 AWS_ACCOUNT_ID=
 ROLE_TO_ASSUME=

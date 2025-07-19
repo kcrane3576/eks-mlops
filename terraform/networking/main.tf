@@ -19,7 +19,13 @@ module "vpc" {
   enable_dns_hostnames = true
   enable_dns_support   = true
 
-  enable_flow_log = var.enable_vpc_flow_logs
+  # TODO remove after env cleanup
+  manage_default_network_acl = false
+
+  enable_flow_log                      = true
+  create_flow_log_cloudwatch_log_group = true
+  create_flow_log_cloudwatch_iam_role  = true
+  flow_log_max_aggregation_interval    = 60
 
   tags = merge(var.tags, {
     "kubernetes.io/cluster/${var.cluster_name}" = "shared"
