@@ -13,9 +13,17 @@ jobs:
       contents: read
     defaults:
       run:
-        working-directory: terraform/composition/dev
+        working-directory: terraform/networking
     env:
-      TF_VAR_cidr_block: ${{ secrets.TF_VAR_CIDR_BLOCK }}
+      TF_VAR_region: ${{ secrets.TF_VAR_REGION }}
+      TF_VAR_vpc_name: ${{ secrets.TF_VAR_VPC_NAME }}
+      TF_VAR_vpc_cidr: ${{ secrets.TF_VAR_CIDR_BLOCK }}
+      TF_VAR_azs: ${{ secrets.TF_VAR_AZS }}
+      TF_VAR_private_subnets: ${{ secrets.TF_VAR_PRIVATE_SUBNETS }}
+      TF_VAR_public_subnets: ${{ secrets.TF_VAR_PUBLIC_SUBNETS }}
+      TF_VAR_enable_vpc_flow_logs: ${{ secrets.TF_VAR_ENABLE_VPC_FLOW_LOGS }}
+      TF_VAR_tags: ${{ secrets.TF_VAR_TAGS }}
+      TF_VAR_cluster_name: ${{ secrets.TF_VAR_CLUSTER_NAME }}
       TF_VAR_environment: ${{ secrets.TF_VAR_ENVIRONMENT }}
     steps:
       - name: Checkout code
@@ -25,17 +33,17 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: ${{ secrets.TF_VAR_ROLE_TO_ASSUME }}
-          aws-region: ${{ secrets.TF_VAR_AWS_REGION }}
+          aws-region: ${{ secrets.TF_VAR_REGION }}
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
         run: |
-          terraform init \
+          TF_LOG=debug terraform init \
             -backend-config="bucket=${{ secrets.TF_VAR_S3_BUCKET_NAME }}" \
             -backend-config="key=${{ secrets.TF_VAR_S3_BUCKET_KEY }}" \
-            -backend-config="region=${{ secrets.TF_VAR_AWS_REGION }}" \
+            -backend-config="region=${{ secrets.TF_VAR_REGION }}" \
             -backend-config="encrypt=true" \
             -backend-config="dynamodb_table=${{ secrets.TF_VAR_DYNAMODB_TABLE_NAME }}"
 
@@ -45,6 +53,12 @@ jobs:
 
       - name: Terraform Plan
         run: terraform plan
+
+      - name: Install Checkov
+        run: pip install checkov
+
+      - name: Run Checkov Scan
+        run: checkov -d . --framework terraform -o json --download-external-modules true || true
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main'

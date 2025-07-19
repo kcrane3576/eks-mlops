@@ -10,7 +10,7 @@
                 "dynamodb:DeleteItem",
                 "dynamodb:DescribeTable"
             ],
-            "Resource": "arn:aws:dynamodb:$AWS_REGION:$AWS_ACCOUNT_ID:table/$DYNAMODB_TABLE_NAME"
+            "Resource": "arn:aws:dynamodb:$REGION:$AWS_ACCOUNT_ID:table/$DYNAMODB_TABLE_NAME"
         }
     ]
 }

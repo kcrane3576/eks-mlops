@@ -1,5 +1,5 @@
-# eks-mlops-blueprint
-Minimal 3-layer Terraform layout with GitHub Actions CI.
+# eks-mlops
+Simple eks / mlops setup
 
 ---
 
@@ -8,14 +8,24 @@ Minimal 3-layer Terraform layout with GitHub Actions CI.
 ### 1. Create your `.env` file
 At the root of the repo, create a `.env` file with the following variables:
 ```env
-AWS_ACCOUNT_ID=your_aws_account_id
-AWS_REGION=your_aws_region
-S3_BUCKET_NAME=your_s3_bucket_name
-S3_BUCKET_KEY=your_s3_bucket_key
-S3_ACCESS_SID=your_s3_access_sid
-DYNAMODB_TABLE_NAME=your_dynamodb_table_name
-DYNAMODB_ACCESS_SID=your_dynamodb_access_sid
-VPC_ACCESS_SID=your_vpc_access_sid
+AWS_ACCOUNT_ID=
+ROLE_TO_ASSUME=
+ENVIRONMENT=
+REGION=
+VPC_NAME=
+CIDR_BLOCK=
+AZS=
+PRIVATE_SUBNETS=
+PUBLIC_SUBNETS=
+ENABLE_VPC_FLOW_LOGS=
+TAGS=
+CLUSTER_NAME=
+S3_BUCKET_NAME=
+S3_BUCKET_KEY=
+S3_ACCESS_SID=
+DYNAMODB_TABLE_NAME=
+DYNAMODB_ACCESS_SID=
+VPC_ACCESS_SID=
 ```
 This file is ignored via `.gitignore`.
 
@@ -24,15 +34,10 @@ This file is ignored via `.gitignore`.
 make format
 ```
 
-> Note: Only `format` is supported locally to avoid state conflicts. Full init/plan/apply is handled via GitHub Actions.
-
----
-
-## CI/CD and Deployment Flow
-
-1. Start by following the manual setup steps in [docs/01-bootstrap.md](./docs/01-bootstrap.md)
-2. Configure GitHub Actions as shown in [docs/02-ci-setup.md](./docs/02-ci-setup.md)
-3. Use PRs to trigger Terraform plans. Merges to `main` trigger `apply`.
+### 3. Static analysis
+```bash
+make scan
+```
 
 ---
 
@@ -43,21 +48,12 @@ make format
     git checkout -b init && \
     git merge main
 ```
----
-
-## Structure
-
-- `terraform/composition`: Top-level env-specific orchestration
-- `terraform/infrastructure_modules`: Composable units like networking
-- `terraform/policies/iam_templates`: IAM policy definition templates for CI access
-- `Makefile`: Format helper (Docker-based)
-- `.github/workflows`: GitHub Actions CI pipelines
 
 ---
 
 ## Remote State
 
-Terraform uses an S3 backend with DynamoDB state locking. You must configure the values in the `terraform init` step of GitHub Actions. See [01-bootstrap.md](./docs/01-bootstrap.md).
+Terraform uses an S3 backend with DynamoDB state locking. You must configure the values in the `terraform init` step of GitHub Actions based on the `env` values above.
 
 ---
 
