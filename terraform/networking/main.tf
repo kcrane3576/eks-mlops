@@ -18,7 +18,7 @@ module "vpc" {
   enable_dns_hostnames = true
   enable_dns_support   = true
 
-  manage_default_network_acl = false
+  manage_default_network_acl = true
 
   enable_flow_log                      = true
   create_flow_log_cloudwatch_log_group = true
@@ -36,4 +36,15 @@ module "vpc" {
   private_subnet_tags = {
     "kubernetes.io/role/internal-elb" = "1"
   }
+}
+
+# -------------------------------------------------------------------------------------
+# ⚠️ Dependency Hack to Prevent Premature Evaluation of VPC Module Resources
+#
+# This null_resource forces Terraform to fully evaluate and create all resources
+# inside module.vpc (especially aws_vpc.this[0]) before proceeding. This is necessary
+# to avoid errors when using manage_default_network_acl = true.
+# -------------------------------------------------------------------------------------
+resource "null_resource" "vpc_dependency" {
+  depends_on = [module.vpc]
 }
