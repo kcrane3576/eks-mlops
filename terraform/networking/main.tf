@@ -3,9 +3,8 @@ provider "aws" {
 }
 
 module "vpc" {
-  # checkov:skip=CKV_TF_1:Using ~> 5.0 for MVP flexibility; will pin version in production
   source  = "terraform-aws-modules/vpc/aws"
-  version = "5.0.0"
+  version = "6.0.1"
 
   name = var.vpc_name
   cidr = var.vpc_cidr
@@ -18,6 +17,8 @@ module "vpc" {
   single_nat_gateway   = true
   enable_dns_hostnames = true
   enable_dns_support   = true
+
+  manage_default_network_acl = false
 
   enable_flow_log                      = true
   create_flow_log_cloudwatch_log_group = true
