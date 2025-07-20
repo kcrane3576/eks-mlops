@@ -7,7 +7,12 @@
             "Action": [
                 "ec2:DescribeNetworkAcls"
             ],
-            "Resource": "*"
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": {
+                    "aws:ResourceTag/Environment": "$ENVIRONMENT"
+                }
+            }
         },
         {
             "Sid": "$VPC_NACL_MODIFY_SID",
@@ -26,7 +31,12 @@
                 "arn:aws:ec2:us-east-1:*:vpc/*",
                 "arn:aws:ec2:us-east-1:*:network-acl/*",
                 "arn:aws:ec2:us-east-1:*:subnet/*"
-            ]
+            ],
+            "Condition": {
+                "StringEquals": {
+                    "aws:ResourceTag/Environment": "$ENVIRONMENT"
+                }
+            }
         }
     ]
 }

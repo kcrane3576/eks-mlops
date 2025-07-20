@@ -13,12 +13,7 @@
             "Resource": [
                 "arn:aws:s3:::$S3_BUCKET_NAME",
                 "arn:aws:s3:::$S3_BUCKET_NAME/*"
-            ],
-            "Condition": {
-                "StringEquals": {
-                    "aws:ResourceTag/Environment": "$ENVIRONMENT"
-                }
-            }
+            ]
         }
     ]
 }
