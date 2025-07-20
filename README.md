@@ -52,7 +52,7 @@ make scan
     git checkout -b init && \
     git merge main
 ```
-
+- Configure a repository Github variable for `REPO_CAN_RUN_CI` to restrict access to who can run your Github actions.
 ---
 
 ## Remote State

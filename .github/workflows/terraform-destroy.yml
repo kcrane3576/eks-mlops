@@ -8,8 +8,8 @@ on:
         required: true
 
 jobs:
-  destroy:
-    if: ${{ github.event.inputs.confirm == 'destroy' }}
+  terraform:
+    if: ${{ github.event.inputs.confirm == 'destroy' && github.repository == vars.REPO_CAN_RUN_CI }}
     runs-on: ubuntu-latest
     permissions:
       id-token: write
