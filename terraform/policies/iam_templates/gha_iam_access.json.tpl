@@ -25,7 +25,8 @@
                 "iam:TagPolicy",
                 "iam:UntagRole",
                 "iam:UntagPolicy",
-                "iam:CreatePolicyVersion"
+                "iam:CreatePolicyVersion",
+                "iam:DeletePolicyVersion"
             ],
             "Resource": "*"
         }
