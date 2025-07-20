@@ -2,7 +2,7 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "$IAM_ACCESS_SID",
+            "Sid": "$IAM_MANAGEMENT_SID",
             "Effect": "Allow",
             "Action": [
                 "iam:CreateRole",
@@ -28,7 +28,12 @@
                 "iam:CreatePolicyVersion",
                 "iam:DeletePolicyVersion"
             ],
-            "Resource": "*"
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": {
+                    "aws:ResourceTag/Environment": "$ENVIRONMENT"
+                }
+            }
         }
     ]
 }

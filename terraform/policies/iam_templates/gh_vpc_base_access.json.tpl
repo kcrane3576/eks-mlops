@@ -2,7 +2,7 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "$VPC_ACCESS_SID",
+            "Sid": "$VPC_BASE_SID",
             "Effect": "Allow",
             "Action": [
                 "ec2:CreateVpc",
@@ -47,7 +47,12 @@
                 "ec2:RevokeSecurityGroupIngress",
                 "ec2:DescribeNetworkInterfaces"
             ],
-            "Resource": "*"
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": {
+                    "aws:ResourceTag/Environment": "$ENVIRONMENT"
+                }
+            }
         }
     ]
 }

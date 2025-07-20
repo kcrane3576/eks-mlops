@@ -2,7 +2,7 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "$DYNAMODB_ACCESS_SID",
+            "Sid": "$TF_DYNAMODB_SID",
             "Effect": "Allow",
             "Action": [
                 "dynamodb:GetItem",
@@ -10,7 +10,12 @@
                 "dynamodb:DeleteItem",
                 "dynamodb:DescribeTable"
             ],
-            "Resource": "arn:aws:dynamodb:$REGION:$AWS_ACCOUNT_ID:table/$DYNAMODB_TABLE_NAME"
+            "Resource": "arn:aws:dynamodb:$REGION:$AWS_ACCOUNT_ID:table/$DYNAMODB_TABLE_NAME",
+            "Condition": {
+                "StringEquals": {
+                    "aws:ResourceTag/Environment": "$ENVIRONMENT"
+                }
+            }
         }
     ]
 }
