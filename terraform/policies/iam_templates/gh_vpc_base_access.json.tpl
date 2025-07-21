@@ -41,7 +41,11 @@
                     "aws:RequestTag/Environment": "$ENVIRONMENT"
                 },
                 "ForAllValues:StringEquals": {
-                    "aws:TagKeys": ["Environment"]
+                    "aws:TagKeys": [
+                        "Environment",
+                        "Name",
+                        "kubernetes.io/*"
+                    ]
                 }
             }
         },
