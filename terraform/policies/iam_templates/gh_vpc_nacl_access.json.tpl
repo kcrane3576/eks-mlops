@@ -2,17 +2,13 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "$VPC_NACL_DESCRIBE_SID",
+            "Sid": "$VPC_NACL_READ_REPLACE_SID",
             "Effect": "Allow",
             "Action": [
-                "ec2:DescribeNetworkAcls"
+                "ec2:DescribeNetworkAcls",
+                "ec2:ReplaceNetworkAclAssociation"
             ],
-            "Resource": "*",
-            "Condition": {
-                "StringEquals": {
-                    "aws:ResourceTag/Environment": "$ENVIRONMENT"
-                }
-            }
+            "Resource": "*"
         },
         {
             "Sid": "$VPC_NACL_MODIFY_SID",
@@ -23,7 +19,6 @@
                 "ec2:CreateNetworkAclEntry",
                 "ec2:DeleteNetworkAclEntry",
                 "ec2:ReplaceNetworkAclEntry",
-                "ec2:ReplaceNetworkAclAssociation",
                 "ec2:CreateTags",
                 "ec2:DeleteTags"
             ],

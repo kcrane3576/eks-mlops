@@ -8,12 +8,7 @@
                 "logs:DescribeLogGroups",
                 "logs:DescribeLogStreams"
             ],
-            "Resource": "*",
-            "Condition": {
-                "StringEquals": {
-                    "aws:ResourceTag/Environment": "$ENVIRONMENT"
-                }
-            }
+            "Resource": "*"
         },
         {
             "Sid": "$CLOUDWATCH_LOGS_CREATE_PUT_TAG_SID",
