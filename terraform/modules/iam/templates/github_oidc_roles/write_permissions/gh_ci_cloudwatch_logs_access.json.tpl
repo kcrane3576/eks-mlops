@@ -8,10 +8,7 @@
                 "logs:DescribeLogGroups",
                 "logs:DescribeLogStreams"
             ],
-            "Resource": [
-                "arn:aws:logs:$REGION:$AWS_ACCOUNT_ID:log-group:/aws/vpc-flow-log/*",
-                "arn:aws:logs:$REGION:$AWS_ACCOUNT_ID:log-group:/aws/vpc-flow-log/*:log-stream:*"
-            ]
+            "Resource": "*"
         },
         {
             "Sid": "$CLOUDWATCH_LOGS_CREATE_PUT_TAG",
