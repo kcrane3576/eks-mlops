@@ -20,32 +20,32 @@ module "vpc" {
 
   manage_default_network_acl = false
 
-  enable_flow_log                      = true
-  create_flow_log_cloudwatch_log_group = true
-  create_flow_log_cloudwatch_iam_role  = true
+  enable_flow_log                           = true
+  create_flow_log_cloudwatch_log_group      = true
+  create_flow_log_cloudwatch_iam_role       = true
   flow_log_cloudwatch_log_group_name_prefix = "/aws/vpc-flow-log/"
 
   tags = merge(var.tags, {
     "kubernetes.io/cluster/${var.cluster_name}" = "shared",
-    Environment = var.environment
+    Environment                                 = var.environment
   })
 
   public_subnet_tags = merge({
     "kubernetes.io/role/elb" = "1"
   }, { Environment = var.environment })
 
-  private_subnet_tags = merge({  // Updated: Merge Environment tag for private subnets
+  private_subnet_tags = merge({ // Updated: Merge Environment tag for private subnets
     "kubernetes.io/role/internal-elb" = "1"
   }, { Environment = var.environment })
 }
 
 # Custom NACL with Well-Architected best-practice rules (restrictive: deny inbound, allow outbound)
 resource "aws_network_acl" "custom" {
-  vpc_id = module.vpc.vpc_id  # Reference module output
+  vpc_id = module.vpc.vpc_id # Reference module output
 
   # Inbound rules: Deny all (coarse restriction; add allows for specific ports if needed)
   ingress {
-    protocol   = -1  # All protocols
+    protocol   = -1 # All protocols
     rule_no    = 100
     action     = "deny"
     cidr_block = "0.0.0.0/0"
@@ -82,7 +82,7 @@ resource "aws_network_acl" "custom" {
   }
 
   tags = merge(var.tags, {
-    Name = "${var.vpc_name}-custom-nacl",
+    Name        = "${var.vpc_name}-custom-nacl",
     Environment = var.environment
   })
 }

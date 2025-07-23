@@ -1,5 +1,5 @@
 TF_IMAGE=hashicorp/terraform:1.6.6
-TF_DIR=terraform/networking
+TF_DIR=terraform/modules/networking
 ENV_FILE=.env
 
 include $(ENV_FILE)
@@ -9,4 +9,4 @@ format:
 	  $(TF_IMAGE) fmt -recursive
 
 scan:
-	checkov -d terraform/networking --framework terraform
+	checkov -d terraform/modules/networking --framework terraform
