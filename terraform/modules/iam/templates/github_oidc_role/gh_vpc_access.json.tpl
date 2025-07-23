@@ -2,7 +2,7 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "$VPC_DESCRIBE_DISASSOCIATE_SID",
+            "Sid": "$VPC_DESCRIBE_DISASSOCIATE",
             "Effect": "Allow",
             "Action": [
                 "ec2:DescribeVpcs",
@@ -25,7 +25,7 @@
             "Resource": "*"
         },
         {
-            "Sid": "$VPC_CREATE_STRICT_SID",
+            "Sid": "$VPC_CREATE_STRICT",
             "Effect": "Allow",
             "Action": [
                 "ec2:CreateVpc",
@@ -50,7 +50,7 @@
             }
         },
         {
-            "Sid": "$VPC_CREATE_RELAXED_SID",
+            "Sid": "$VPC_CREATE_RELAXED",
             "Effect": "Allow",
             "Action": [
                 "ec2:CreateSubnet",
@@ -66,7 +66,7 @@
             }
         },
         {
-            "Sid": "$VPC_CREATE_RELAXED_NAT_GATEWAY_SID",
+            "Sid": "$VPC_CREATE_RELAXED_NAT_GATEWAY",
             "Effect": "Allow",
             "Action": [
                 "ec2:CreateNatGateway"
@@ -74,7 +74,7 @@
             "Resource": "*"
         },
         {
-            "Sid": "$VPC_MODIFY_DELETE_SID",
+            "Sid": "$VPC_MODIFY_DELETE",
             "Effect": "Allow",
             "Action": [
                 "ec2:DeleteVpc",
@@ -113,7 +113,7 @@
             }
         },
         {
-            "Sid": "$VPC_REPLACE_NACL_ASSOCIATION_SID",
+            "Sid": "$VPC_REPLACE_NACL_ASSOCIATION",
             "Effect": "Allow",
             "Action": "ec2:ReplaceNetworkAclAssociation",
             "Resource": "*",
@@ -124,13 +124,13 @@
             }
         },
         {
-            "Sid": "$VPC_DISASSOCIATE_ROUTE_TABLE_ALLOW",
+            "Sid": "$VPC_DISASSOCIATE_ROUTE_TABLE",
             "Effect": "Allow",
             "Action": "ec2:DisassociateRouteTable",
             "Resource": "*"
         },
         {
-            "Sid": "$VPC_ALLOW_SECURITY_GROUP_RULE_CHANGE_SID",
+            "Sid": "$VPC_REVOKE_SECURITY_GROUP_RULE",
             "Effect": "Allow",
             "Action": [
                 "ec2:RevokeSecurityGroupEgress",
@@ -145,30 +145,8 @@
                 }
             }
         },
-        {
-            "Sid": "$VPC_DENY_DELETE_TAG_SID",
-            "Effect": "Deny",
-            "Action": "ec2:DeleteTags",
-            "Resource": [
-                "arn:aws:ec2:$REGION:*:vpc/*",
-                "arn:aws:ec2:$REGION:*:subnet/*",
-                "arn:aws:ec2:$REGION:*:network-acl/*",
-                "arn:aws:ec2:$REGION:*:route-table/*",
-                "arn:aws:ec2:$REGION:*:internet-gateway/*",
-                "arn:aws:ec2:$REGION:*:security-group/*",
-                "arn:aws:ec2:$REGION:*:natgateway/*"
-            ],
-            "Condition": {
-                "StringEquals": {
-                    "aws:ResourceTag/Environment": "$ENVIRONMENT"
-                },
-                "ForAnyValue:StringEquals": {
-                    "aws:TagKeys": ["Environment"]
-                }
-            }
-        },
-        {
-            "Sid": "$VPC_CREATE_TAG_SID",
+                {
+            "Sid": "$VPC_CREATE_TAG",
             "Effect": "Allow",
             "Action": "ec2:CreateTags",
             "Resource": [
@@ -195,8 +173,8 @@
                 }
             }
         },
-        {
-            "Sid": "$VPC_CREATE_TAG_EIP_SID",
+                {
+            "Sid": "$VPC_CREATE_TAG_EIP",
             "Effect": "Allow",
             "Action": "ec2:CreateTags",
             "Resource": "*",
@@ -216,7 +194,29 @@
             }
         },
         {
-            "Sid": "$VPC_DENY_CHANGE_TAG_SID",
+            "Sid": "$VPC_DELETE_TAG",
+            "Effect": "Deny",
+            "Action": "ec2:DeleteTags",
+            "Resource": [
+                "arn:aws:ec2:$REGION:*:vpc/*",
+                "arn:aws:ec2:$REGION:*:subnet/*",
+                "arn:aws:ec2:$REGION:*:network-acl/*",
+                "arn:aws:ec2:$REGION:*:route-table/*",
+                "arn:aws:ec2:$REGION:*:internet-gateway/*",
+                "arn:aws:ec2:$REGION:*:security-group/*",
+                "arn:aws:ec2:$REGION:*:natgateway/*"
+            ],
+            "Condition": {
+                "StringEquals": {
+                    "aws:ResourceTag/Environment": "$ENVIRONMENT"
+                },
+                "ForAnyValue:StringEquals": {
+                    "aws:TagKeys": ["Environment"]
+                }
+            }
+        },
+        {
+            "Sid": "$VPC_CHANGE_TAG",
             "Effect": "Deny",
             "Action": "ec2:CreateTags",
             "Resource": [

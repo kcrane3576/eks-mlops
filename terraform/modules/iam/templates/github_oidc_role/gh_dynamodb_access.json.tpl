@@ -2,7 +2,7 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "$TF_DYNAMODB_SID",
+            "Sid": "$DYNAMODB",
             "Effect": "Allow",
             "Action": [
                 "dynamodb:GetItem",

@@ -2,7 +2,7 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "$IAM_MANAGEMENT_SID",
+            "Sid": "$IAM_MANAGEMENT",
             "Effect": "Allow",
             "Action": [
                 "iam:CreateRole",
