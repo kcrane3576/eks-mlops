@@ -9,9 +9,11 @@ echo "DYNAMODB_TABLE_NAME is: $DYNAMODB_TABLE_NAME"
 
 mkdir -p generated
 
-for tpl in github_oidc_role/*.json.tpl; do
+find github_oidc_roles -type f -name '*.json.tpl' | while read -r tpl; do
+  relative_dir=$(dirname "$tpl" | sed 's/^github_oidc_roles\///')
   base=$(basename "$tpl" .tpl)
-  envsubst < "$tpl" > "generated/$base"
+  mkdir -p "generated/$relative_dir"
+  envsubst < "$tpl" > "generated/$relative_dir/$base"
 done
 
 echo "✅ Policies generated in /generated"

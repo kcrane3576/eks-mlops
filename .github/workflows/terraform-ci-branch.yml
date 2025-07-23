@@ -1,13 +1,14 @@
-name: Terraform CI
+name: Terraform CI - branches/PRs
 
 on:
-  push:
-    branches: [main]
   pull_request:
 
 jobs:
   terraform:
-    if: github.repository == vars.REPO_CAN_RUN_CI
+    if: >
+      github.repository == vars.REPO_CAN_RUN_CI &&
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.base.ref == 'main'
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -30,10 +31,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Configure AWS credentials
+      - name: Configure AWS credentials (Read)
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: ${{ secrets.TF_VAR_ROLE_TO_ASSUME }}
+          role-to-assume: ${{ secrets.TF_VAR_READ_ROLE_ARN }}
           aws-region: ${{ secrets.TF_VAR_REGION }}
 
       - name: Setup Terraform
@@ -49,18 +50,13 @@ jobs:
             -backend-config="dynamodb_table=${{ secrets.TF_VAR_DYNAMODB_TABLE_NAME }}"
 
       - name: Terraform Validate
-        if: github.ref != 'refs/heads/main'
         run: terraform validate
 
-      - name: Terraform Plan
-        run: terraform plan
+      - name: Terraform Plan (no lock)
+        run: terraform plan -lock=false
 
       - name: Install Checkov
         run: pip install checkov
 
       - name: Run Checkov Scan
         run: checkov -d . --framework terraform -o json --download-external-modules true || true
-
-      - name: Terraform Apply
-        if: github.ref == 'refs/heads/main'
-        run: terraform apply -auto-approve

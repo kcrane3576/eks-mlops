@@ -2,13 +2,11 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "$S3",
+            "Sid": "$S3_READ",
             "Effect": "Allow",
             "Action": [
-                "s3:GetObject",
-                "s3:PutObject",
-                "s3:DeleteObject",
-                "s3:ListBucket"
+                "s3:ListBucket",
+                "s3:GetObject"
             ],
             "Resource": [
                 "arn:aws:s3:::$S3_BUCKET_NAME",

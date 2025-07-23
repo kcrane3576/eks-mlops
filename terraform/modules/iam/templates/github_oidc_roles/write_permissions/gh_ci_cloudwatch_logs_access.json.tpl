@@ -52,7 +52,6 @@
             ],
             "Resource": "*"
         },
-
         {
             "Sid": "$CLOUDWATCH_LOGS_PASS_ROLE_FOR_FLOW_LOG",
             "Effect": "Allow",

@@ -2,13 +2,11 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "$DYNAMODB",
+            "Sid": "$DYNAMODB_WRITE",
             "Effect": "Allow",
             "Action": [
-                "dynamodb:GetItem",
                 "dynamodb:PutItem",
-                "dynamodb:DeleteItem",
-                "dynamodb:DescribeTable"
+                "dynamodb:DeleteItem"
             ],
             "Resource": "arn:aws:dynamodb:$REGION:$AWS_ACCOUNT_ID:table/$DYNAMODB_TABLE_NAME",
             "Condition": {
