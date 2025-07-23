@@ -8,7 +8,10 @@
                 "logs:DescribeLogGroups",
                 "logs:DescribeLogStreams"
             ],
-            "Resource": "*"
+            "Resource": [
+                "arn:aws:logs:$REGION:$AWS_ACCOUNT_ID:log-group:/aws/vpc-flow-log/*",
+                "arn:aws:logs:$REGION:$AWS_ACCOUNT_ID:log-group:/aws/vpc-flow-log/*:log-stream:*"
+            ]
         },
         {
             "Sid": "$CLOUDWATCH_LOGS_CREATE_PUT_TAG",
@@ -42,7 +45,12 @@
             "Action": [
                 "ec2:CreateFlowLogs"
             ],
-            "Resource": "*"
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": {
+                    "ec2:ResourceTag/Environment": "$ENVIRONMENT"
+                }
+            }
         },
         {
             "Sid": "$CLOUDWATCH_LOGS_DELETE_FLOW_LOG",
@@ -50,13 +58,23 @@
             "Action": [
                 "ec2:DeleteFlowLogs"
             ],
-            "Resource": "*"
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": {
+                    "ec2:ResourceTag/Environment": "$ENVIRONMENT"
+                }
+            }
         },
         {
             "Sid": "$CLOUDWATCH_LOGS_PASS_ROLE_FOR_FLOW_LOG",
             "Effect": "Allow",
             "Action": "iam:PassRole",
-            "Resource": "arn:aws:iam::$AWS_ACCOUNT_ID:role/vpc-flow-log-role-*"
+            "Resource": "arn:aws:iam::$AWS_ACCOUNT_ID:role/vpc-flow-log-role-*",
+            "Condition": {
+                "StringEquals": {
+                    "iam:PassedToService": "vpc-flow-logs.amazonaws.com"
+                }
+            }
         }
     ]
 }
