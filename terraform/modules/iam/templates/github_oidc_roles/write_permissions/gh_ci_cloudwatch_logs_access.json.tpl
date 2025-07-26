@@ -11,11 +11,9 @@
             "Resource": "*"
         },
         {
-            "Sid": "$CLOUDWATCH_LOGS_CREATE_PUT_TAG",
+            "Sid": "$CLOUDWATCH_LOGS_PUT_TAG",
             "Effect": "Allow",
             "Action": [
-                "logs:CreateLogGroup",
-                "logs:CreateLogStream",
                 "logs:PutLogEvents",
                 "logs:TagResource",
                 "logs:UntagResource",
@@ -25,6 +23,20 @@
             "Condition": {
                 "StringEquals": {
                     "aws:ResourceTag/Environment": "$ENVIRONMENT"
+                }
+            }
+        },
+        {
+            "Sid": "$CLOUDWATCH_LOGS_CREATE",
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream"
+            ],
+            "Resource": "arn:aws:logs:$REGION:$AWS_ACCOUNT_ID:log-group:/aws/vpc-flow-log/*",
+            "Condition": {
+                "StringEquals": {
+                    "aws:RequestTag/Environment": "$ENVIRONMENT"
                 }
             }
         },

@@ -14,7 +14,7 @@
         "iam:ListAttachedRolePolicies",
         "iam:ListInstanceProfilesForRole"
       ],
-      "Resource": "arn:aws:iam::$AWS_ACCOUNT_ID:role/$WRITE_ROLE_ARN",
+      "Resource": "arn:aws:iam::$AWS_ACCOUNT_ID:role/vpc-flow-log-role-*",
       "Condition": {
         "StringEquals": {
           "aws:ResourceTag/Environment": "$ENVIRONMENT"
@@ -35,7 +35,7 @@
         "iam:UntagPolicy",
         "iam:ListPolicyVersions"
       ],
-      "Resource": "arn:aws:iam::$AWS_ACCOUNT_ID:policy/*",
+      "Resource": "arn:aws:iam::$AWS_ACCOUNT_ID:policy/vpc-flow-log-to-cloudwatch-*",
       "Condition": {
         "StringEquals": {
           "aws:ResourceTag/Environment": "$ENVIRONMENT"
@@ -51,7 +51,7 @@
         "iam:PutRolePolicy",
         "iam:DeleteRolePolicy"
       ],
-      "Resource": "arn:aws:iam::$AWS_ACCOUNT_ID:role/$WRITE_ROLE_ARN"
+      "Resource": "arn:aws:iam::$AWS_ACCOUNT_ID:role/vpc-flow-log-role-*"
     },
     {
       "Sid": "$IAM_PASS_TO_WRITE_ROLE",
