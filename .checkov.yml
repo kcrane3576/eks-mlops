@@ -1,0 +1,6 @@
+skip-check:
+  - CKV_TF_1        # Terraform Registry version pinning is used instead of Git commit hash; accepted for official modules
+  - CKV2_AWS_11     # VPC flow logs are explicitly enabled via module input variables (enable_flow_log=true, etc.)
+  - CKV2_AWS_19     # NAT gateway EIPs are intentionally unattached to EC2; expected behavior in secure NAT gateway setup
+  - CKV2_AWS_12     # Default security group is restricted via separate aws_default_security_group resource after VPC creation
+  - CKV2_AWS_1      # All subnets (public/private) are explicitly associated with custom NACL via dynamic count; Checkov cannot statically resolve

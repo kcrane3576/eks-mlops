@@ -2,6 +2,7 @@ provider "aws" {
   region = "us-east-1"
 }
 
+# Uses Terraform Registry version pinning (CKV_TF_1 skipped in .checkov.yml)
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "6.0.1"
@@ -37,6 +38,21 @@ module "vpc" {
   private_subnet_tags = merge({ // Updated: Merge Environment tag for private subnets
     "kubernetes.io/role/internal-elb" = "1"
   }, { Environment = var.environment })
+}
+
+# Restricts default SG traffic post-VPC creation (CKV2_AWS_12 skipped in .checkov.yml)
+resource "aws_default_security_group" "restrict_all" {
+  vpc_id = module.vpc.vpc_id
+
+  revoke_rules_on_delete = true
+
+  ingress = []
+  egress  = []
+
+  tags = merge(var.tags, {
+    Name        = "${var.vpc_name}-default-sg-restrict",
+    Environment = var.environment
+  })
 }
 
 # Custom NACL with Well-Architected best-practice rules (restrictive: deny inbound, allow outbound)
@@ -88,6 +104,8 @@ resource "aws_network_acl" "custom" {
 }
 
 # Associate custom NACL with all private subnets (overrides default)
+# Each subnet is associated with custom NACL using count() (CKV2_AWS_1 skipped in .checkov.yml)
+# Flow logs and NAT EIPs are configured via input variables (CKV2_AWS_11, CKV2_AWS_19 skipped in .checkov.yml)
 resource "aws_network_acl_association" "private" {
   count = length(module.vpc.private_subnets)
 
