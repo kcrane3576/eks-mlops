@@ -50,7 +50,6 @@ resource "aws_default_security_group" "restrict_all" {
   egress  = []
 
   tags = merge(var.tags, {
-    Name        = "${var.vpc_name}-default-sg-restrict",
     Environment = var.environment
   })
 }
