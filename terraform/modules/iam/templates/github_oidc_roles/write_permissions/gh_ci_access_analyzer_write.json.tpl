@@ -25,6 +25,17 @@
                     ]
                 }
             }
+        },
+        {
+            "Sid": "$ACCESS_ANALYZER_CREATE_ROLE",
+            "Effect": "Allow",
+            "Action": "iam:CreateServiceLinkedRole",
+            "Resource": "arn:aws:iam::*:role/aws-service-role/access-analyzer.amazonaws.com/AWSServiceRoleForAccessAnalyzer",
+            "Condition": {
+                "StringEquals": {
+                    "iam:AWSServiceName": "access-analyzer.amazonaws.com"
+                }
+            }
         }
     ]
 }
