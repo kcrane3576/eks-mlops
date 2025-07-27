@@ -19,7 +19,7 @@ jobs:
       contents: read
     defaults:
       run:
-        working-directory: terraform/modules/networking
+        working-directory: terraform/envs/mvp
     env:
       TF_VAR_region: ${{ secrets.TF_VAR_REGION }}
       TF_VAR_vpc_name: ${{ secrets.TF_VAR_VPC_NAME }}
