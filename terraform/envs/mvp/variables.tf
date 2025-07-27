@@ -1,3 +1,8 @@
+variable "region" {
+  type        = string
+  description = "AWS region"
+}
+
 variable "vpc_name" {
   type        = string
   description = "VPC name"
@@ -32,12 +37,6 @@ variable "enable_vpc_flow_logs" {
   default     = true
 }
 
-variable "tags" {
-  type        = map(string)
-  description = "Resource tags"
-  default     = {}
-}
-
 variable "cluster_name" {
   type        = string
   description = "EKS cluster name for tags"
@@ -46,4 +45,9 @@ variable "cluster_name" {
 variable "environment" {
   type        = string
   description = "Environment name (e.g., dev, test, prod) for tagging and IAM scoping"
+}
+
+variable "repo_name" {
+  type        = string
+  description = "Github repository name"
 }

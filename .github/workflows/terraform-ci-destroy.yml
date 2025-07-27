@@ -31,6 +31,7 @@ jobs:
       TF_VAR_tags: ${{ secrets.TF_VAR_TAGS }}
       TF_VAR_cluster_name: ${{ secrets.TF_VAR_CLUSTER_NAME }}
       TF_VAR_environment: ${{ secrets.TF_VAR_ENVIRONMENT }}
+      TF_VAR_repo_name: ${{ vars.REPO_NAME }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3

@@ -1,7 +1,3 @@
-provider "aws" {
-  region = "us-east-1"
-}
-
 # Uses Terraform Registry version pinning (CKV_TF_1 skipped in .checkov.yml)
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
