@@ -42,6 +42,7 @@
                     "aws:TagKeys": [
                         "Environment",
                         "Name",
+                        "Repo",
                         "kubernetes.io/cluster/$CLUSTER_NAME",
                         "kubernetes.io/role/elb",
                         "kubernetes.io/role/internal-elb"
@@ -166,6 +167,7 @@
                     "aws:TagKeys": [
                         "Environment",
                         "Name",
+                        "Repo",
                         "kubernetes.io/cluster/$CLUSTER_NAME",
                         "kubernetes.io/role/elb",
                         "kubernetes.io/role/internal-elb"
@@ -186,6 +188,7 @@
                     "aws:TagKeys": [
                         "Environment",
                         "Name",
+                        "Repo",
                         "kubernetes.io/cluster/$CLUSTER_NAME",
                         "kubernetes.io/role/elb",
                         "kubernetes.io/role/internal-elb"
@@ -211,7 +214,7 @@
                     "aws:ResourceTag/Environment": "$ENVIRONMENT"
                 },
                 "ForAnyValue:StringEquals": {
-                    "aws:TagKeys": ["Environment"]
+                    "aws:TagKeys": ["Environment", "Repo"]
                 }
             }
         },
