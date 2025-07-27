@@ -2,15 +2,11 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "$ACCESS_ANALYZER_MANAGEMENT",
+            "Sid": "$ACCESS_ANALYZER_CREATE_TAG",
             "Effect": "Allow",
             "Action": [
                 "access-analyzer:CreateAnalyzer",
-                "access-analyzer:TagResource",
-                "access-analyzer:GetAnalyzer",
-                "access-analyzer:DeleteAnalyzer",
-                "access-analyzer:ListAnalyzers",
-                "access-analyzer:ListTagsForResource"
+                "access-analyzer:TagResource"
             ],
             "Resource": "*",
             "Condition": {
@@ -25,6 +21,34 @@
                     ]
                 }
             }
+        },
+        {
+            "Sid": "$ACCESS_ANALYZER_DELETE_GET_LIST",
+            "Effect": "Allow",
+            "Action": [
+                "access-analyzer:GetAnalyzer",
+                "access-analyzer:DeleteAnalyzer",
+                "access-analyzer:ListTagsForResource"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": {
+                    "aws:ResourceTag/Environment": "$ENVIRONMENT"
+                },
+                "ForAllValues:StringLike": {
+                    "aws:TagKeys": [
+                        "Environment",
+                        "Name",
+                        "Repo"
+                    ]
+                }
+            }
+        },
+        {
+            "Sid": "$ACCESS_ANALYZER_LIST",
+            "Effect": "Allow",
+            "Action": "access-analyzer:ListAnalyzers",
+            "Resource": "*"
         },
         {
             "Sid": "$ACCESS_ANALYZER_CREATE_ROLE",
