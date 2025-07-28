@@ -10,3 +10,6 @@ format:
 
 scan:
 	checkov -d terraform/modules/networking --framework terraform
+
+generate-policies:
+	./scripts/generate_policies.sh
