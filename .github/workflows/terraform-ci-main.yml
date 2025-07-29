@@ -10,7 +10,6 @@ jobs:
       github.repository == vars.REPO_CAN_RUN_CI &&
       github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    environment: dev
     permissions:
       id-token: write
       contents: read
@@ -18,32 +17,31 @@ jobs:
       run:
         working-directory: terraform/envs/dev
     env:
+      TF_VAR_environment: dev
       TF_VAR_repo_name: ${{ vars.TF_VAR_REPO_NAME }}
-      TF_VAR_environment: ${{ vars.TF_VAR_ENVIRONMENT }}
-      TF_VAR_region: ${{ secrets.TF_VAR_REGION }}
-      TF_VAR_vpc_name: ${{ secrets.TF_VAR_VPC_NAME }}
-      TF_VAR_vpc_cidr: ${{ secrets.TF_VAR_CIDR_BLOCK }}
-      TF_VAR_azs: ${{ secrets.TF_VAR_AZS }}
-      TF_VAR_private_subnets: ${{ secrets.TF_VAR_PRIVATE_SUBNETS }}
-      TF_VAR_public_subnets: ${{ secrets.TF_VAR_PUBLIC_SUBNETS }}
-      TF_VAR_cluster_name: ${{ secrets.TF_VAR_CLUSTER_NAME }}
       TF_VAR_enable_vpc_flow_logs: ${{ secrets.TF_VAR_ENABLE_VPC_FLOW_LOGS }}
       TF_VAR_tags: ${{ secrets.TF_VAR_TAGS }}
+      TF_VAR_s3_bucket_key: ${{ secrets.TF_VAR_S3_BUCKET_KEY }}
+
+      TF_VAR_region: ${{ secrets.TF_VAR_DEV_REGION }}
+      TF_VAR_vpc_name: ${{ secrets.TF_VAR_DEV_VPC_NAME }}
+      TF_VAR_vpc_cidr: ${{ secrets.TF_VAR_DEV_CIDR_BLOCK }}
+      TF_VAR_azs: ${{ secrets.TF_VAR_DEV_AZS }}
+      TF_VAR_private_subnets: ${{ secrets.TF_VAR_DEV_PRIVATE_SUBNETS }}
+      TF_VAR_public_subnets: ${{ secrets.TF_VAR_DEV_PUBLIC_SUBNETS }}
+      TF_VAR_cluster_name: ${{ secrets.TF_VAR_DEV_CLUSTER_NAME }}
+      TF_VAR_s3_bucket_name: ${{ secrets.TF_VAR_DEV_S3_BUCKET_NAME }}
+      TF_VAR_dynamodb_table_name: ${{ secrets.TF_VAR_DEV_DYNAMODB_TABLE_NAME }}
+      ROLE_TO_ASSUME: ${{ secrets.TF_VAR_DEV_WRITE_ROLE_ARN }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Debug OIDC token
-        run: |
-          curl -sH "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
-              "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com" | jq '.sub'
-
-
       - name: Configure AWS credentials (Write)
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: ${{ secrets.TF_VAR_WRITE_ROLE_ARN }}
-          aws-region: ${{ secrets.TF_VAR_REGION }}
+          role-to-assume: ${{ env.ROLE_TO_ASSUME }}
+          aws-region: ${{ env.TF_VAR_region }}
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -51,9 +49,9 @@ jobs:
       - name: Terraform Init
         run: |
           TF_LOG=debug terraform init \
-            -backend-config="bucket=${{ secrets.TF_VAR_S3_BUCKET_NAME }}" \
+            -backend-config="bucket=${{ secrets.TF_VAR_DEV_S3_BUCKET_NAME }}" \
             -backend-config="key=${{ secrets.TF_VAR_S3_BUCKET_KEY }}" \
-            -backend-config="region=${{ secrets.TF_VAR_REGION }}" \
+            -backend-config="region=${{ secrets.TF_VAR_DEV_REGION }}" \
             -backend-config="encrypt=true" \
             -backend-config="dynamodb_table=${{ secrets.TF_VAR_DYNAMODB_TABLE_NAME }}"
 
