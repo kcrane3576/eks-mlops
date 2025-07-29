@@ -1,6 +1,6 @@
 TF_IMAGE=hashicorp/terraform:1.6.6
 TF_DIR=terraform/modules/networking
-ENV_FILE=.env
+ENV_FILE=env/.dev.env
 
 include $(ENV_FILE)
 

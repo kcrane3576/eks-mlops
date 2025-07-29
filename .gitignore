@@ -14,6 +14,7 @@ terraform.tfplan
 *.swp
 
 # Ignore sensitive override files
+env/
 .env
 .env.*
 

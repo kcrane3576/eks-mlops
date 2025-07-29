@@ -14,12 +14,13 @@ jobs:
       github.repository == vars.REPO_CAN_RUN_CI &&
       github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    environment: dev
     permissions:
       id-token: write
       contents: read
     defaults:
       run:
-        working-directory: terraform/envs/mvp
+        working-directory: terraform/envs/dev
     env:
       TF_VAR_region: ${{ secrets.TF_VAR_REGION }}
       TF_VAR_vpc_name: ${{ secrets.TF_VAR_VPC_NAME }}
@@ -28,10 +29,9 @@ jobs:
       TF_VAR_private_subnets: ${{ secrets.TF_VAR_PRIVATE_SUBNETS }}
       TF_VAR_public_subnets: ${{ secrets.TF_VAR_PUBLIC_SUBNETS }}
       TF_VAR_enable_vpc_flow_logs: ${{ secrets.TF_VAR_ENABLE_VPC_FLOW_LOGS }}
-      TF_VAR_tags: ${{ secrets.TF_VAR_TAGS }}
       TF_VAR_cluster_name: ${{ secrets.TF_VAR_CLUSTER_NAME }}
-      TF_VAR_environment: ${{ secrets.TF_VAR_ENVIRONMENT }}
-      TF_VAR_repo_name: ${{ vars.REPO_NAME }}
+      TF_VAR_repo_name: ${{ vars.TF_VAR_REPO_NAME }}
+      TF_VAR_environment: ${{ vars.TF_VAR_ENVIRONMENT }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
