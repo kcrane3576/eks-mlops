@@ -2,17 +2,13 @@
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "$IAM_MANAGE_SCOPE_ROLES",
+      "Sid": "$IAM_WRITE_SCOPE_ROLES",
       "Effect": "Allow",
       "Action": [
         "iam:CreateRole",
         "iam:DeleteRole",
-        "iam:GetRole",
         "iam:TagRole",
-        "iam:UntagRole",
-        "iam:ListRolePolicies",
-        "iam:ListAttachedRolePolicies",
-        "iam:ListInstanceProfilesForRole"
+        "iam:UntagRole"
       ],
       "Resource": "arn:aws:iam::$AWS_ACCOUNT_ID:role/vpc-flow-log-role-*",
       "Condition": {
@@ -22,18 +18,15 @@
       }
     },
     {
-      "Sid": "$IAM_MANAGE_SCOPE_POLICIES",
+      "Sid": "$IAM_WRITE_SCOPE_POLICIES",
       "Effect": "Allow",
       "Action": [
         "iam:CreatePolicy",
         "iam:DeletePolicy",
-        "iam:GetPolicy",
-        "iam:GetPolicyVersion",
         "iam:CreatePolicyVersion",
         "iam:DeletePolicyVersion",
         "iam:TagPolicy",
-        "iam:UntagPolicy",
-        "iam:ListPolicyVersions"
+        "iam:UntagPolicy"
       ],
       "Resource": "arn:aws:iam::$AWS_ACCOUNT_ID:policy/vpc-flow-log-to-cloudwatch-*",
       "Condition": {

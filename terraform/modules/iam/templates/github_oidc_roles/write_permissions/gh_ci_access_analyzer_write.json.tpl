@@ -23,12 +23,10 @@
             }
         },
         {
-            "Sid": "$ACCESS_ANALYZER_DELETE_GET_LIST",
+            "Sid": "$ACCESS_ANALYZER_DELETE",
             "Effect": "Allow",
             "Action": [
-                "access-analyzer:GetAnalyzer",
-                "access-analyzer:DeleteAnalyzer",
-                "access-analyzer:ListTagsForResource"
+                "access-analyzer:DeleteAnalyzer"
             ],
             "Resource": "*",
             "Condition": {
@@ -43,12 +41,6 @@
                     ]
                 }
             }
-        },
-        {
-            "Sid": "$ACCESS_ANALYZER_LIST",
-            "Effect": "Allow",
-            "Action": "access-analyzer:ListAnalyzers",
-            "Resource": "*"
         },
         {
             "Sid": "$ACCESS_ANALYZER_CREATE_ROLE",
