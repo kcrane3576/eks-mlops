@@ -6,8 +6,8 @@ Simple eks / mlops setup
 ## Local Setup
 
 ### 1. Create your `.env` file
-At the root of the repo, create a `.env` file with the following variables:
-`AWARENESS`: single quotes (') are used in the .env file, but must be removed for secret values in github.
+create a `env/.dev.env` file with the following variables:
+- `AWARENESS`: single quotes (') are used in the `env/.dev.env` file, but must be removed for secret values in github.
 ```env
 # Github
 REPO_OWNER=
@@ -18,6 +18,10 @@ AWS_ACCOUNT_ID=
 ENVIRONMENT=
 REGION=
 TAGS=
+# Terraform Backend
+S3_BUCKET_NAME=
+S3_BUCKET_KEY=
+DYNAMODB_TABLE_NAME=
 # IAM
 ROLE_TARGET=
 ROLE_PURPOSE=
@@ -25,14 +29,12 @@ READ_ROLE_ARN=
 WRITE_ROLE_ARN=
 ## IAM Policies
 ### IAM Management
-IAM_MANAGE_SCOPE_ROLES=
-IAM_MANAGE_SCOPE_POLICIES=
+IAM_WRITE_SCOPE_ROLES=
+IAM_READ_SCOPE_ROLES=
+IAM_WRITE_SCOPE_POLICIES=
+IAM_READ_SCOPE_POLICIES=
 IAM_ATTACH_SCOPE_ROLE_POLICIES=
 IAM_PASS_TO_WRITE_ROLE=
-### Terraform
-S3_BUCKET_NAME=
-S3_BUCKET_KEY=
-DYNAMODB_TABLE_NAME=
 #### Read
 S3_READ=
 DYNAMODB_READ=
@@ -68,8 +70,9 @@ CLOUDWATCH_LOGS_DELETE_FLOW_LOG=
 CLOUDWATCH_LOGS_PASS_ROLE_FOR_FLOW_LOG=
 ### Access Analyzer
 ACCESS_ANALYZER_CREATE_TAG=
+ACCESS_ANALYZER_DELETE=
+ACCESS_ANALYZER_GET_LIST=
 ACCESS_ANALYZER_LIST=
-ACCESS_ANALYZER_DELETE_GET_LIST=
 ACCESS_ANALYZER_CREATE_ROLE=
 ### EKS
 CLUSTER_NAME=
@@ -100,11 +103,10 @@ Branch Setup
 
 Messaging
 ```
-<type>[optional scope]: <description>
+<type>(<scope>): <summary line>
 
-[optional body]
+<explanation of what changed and why, especially if fixing something broken>
 
-[optional footer(s)]
 ```
 ---
 
