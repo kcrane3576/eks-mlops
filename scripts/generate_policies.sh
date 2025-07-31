@@ -20,7 +20,10 @@ for env_file in "$ENV_DIR"/*.env; do
 
   echo "🔧 Processing environment: $ENV_NAME"
 
-  # Load environment variables
+  # Set ENVIRONMENT variable from filename
+  export ENVIRONMENT="$ENV_NAME"
+
+  # Load environment variables from file
   set -a
   source "$env_file"
   set +a
