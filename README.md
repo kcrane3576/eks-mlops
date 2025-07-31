@@ -130,9 +130,3 @@ Branch template
     git pull origin main && \
     git checkout -b <branch_name> &&
 ```
-Commit messaging
-```shell
-<type>(<scope>): <summary>
-
-[body — what changed and why]
-```
