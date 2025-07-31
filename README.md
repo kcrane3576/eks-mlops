@@ -13,12 +13,12 @@ This project expects sensitive configuration to be stored outside of version con
 1. Local Environment Files
 - Create a directory named `env/` in the project root
 - Inside it, create a file named `.dev.env`
-    - Use the provided `.local.env` file at the root as a reference
+    - Use the provided `env/.local.env` file at the root as a reference
     - Be sure to define a valid `WRITE_ROLE_ARN` and `READ_ROLE_ARN` in this file before proceeding to `Step 2`
 2. GitHub Repository Variables and Secrets
 - Go to your repository’s Settings → Secrets and Variables → Actions
 - These must be defined at the repository level — not as GitHub Environments — due to OIDC limitations
-- Use `.github.env` in the root as a reference for required repository-level variables and secrets.
+- Use `env/.github.env` in the root as a reference for required repository-level variables and secrets.
 
 #### ⚠️ Environment File Warning
 The `env/` directory and `.dev.env` file are intentionally excluded from version control via the `.gitignore` file.
@@ -27,7 +27,7 @@ These files are used for local development and policy generation only. They will
 
 Ensure they remain ignored and are **never** committed to the repository.
 
-Use `.local.env` as a safe, shareable **template** of the required variables for a successful deployment.
+Use `env/.local.env` as a safe, shareable **template** of the required variables for a successful deployment.
 
 ## Step 2
 ### Manual IAM Policy Generation and Setup

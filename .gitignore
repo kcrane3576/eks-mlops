@@ -14,8 +14,8 @@ terraform.tfplan
 *.swp
 
 # Ignore sensitive override files
-env/
 .env
+.dev.env
 .env.*
 
 # Ignore generated policies
