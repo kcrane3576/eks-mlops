@@ -13,11 +13,9 @@ module "networking" {
   enable_vpc_flow_logs = var.enable_vpc_flow_logs
   cluster_name         = var.cluster_name
   environment          = var.environment
+  repo_name            = var.repo_name
 
-  tags = {
-    Environment = var.environment
-    Repo        = var.repo_name
-  }
+  tags = local.default_tags
 }
 
 module "access_analyzer" {
@@ -26,7 +24,11 @@ module "access_analyzer" {
   repo_name   = var.repo_name
   environment = var.environment
 
-  tags = {
+  tags = local.default_tags
+}
+
+locals {
+  default_tags = {
     Environment = var.environment
     Repo        = var.repo_name
   }

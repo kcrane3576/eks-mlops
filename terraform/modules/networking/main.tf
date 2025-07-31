@@ -23,17 +23,19 @@ module "vpc" {
   flow_log_cloudwatch_log_group_name_prefix = "/aws/vpc-flow-log/"
 
   tags = merge(var.tags, {
+    Name                                        = var.vpc_name,
     "kubernetes.io/cluster/${var.cluster_name}" = "shared",
-    Environment                                 = var.environment
   })
 
-  public_subnet_tags = merge({
+  public_subnet_tags = merge(var.tags, {
+    Name                     = "${var.vpc_name}-public-subnets",
     "kubernetes.io/role/elb" = "1"
-  }, { Environment = var.environment })
+  })
 
-  private_subnet_tags = merge({ // Updated: Merge Environment tag for private subnets
+  private_subnet_tags = merge(var.tags, { // Updated: Merge Environment tag for private subnets
+    Name                              = "${var.vpc_name}-private-subnets",
     "kubernetes.io/role/internal-elb" = "1"
-  }, { Environment = var.environment })
+  })
 }
 
 # Restricts default SG traffic post-VPC creation (CKV2_AWS_12 skipped in .checkov.yml)
@@ -46,7 +48,7 @@ resource "aws_default_security_group" "restrict_all" {
   egress  = []
 
   tags = merge(var.tags, {
-    Environment = var.environment
+    Name = "${var.vpc_name}-default-security-group",
   })
 }
 
@@ -93,8 +95,7 @@ resource "aws_network_acl" "custom" {
   }
 
   tags = merge(var.tags, {
-    Name        = "${var.vpc_name}-custom-nacl",
-    Environment = var.environment
+    Name = "${var.vpc_name}-custom-nacl"
   })
 }
 
