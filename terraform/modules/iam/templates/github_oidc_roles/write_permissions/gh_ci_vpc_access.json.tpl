@@ -2,7 +2,7 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "$VPC_DESCRIBE_DISASSOCIATE",
+            "Sid": "${VPC_DESCRIBE_DISASSOCIATE}",
             "Effect": "Allow",
             "Action": [
                 "ec2:DescribeVpcs",
@@ -25,7 +25,7 @@
             "Resource": "*"
         },
         {
-            "Sid": "$VPC_CREATE_STRICT",
+            "Sid": "${VPC_CREATE_STRICT}",
             "Effect": "Allow",
             "Action": [
                 "ec2:CreateVpc",
@@ -36,14 +36,14 @@
             "Resource": "*",
             "Condition": {
                 "StringEquals": {
-                    "aws:RequestTag/Environment": "$ENVIRONMENT"
+                    "aws:RequestTag/Environment": "${ENVIRONMENT}"
                 },
                 "ForAllValues:StringLike": {
                     "aws:TagKeys": [
                         "Environment",
                         "Name",
                         "Repo",
-                        "kubernetes.io/cluster/$CLUSTER_NAME",
+                        "kubernetes.io/cluster/${CLUSTER_NAME}",
                         "kubernetes.io/role/elb",
                         "kubernetes.io/role/internal-elb"
                     ]
@@ -51,7 +51,7 @@
             }
         },
         {
-            "Sid": "$VPC_CREATE_RELAXED",
+            "Sid": "${VPC_CREATE_RELAXED}",
             "Effect": "Allow",
             "Action": [
                 "ec2:CreateSubnet",
@@ -62,12 +62,12 @@
             "Resource": "*",
             "Condition": {
                 "StringEqualsIfExists": {
-                    "aws:RequestTag/Environment": "$ENVIRONMENT"
+                    "aws:RequestTag/Environment": "${ENVIRONMENT}"
                 }
             }
         },
         {
-            "Sid": "$VPC_CREATE_RELAXED_NAT_GATEWAY",
+            "Sid": "${VPC_CREATE_RELAXED_NAT_GATEWAY}",
             "Effect": "Allow",
             "Action": [
                 "ec2:CreateNatGateway"
@@ -75,7 +75,7 @@
             "Resource": "*"
         },
         {
-            "Sid": "$VPC_MODIFY_DELETE",
+            "Sid": "${VPC_MODIFY_DELETE}",
             "Effect": "Allow",
             "Action": [
                 "ec2:DeleteVpc",
@@ -99,76 +99,76 @@
                 "ec2:ReplaceNetworkAclEntry"
             ],
             "Resource": [
-                "arn:aws:ec2:$REGION:*:vpc/*",
-                "arn:aws:ec2:$REGION:*:subnet/*",
-                "arn:aws:ec2:$REGION:*:route-table/*",
-                "arn:aws:ec2:$REGION:*:internet-gateway/*",
-                "arn:aws:ec2:$REGION:*:natgateway/*",
-                "arn:aws:ec2:$REGION:*:elastic-ip/*",
-                "arn:aws:ec2:$REGION:*:network-acl/*"
+                "arn:aws:ec2:${REGION}:*:vpc/*",
+                "arn:aws:ec2:${REGION}:*:subnet/*",
+                "arn:aws:ec2:${REGION}:*:route-table/*",
+                "arn:aws:ec2:${REGION}:*:internet-gateway/*",
+                "arn:aws:ec2:${REGION}:*:natgateway/*",
+                "arn:aws:ec2:${REGION}:*:elastic-ip/*",
+                "arn:aws:ec2:${REGION}:*:network-acl/*"
             ],
             "Condition": {
                 "StringEquals": {
-                    "aws:ResourceTag/Environment": "$ENVIRONMENT"
+                    "aws:ResourceTag/Environment": "${ENVIRONMENT}"
                 }
             }
         },
         {
-            "Sid": "$VPC_REPLACE_NACL_ASSOCIATION",
+            "Sid": "${VPC_REPLACE_NACL_ASSOCIATION}",
             "Effect": "Allow",
             "Action": "ec2:ReplaceNetworkAclAssociation",
             "Resource": "*",
             "Condition": {
                 "StringEqualsIfExists": {
-                    "aws:ResourceTag/Environment": "$ENVIRONMENT"
+                    "aws:ResourceTag/Environment": "${ENVIRONMENT}"
                 }
             }
         },
         {
-            "Sid": "$VPC_DISASSOCIATE_ROUTE_TABLE",
+            "Sid": "${VPC_DISASSOCIATE_ROUTE_TABLE}",
             "Effect": "Allow",
             "Action": "ec2:DisassociateRouteTable",
             "Resource": "*"
         },
         {
-            "Sid": "$VPC_REVOKE_SECURITY_GROUP_RULE",
+            "Sid": "${VPC_REVOKE_SECURITY_GROUP_RULE}",
             "Effect": "Allow",
             "Action": [
                 "ec2:RevokeSecurityGroupEgress",
                 "ec2:RevokeSecurityGroupIngress"
             ],
             "Resource": [
-                "arn:aws:ec2:$REGION:*:security-group/*"
+                "arn:aws:ec2:${REGION}:*:security-group/*"
             ],
             "Condition": {
                 "StringEqualsIfExists": {
-                    "aws:ResourceTag/Environment": "$ENVIRONMENT"
+                    "aws:ResourceTag/Environment": "${ENVIRONMENT}"
                 }
             }
         },
-                {
-            "Sid": "$VPC_CREATE_TAG",
+        {
+            "Sid": "${VPC_CREATE_TAG}",
             "Effect": "Allow",
             "Action": "ec2:CreateTags",
             "Resource": [
-                "arn:aws:ec2:$REGION:*:vpc/*",
-                "arn:aws:ec2:$REGION:*:subnet/*",
-                "arn:aws:ec2:$REGION:*:network-acl/*",
-                "arn:aws:ec2:$REGION:*:route-table/*",
-                "arn:aws:ec2:$REGION:*:internet-gateway/*",
-                "arn:aws:ec2:$REGION:*:security-group/*",
-                "arn:aws:ec2:$REGION:*:natgateway/*"
+                "arn:aws:ec2:${REGION}:*:vpc/*",
+                "arn:aws:ec2:${REGION}:*:subnet/*",
+                "arn:aws:ec2:${REGION}:*:network-acl/*",
+                "arn:aws:ec2:${REGION}:*:route-table/*",
+                "arn:aws:ec2:${REGION}:*:internet-gateway/*",
+                "arn:aws:ec2:${REGION}:*:security-group/*",
+                "arn:aws:ec2:${REGION}:*:natgateway/*"
             ],
             "Condition": {
                 "StringEquals": {
-                    "aws:RequestTag/Environment": "$ENVIRONMENT"
+                    "aws:RequestTag/Environment": "${ENVIRONMENT}"
                 },
                 "ForAnyValue:StringLike": {
                     "aws:TagKeys": [
                         "Environment",
                         "Name",
                         "Repo",
-                        "kubernetes.io/cluster/$CLUSTER_NAME",
+                        "kubernetes.io/cluster/${CLUSTER_NAME}",
                         "kubernetes.io/role/elb",
                         "kubernetes.io/role/internal-elb"
                     ]
@@ -176,20 +176,20 @@
             }
         },
                 {
-            "Sid": "$VPC_CREATE_TAG_EIP",
+            "Sid": "${VPC_CREATE_TAG_EIP}",
             "Effect": "Allow",
             "Action": "ec2:CreateTags",
             "Resource": "*",
             "Condition": {
                 "StringEquals": {
-                    "aws:RequestTag/Environment": "$ENVIRONMENT"
+                    "aws:RequestTag/Environment": "${ENVIRONMENT}"
                 },
                 "ForAllValues:StringLike": {
                     "aws:TagKeys": [
                         "Environment",
                         "Name",
                         "Repo",
-                        "kubernetes.io/cluster/$CLUSTER_NAME",
+                        "kubernetes.io/cluster/${CLUSTER_NAME}",
                         "kubernetes.io/role/elb",
                         "kubernetes.io/role/internal-elb"
                     ]
@@ -197,21 +197,21 @@
             }
         },
         {
-            "Sid": "$VPC_DELETE_TAG",
+            "Sid": "${VPC_DELETE_TAG}",
             "Effect": "Deny",
             "Action": "ec2:DeleteTags",
             "Resource": [
-                "arn:aws:ec2:$REGION:*:vpc/*",
-                "arn:aws:ec2:$REGION:*:subnet/*",
-                "arn:aws:ec2:$REGION:*:network-acl/*",
-                "arn:aws:ec2:$REGION:*:route-table/*",
-                "arn:aws:ec2:$REGION:*:internet-gateway/*",
-                "arn:aws:ec2:$REGION:*:security-group/*",
-                "arn:aws:ec2:$REGION:*:natgateway/*"
+                "arn:aws:ec2:${REGION}:*:vpc/*",
+                "arn:aws:ec2:${REGION}:*:subnet/*",
+                "arn:aws:ec2:${REGION}:*:network-acl/*",
+                "arn:aws:ec2:${REGION}:*:route-table/*",
+                "arn:aws:ec2:${REGION}:*:internet-gateway/*",
+                "arn:aws:ec2:${REGION}:*:security-group/*",
+                "arn:aws:ec2:${REGION}:*:natgateway/*"
             ],
             "Condition": {
                 "StringEquals": {
-                    "aws:ResourceTag/Environment": "$ENVIRONMENT"
+                    "aws:ResourceTag/Environment": "${ENVIRONMENT}"
                 },
                 "ForAnyValue:StringEquals": {
                     "aws:TagKeys": ["Environment", "Repo"]
@@ -219,24 +219,24 @@
             }
         },
         {
-            "Sid": "$VPC_CHANGE_TAG",
+            "Sid": "${VPC_CHANGE_TAG}",
             "Effect": "Deny",
             "Action": "ec2:CreateTags",
             "Resource": [
-                "arn:aws:ec2:$REGION:*:vpc/*",
-                "arn:aws:ec2:$REGION:*:subnet/*",
-                "arn:aws:ec2:$REGION:*:network-acl/*",
-                "arn:aws:ec2:$REGION:*:route-table/*",
-                "arn:aws:ec2:$REGION:*:internet-gateway/*",
-                "arn:aws:ec2:$REGION:*:security-group/*",
-                "arn:aws:ec2:$REGION:*:natgateway/*"
+                "arn:aws:ec2:${REGION}:*:vpc/*",
+                "arn:aws:ec2:${REGION}:*:subnet/*",
+                "arn:aws:ec2:${REGION}:*:network-acl/*",
+                "arn:aws:ec2:${REGION}:*:route-table/*",
+                "arn:aws:ec2:${REGION}:*:internet-gateway/*",
+                "arn:aws:ec2:${REGION}:*:security-group/*",
+                "arn:aws:ec2:${REGION}:*:natgateway/*"
             ],
             "Condition": {
                 "StringEquals": {
-                    "aws:ResourceTag/Environment": "$ENVIRONMENT"
+                    "aws:ResourceTag/Environment": "${ENVIRONMENT}"
                 },
                 "StringNotEqualsIfExists": {
-                    "aws:RequestTag/Environment": "$ENVIRONMENT"
+                    "aws:RequestTag/Environment": "${ENVIRONMENT}"
                 },
                 "ForAnyValue:StringEquals": {
                     "aws:TagKeys": ["Environment"]

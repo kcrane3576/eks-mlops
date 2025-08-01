@@ -12,4 +12,4 @@ scan:
 	checkov -d terraform/modules/networking --framework terraform
 
 generate-policies:
-	./scripts/generate_policies.sh
+	docker compose -f infra-tools/generate-policies/docker-compose.yml run --rm generate-policies

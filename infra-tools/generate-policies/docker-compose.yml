@@ -1,0 +1,13 @@
+services:
+  generate-policies:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ../../:/app
+    working_dir: /app
+    environment:
+      - TEMPLATE_DIR=terraform/modules/iam/templates/github_oidc_roles
+      - ENV_DIR=env
+      - OUTPUT_DIR=terraform/modules/iam/templates/generated
+    command: ["python3", "infra-tools/generate-policies/main.py"]

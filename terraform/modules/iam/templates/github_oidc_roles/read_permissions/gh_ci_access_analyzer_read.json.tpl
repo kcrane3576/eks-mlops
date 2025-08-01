@@ -2,7 +2,7 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "$ACCESS_ANALYZER_GET_LIST",
+            "Sid": "${ACCESS_ANALYZER_GET_LIST}",
             "Effect": "Allow",
             "Action": [
                 "access-analyzer:GetAnalyzer",
@@ -11,7 +11,7 @@
             "Resource": "*",
             "Condition": {
                 "StringEquals": {
-                    "aws:ResourceTag/Environment": "$ENVIRONMENT"
+                    "aws:ResourceTag/Environment": "${ENVIRONMENT}"
                 },
                 "ForAllValues:StringLike": {
                     "aws:TagKeys": [
@@ -23,7 +23,7 @@
             }
         },
         {
-            "Sid": "$ACCESS_ANALYZER_LIST",
+            "Sid": "${ACCESS_ANALYZER_LIST}",
             "Effect": "Allow",
             "Action": "access-analyzer:ListAnalyzers",
             "Resource": "*"
