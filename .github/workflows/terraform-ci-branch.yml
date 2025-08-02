@@ -70,7 +70,8 @@ jobs:
           if [ -f .terraform.lock.hcl ]; then
             grep '"version"' .terraform.lock.hcl -A 1
           else
-            echo "⚠️ Lockfile not found. Terraform likely did not generate it."
+            echo "🔴 STILL missing lockfile. Terraform isn't installing any provider."
+            exit 1
           fi
         shell: bash
 
