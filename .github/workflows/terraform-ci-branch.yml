@@ -69,17 +69,6 @@ jobs:
             -backend-config="encrypt=true" \
             -backend-config="dynamodb_table=${{ secrets.TF_VAR_DYNAMODB_TABLE_NAME }}"
 
-      - name: Show Resolved AWS Provider Version
-        run: |
-          echo "🔍 Checking .terraform.lock.hcl for resolved version..."
-          if [ -f .terraform.lock.hcl ]; then
-            grep '"version"' .terraform.lock.hcl -A 1
-          else
-            echo "🔴 STILL missing lockfile. Terraform isn't installing any provider."
-            exit 1
-          fi
-        shell: bash
-
       - name: Terraform Validate
         run: terraform validate
 
