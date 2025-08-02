@@ -56,12 +56,16 @@ jobs:
 
       - name: Terraform Init
         run: |
+          rm -rf .terraform .terraform.lock.hcl
           TF_LOG=debug terraform init -upgrade \
             -backend-config="bucket=${{ secrets.TF_VAR_DEV_S3_BUCKET_NAME }}" \
             -backend-config="key=${{ secrets.TF_VAR_S3_BUCKET_KEY }}" \
             -backend-config="region=${{ secrets.TF_VAR_DEV_REGION }}" \
             -backend-config="encrypt=true" \
             -backend-config="dynamodb_table=${{ secrets.TF_VAR_DYNAMODB_TABLE_NAME }}"
+
+      - name: Confirm Provider Version
+        run: terraform providers
 
       - name: Terraform Validate
         run: terraform validate
