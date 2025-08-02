@@ -66,8 +66,14 @@ jobs:
             -backend-config="encrypt=true" \
             -backend-config="dynamodb_table=${{ secrets.TF_VAR_DYNAMODB_TABLE_NAME }}"
 
-      - name: Confirm Provider Version
-        run: terraform providers
+      - name: Show AWS Provider Version Resolved
+        run: |
+          if [ -f .terraform.lock.hcl ]; then
+            echo "🔍 Provider version resolved:"
+            grep '"version"' .terraform.lock.hcl -A 1
+          else
+            echo "⚠️ No .terraform.lock.hcl found. Terraform is resolving provider version from scratch. This can cause old versions to be used."
+          fi
 
       - name: Terraform Validate
         run: terraform validate
