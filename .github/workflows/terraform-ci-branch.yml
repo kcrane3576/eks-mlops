@@ -54,6 +54,11 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
+      - name: Terraform Pre-Init (Local Backend Only)
+        run: |
+          rm -rf .terraform .terraform.lock.hcl
+          terraform init -upgrade -backend=false
+
       - name: Terraform Init
         run: |
           rm -f .terraform.lock.hcl
