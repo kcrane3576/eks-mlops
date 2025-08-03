@@ -8,6 +8,14 @@
                 "iam:GetRole"
             ],
             "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/${READ_ROLE_ARN}"
+        },
+        {
+            "Sid": "${EKS_SSM_READ_AMI}",
+            "Effect": "Allow",
+            "Action": [
+                "ssm:GetParameter"
+            ],
+            "Resource": "arn:aws:ssm:*::parameter/aws/service/eks/optimized-ami*"
         }
     ]
 }
