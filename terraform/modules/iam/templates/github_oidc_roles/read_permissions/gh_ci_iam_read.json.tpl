@@ -17,14 +17,6 @@
                 }
             }
         },
-                {
-            "Sid": "${IAM_GET_SCOPE_ROLES}",
-            "Effect": "Allow",
-            "Action": [
-                "iam:GetRole"
-            ],
-            "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/${READ_ROLE_ARN}"
-        },
         {
             "Sid": "${IAM_READ_SCOPE_POLICIES}",
             "Effect": "Allow",
