@@ -38,6 +38,17 @@ module "access_analyzer" {
   tags = local.default_tags
 }
 
+
+module "eks" {
+  source = "../../modules/eks"
+
+  cluster_name       = var.cluster_name
+  vpc_id             = module.networking.vpc_id
+  private_subnet_ids = module.networking.private_subnets
+
+  tags = local.default_tags
+}
+
 locals {
   default_tags = {
     Environment = var.environment
