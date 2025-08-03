@@ -39,7 +39,12 @@
             "Resource": [
                 "arn:aws:iam::${AWS_ACCOUNT_ID}:role/vpc-flow-log-role-*",
                 "arn:aws:iam::${AWS_ACCOUNT_ID}:role/${READ_ROLE_ARN}"
-            ]
+            ],
+            "Condition": {
+                "StringEquals": {
+                    "aws:ResourceTag/Environment": "${ENVIRONMENT}"
+                }
+            }
         },
         {
             "Sid": "${IAM_READ_SCOPE_POLICIES}",
