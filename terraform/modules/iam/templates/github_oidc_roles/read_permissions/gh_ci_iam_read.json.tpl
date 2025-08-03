@@ -10,15 +10,20 @@
                 "iam:ListAttachedRolePolicies",
                 "iam:ListInstanceProfilesForRole"
             ],
-            "Resource": [
-                "arn:aws:iam::${AWS_ACCOUNT_ID}:role/vpc-flow-log-role-*",
-                "arn:aws:iam::${AWS_ACCOUNT_ID}:role/${READ_ROLE_ARN}"
-            ],
+            "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/vpc-flow-log-role-*",
             "Condition": {
                 "StringEquals": {
                     "aws:ResourceTag/Environment": "${ENVIRONMENT}"
                 }
             }
+        },
+        {
+            "Sid": "${IAM_READ_SELF}",
+            "Effect": "Allow",
+            "Action": [
+                "iam:GetRole"
+            ],
+            "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/${READ_ROLE_ARN}"
         },
         {
             "Sid": "${IAM_READ_SCOPE_POLICIES}",
