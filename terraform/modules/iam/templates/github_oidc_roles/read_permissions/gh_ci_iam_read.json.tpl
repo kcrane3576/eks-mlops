@@ -5,7 +5,6 @@
             "Sid": "${IAM_READ_SCOPE_ROLES}",
             "Effect": "Allow",
             "Action": [
-                "iam:GetRole",
                 "iam:ListRolePolicies",
                 "iam:ListAttachedRolePolicies",
                 "iam:ListInstanceProfilesForRole"
@@ -18,12 +17,15 @@
             }
         },
         {
-            "Sid": "${IAM_READ_SELF}",
+            "Sid": "${IAM_GET_SCOPE_ROLES}",
             "Effect": "Allow",
             "Action": [
                 "iam:GetRole"
             ],
-            "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/${READ_ROLE_ARN}"
+            "Resource": [
+                "arn:aws:iam::${AWS_ACCOUNT_ID}:role/vpc-flow-log-role-*",
+                "arn:aws:iam::${AWS_ACCOUNT_ID}:role/${READ_ROLE_ARN}"
+            ]
         },
         {
             "Sid": "${IAM_READ_SCOPE_POLICIES}",
