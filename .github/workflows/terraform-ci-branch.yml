@@ -55,17 +55,6 @@ jobs:
       - name: Confirm Terraform Version
         run: terraform version
 
-      - name: Terraform Init (no backend, just install modules/providers)
-        run: |
-          rm -rf .terraform .terraform.lock.hcl
-          terraform init -upgrade -backend=false
-
-      - name: Terraform Dummy Plan (force provider resolution)
-        run: terraform plan -refresh=false -lock=false -out=tf.dryrun.plan || true
-
-      - name: Show locked AWS provider version
-        run: grep -A 5 '"hashicorp/aws"' .terraform.lock.hcl || echo "❌ AWS provider not found"
-
       - name: Terraform Init
         run: |
           TF_LOG=debug terraform init -upgrade \
@@ -74,7 +63,6 @@ jobs:
             -backend-config="region=${{ secrets.TF_VAR_DEV_REGION }}" \
             -backend-config="encrypt=true" \
             -backend-config="dynamodb_table=${{ secrets.TF_VAR_DYNAMODB_TABLE_NAME }}"
-
 
       - name: Terraform Validate
         run: terraform validate
