@@ -55,10 +55,11 @@ jobs:
       - name: Confirm Terraform Version
         run: terraform version
 
-      - name: Terraform Init (no backend, just to install providers)
+      - name: Terraform Init (provider-only)
         run: |
-          rm -rf .terraform .terraform.lock.hcl ~/.terraform.d/plugin-cache
-          terraform init -upgrade -backend=false
+          rm -rf .terraform .terraform.lock.hcl
+          terraform init -upgrade -backend=false -get=true
+          grep -A 5 '"hashicorp/aws"' .terraform.lock.hcl || echo "❌ AWS provider not found"
 
       - name: Show locked AWS provider version
         run: grep -A 5 '"hashicorp/aws"' .terraform.lock.hcl || echo "❌ AWS provider not found"
