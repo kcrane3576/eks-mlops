@@ -49,9 +49,6 @@ jobs:
         with:
           terraform_version: 1.8.5
 
-      - name: Add Terraform to PATH
-        run: echo "$HOME/.terraform.versions/1.8.5" >> $GITHUB_PATH
-
       - name: Confirm Terraform Version
         run: terraform version
 
