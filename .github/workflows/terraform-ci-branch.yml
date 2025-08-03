@@ -38,13 +38,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Debug GitHub OIDC token
-        run: |
-          TOKEN=$(curl -sLS "$ACTIONS_ID_TOKEN_REQUEST_URL" \
-          -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" | jq -r '.value')
-
-          echo "$TOKEN" | cut -d '.' -f2 | base64 -d | jq .
-
       - name: Configure AWS credentials (Read)
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -55,6 +48,17 @@ jobs:
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.8.5
+
+      - name: Add Terraform to PATH
+        run: echo "$HOME/.terraform.versions/1.8.5" >> $GITHUB_PATH
+
+      - name: Confirm Terraform Version
+        run: terraform version
+
+      - name: Terraform Pre-Init (Local Backend Only)
+        run: |
+          rm -rf .terraform .terraform.lock.hcl
+          terraform init -upgrade -backend=false
 
       - name: Terraform Pre-Init (Local Backend Only)
         run: |
