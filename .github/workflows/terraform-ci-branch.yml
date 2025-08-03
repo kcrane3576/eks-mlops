@@ -60,8 +60,8 @@ jobs:
           rm -rf .terraform .terraform.lock.hcl
           terraform init -upgrade -backend=false
 
-      - name: Terraform Graph Walk (forces full provider evaluation)
-        run: terraform providers || true
+      - name: Terraform Dummy Plan (force provider resolution)
+        run: terraform plan -refresh=false -lock=false -out=tf.dryrun.plan || true
 
       - name: Show locked AWS provider version
         run: grep -A 5 '"hashicorp/aws"' .terraform.lock.hcl || echo "❌ AWS provider not found"
