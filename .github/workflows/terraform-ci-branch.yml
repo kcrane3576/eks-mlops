@@ -55,15 +55,13 @@ jobs:
       - name: Confirm Terraform Version
         run: terraform version
 
-      - name: Terraform Pre-Init (Local Backend Only)
+      - name: Terraform Init (no backend, just to install providers)
         run: |
-          rm -rf .terraform .terraform.lock.hcl
+          rm -rf .terraform .terraform.lock.hcl ~/.terraform.d/plugin-cache
           terraform init -upgrade -backend=false
 
-      - name: Terraform Pre-Init (Local Backend Only)
-        run: |
-          rm -rf .terraform .terraform.lock.hcl
-          terraform init -upgrade -backend=false
+      - name: Show locked AWS provider version
+        run: grep -A 5 '"hashicorp/aws"' .terraform.lock.hcl || echo "❌ AWS provider not found"
 
       - name: Terraform Init
         run: |
@@ -74,10 +72,6 @@ jobs:
             -backend-config="encrypt=true" \
             -backend-config="dynamodb_table=${{ secrets.TF_VAR_DYNAMODB_TABLE_NAME }}"
 
-      - name: Clean Terraform cache
-        run: |
-          rm -rf .terraform .terraform.lock.hcl ~/.terraform.d/plugin-cache
-          terraform init -upgrade -backend=false
 
       - name: Terraform Validate
         run: terraform validate
