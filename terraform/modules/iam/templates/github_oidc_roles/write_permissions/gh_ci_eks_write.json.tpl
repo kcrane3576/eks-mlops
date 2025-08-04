@@ -6,7 +6,6 @@
             "Effect": "Allow",
             "Action": [
                 "iam:CreateRole",
-                "iam:GetRole",
                 "iam:AttachRolePolicy",
                 "iam:PutRolePolicy",
                 "iam:TagRole",
