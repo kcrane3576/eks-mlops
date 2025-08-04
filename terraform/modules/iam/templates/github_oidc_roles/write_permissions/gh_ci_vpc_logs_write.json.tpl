@@ -2,7 +2,7 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "${CLOUDWATCH_LOGS_DESCRIBE}",
+            "Sid": "${CLOUDWATCH_LOGS_DESCRIBE_WRITE}",
             "Effect": "Allow",
             "Action": [
                 "logs:DescribeLogGroups",
