@@ -17,7 +17,7 @@
                 "iam:ListRolePolicies",
                 "iam:ListAttachedRolePolicies"
             ],
-            "Resource": "arn:aws:iam::728852640881:role/default-eks-node-group-*"
+            "Resource": "arn:aws:iam::728852640881:role/*"
         },
         {
             "Sid": "${EKS_SSM_READ_AMI}",
