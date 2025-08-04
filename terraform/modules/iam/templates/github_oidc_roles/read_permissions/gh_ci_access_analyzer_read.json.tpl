@@ -8,19 +8,7 @@
                 "access-analyzer:GetAnalyzer",
                 "access-analyzer:ListTagsForResource"
             ],
-            "Resource": "*",
-            "Condition": {
-                "StringEquals": {
-                    "aws:ResourceTag/Environment": "${ENVIRONMENT}"
-                },
-                "ForAllValues:StringLike": {
-                    "aws:TagKeys": [
-                        "Environment",
-                        "Name",
-                        "Repo"
-                    ]
-                }
-            }
+            "Resource": "*"
         },
         {
             "Sid": "${ACCESS_ANALYZER_LIST}",
