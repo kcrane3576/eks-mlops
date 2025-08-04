@@ -2,7 +2,7 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "${IAM_GET_SCOPE_ROLES}",
+            "Sid": "${IAM_GET_SCOPE_ROLES_READ}",
             "Effect": "Allow",
             "Action": [
                 "iam:GetRole"
