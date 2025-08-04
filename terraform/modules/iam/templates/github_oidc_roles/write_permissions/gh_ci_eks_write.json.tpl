@@ -30,7 +30,7 @@
             "Action": [
                 "logs:CreateLogGroup"
             ],
-            "Resource": "arn:aws:logs:${REGION}:${AWS_ACCOUNT_ID}:log-group:/aws/eks/*:log-stream:*"
+            "Resource": "arn:aws:logs:${REGION}:${AWS_ACCOUNT_ID}:log-group:/aws/eks/*"
         },
         {
             "Sid": "GithubCIEKSSecurityGroupsAndTags",
