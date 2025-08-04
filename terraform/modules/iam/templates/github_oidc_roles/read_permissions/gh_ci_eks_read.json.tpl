@@ -10,6 +10,14 @@
             "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/${READ_ROLE_ARN}"
         },
         {
+            "Sid": "${IAM_GET_SCOPE_ROLES_NODE_GROUP}",
+            "Effect": "Allow",
+            "Action": [
+                "iam:GetRole"
+            ],
+            "Resource": "arn:aws:iam::728852640881:role/default-eks-node-group-*"
+        },
+        {
             "Sid": "${EKS_SSM_READ_AMI}",
             "Effect": "Allow",
             "Action": [
