@@ -37,6 +37,7 @@
             "Effect": "Allow",
             "Action": [
                 "ec2:CreateSecurityGroup",
+                "ec2:DeleteSecurityGroup",
                 "ec2:DeleteTags"
             ],
             "Resource": "*"
