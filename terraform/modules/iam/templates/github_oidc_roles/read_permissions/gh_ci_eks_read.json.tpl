@@ -13,7 +13,8 @@
             "Sid": "${IAM_GET_SCOPE_ROLES_NODE_GROUP}",
             "Effect": "Allow",
             "Action": [
-                "iam:GetRole"
+                "iam:GetRole",
+                "iam:ListRolePolicies"
             ],
             "Resource": "arn:aws:iam::728852640881:role/default-eks-node-group-*"
         },
