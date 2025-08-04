@@ -27,7 +27,8 @@
                 "ec2:DescribeRouteTables",
                 "ec2:DescribeInternetGateways",
                 "ec2:DescribeSecurityGroups",
-                "ec2:DescribeNetworkAcls"
+                "ec2:DescribeNetworkAcls",
+                "ec2:DescribeAddresses"
             ],
             "Resource": "*"
         },
@@ -38,6 +39,14 @@
                 "logs:DescribeLogGroups"
             ],
             "Resource": "*"
+        },
+        {
+            "Sid": "${CLOUDWATCH_LOGS_LIST}",
+            "Effect": "Allow",
+            "Action": [
+                "logs:ListTagsForResource"
+            ],
+            "Resource": "arn:aws:logs:${REGION}:${AWS_ACCOUNT_ID}:log-group:/aws/vpc-flow-log/*"
         }
     ]
 }
