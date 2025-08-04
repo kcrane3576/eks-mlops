@@ -30,7 +30,8 @@
                 "ec2:DescribeNetworkAcls",
                 "ec2:DescribeAddresses",
                 "ec2:DescribeAddressesAttribute",
-                "ec2:DescribeFlowLogs"
+                "ec2:DescribeFlowLogs",
+                "ec2:DescribeNatGateways"
             ],
             "Resource": "*"
         },
