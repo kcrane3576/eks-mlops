@@ -5,7 +5,8 @@
             "Sid": "${VPC_DESCRIBE_DISASSOCIATE_READ}",
             "Effect": "Allow",
             "Action": [
-                "ec2:DescribeVpcs"
+                "ec2:DescribeVpcs",
+                "ec2:DescribeVpcAttribute"
             ],
             "Resource": "*"
         }
