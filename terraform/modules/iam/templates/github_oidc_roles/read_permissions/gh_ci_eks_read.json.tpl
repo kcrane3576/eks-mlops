@@ -15,7 +15,7 @@
             "Action": [
                 "iam:GetRole",
                 "iam:ListRolePolicies",
-                "iam:ListAttachedRolePolicies",
+                "iam:ListAttachedRolePolicies"
             ],
             "Resource": "arn:aws:iam::728852640881:role/default-eks-node-group-*"
         },
