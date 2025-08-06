@@ -71,7 +71,8 @@
             "Effect": "Allow",
             "Action": [
                 "kms:ListAliases",
-                "kms:DescribeKey"
+                "kms:DescribeKey",
+                "kms:GetKeyPolicy"
             ],
             "Resource": "*"
         }
