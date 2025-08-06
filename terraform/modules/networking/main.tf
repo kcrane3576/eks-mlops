@@ -32,8 +32,9 @@ module "vpc" {
   })
 
   private_subnet_tags = merge(var.tags, { // Updated: Merge Environment tag for private subnets
-    Name                              = "${var.vpc_name}-private-subnets",
-    "kubernetes.io/role/internal-elb" = "1"
+    Name                                        = "${var.vpc_name}-private-subnets",
+    "kubernetes.io/role/internal-elb"           = "1",
+    "kubernetes.io/cluster/${var.cluster_name}" = "owned"
   })
 }
 

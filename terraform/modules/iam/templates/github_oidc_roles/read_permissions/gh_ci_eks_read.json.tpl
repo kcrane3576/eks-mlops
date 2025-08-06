@@ -17,7 +17,7 @@
                 "iam:ListRolePolicies",
                 "iam:ListAttachedRolePolicies"
             ],
-            "Resource": "arn:aws:iam::728852640881:role/default-eks-node-group-*"
+            "Resource": "arn:aws:iam::728852640881:role/*"
         },
         {
             "Sid": "${EKS_SSM_READ_AMI}",
@@ -41,7 +41,8 @@
                 "ec2:DescribeAddresses",
                 "ec2:DescribeAddressesAttribute",
                 "ec2:DescribeFlowLogs",
-                "ec2:DescribeNatGateways"
+                "ec2:DescribeNatGateways",
+                "ec2:DescribeInstances"
             ],
             "Resource": "*"
         },
@@ -59,7 +60,18 @@
             "Action": [
                 "logs:ListTagsForResource"
             ],
-            "Resource": "arn:aws:logs:${REGION}:${AWS_ACCOUNT_ID}:log-group:/aws/vpc-flow-log/*"
+            "Resource": [
+                "arn:aws:logs:${REGION}:${AWS_ACCOUNT_ID}:log-group:/aws/vpc-flow-log/*",
+                "arn:aws:logs:${REGION}:${AWS_ACCOUNT_ID}:log-group:/aws/eks/*"
+            ]
+        },
+        {
+            "Sid": "GithubCIKMSCreateAndTagAccess",
+            "Effect": "Allow",
+            "Action": [
+                "kms:ListAliases"
+            ],
+            "Resource": "*"
         }
     ]
 }
