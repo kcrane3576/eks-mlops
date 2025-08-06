@@ -37,6 +37,7 @@
                 "ec2:DescribeRouteTables",
                 "ec2:DescribeInternetGateways",
                 "ec2:DescribeSecurityGroups",
+                "ec2:DescribeSecurityGroupRules",
                 "ec2:DescribeNetworkAcls",
                 "ec2:DescribeAddresses",
                 "ec2:DescribeAddressesAttribute",
