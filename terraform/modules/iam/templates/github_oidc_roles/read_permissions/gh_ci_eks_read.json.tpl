@@ -43,7 +43,8 @@
                 "ec2:DescribeAddressesAttribute",
                 "ec2:DescribeFlowLogs",
                 "ec2:DescribeNatGateways",
-                "ec2:DescribeInstances"
+                "ec2:DescribeInstances",
+                "ec2:DescribeLaunchTemplates"
             ],
             "Resource": "*"
         },
