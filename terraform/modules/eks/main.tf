@@ -12,7 +12,7 @@ module "eks" {
   enabled_log_types                        = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
   enable_kms_key_rotation                  = true
   cloudwatch_log_group_retention_in_days   = 365
-  authentication_mode                   = "API_AND_CONFIG_MAP"
+  authentication_mode                   = "API"
 
   eks_managed_node_groups = {
     default = {
