@@ -72,7 +72,8 @@
             "Action": [
                 "kms:ListAliases",
                 "kms:DescribeKey",
-                "kms:GetKeyPolicy"
+                "kms:GetKeyPolicy",
+                "kms:GetKeyRotationStatus"
             ],
             "Resource": "*"
         }
