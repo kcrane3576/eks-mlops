@@ -197,28 +197,6 @@
             }
         },
         {
-            "Sid": "${VPC_DELETE_TAG}",
-            "Effect": "Deny",
-            "Action": "ec2:DeleteTags",
-            "Resource": [
-                "arn:aws:ec2:${REGION}:*:vpc/*",
-                "arn:aws:ec2:${REGION}:*:subnet/*",
-                "arn:aws:ec2:${REGION}:*:network-acl/*",
-                "arn:aws:ec2:${REGION}:*:route-table/*",
-                "arn:aws:ec2:${REGION}:*:internet-gateway/*",
-                "arn:aws:ec2:${REGION}:*:security-group/*",
-                "arn:aws:ec2:${REGION}:*:natgateway/*"
-            ],
-            "Condition": {
-                "StringEquals": {
-                    "aws:ResourceTag/Environment": "${ENVIRONMENT}"
-                },
-                "ForAnyValue:StringEquals": {
-                    "aws:TagKeys": ["Environment", "Repo"]
-                }
-            }
-        },
-        {
             "Sid": "${VPC_CHANGE_TAG}",
             "Effect": "Deny",
             "Action": "ec2:CreateTags",
