@@ -70,7 +70,8 @@
             "Sid": "GithubCIKMSCreateAndTagAccess",
             "Effect": "Allow",
             "Action": [
-                "kms:ListAliases"
+                "kms:ListAliases",
+                "kms:DescribeKey"
             ],
             "Resource": "*"
         }
