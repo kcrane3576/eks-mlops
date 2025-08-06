@@ -83,48 +83,112 @@ resource "aws_default_security_group" "default_eks" {
   })
 }
 
-
-
 # Custom NACL with Well-Architected best-practice rules (restrictive: deny inbound, allow outbound)
 resource "aws_network_acl" "custom" {
-  vpc_id = module.vpc.vpc_id # Reference module output
+  vpc_id = module.vpc.vpc_id
 
-  # Inbound rules: Deny all (coarse restriction; add allows for specific ports if needed)
+  # Inbound: Allow HTTPS (443) for EKS control plane communication
   ingress {
-    protocol   = -1 # All protocols
+    protocol   = "tcp"
+    rule_no    = 90
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 443
+    to_port    = 443
+  }
+
+  # Inbound: Allow kubelet (10250) for node-to-control-plane communication
+  ingress {
+    protocol   = "tcp"
+    rule_no    = 91
+    action     = "allow"
+    cidr_block = module.vpc.vpc_cidr_block
+    from_port  = 10250
+    to_port    = 10250
+  }
+
+  # Inbound: Allow DNS (53, TCP/UDP)
+  ingress {
+    protocol   = "tcp"
+    rule_no    = 92
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 53
+    to_port    = 53
+  }
+  ingress {
+    protocol   = "udp"
+    rule_no    = 93
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 53
+    to_port    = 53
+  }
+
+  # Inbound: Allow ephemeral ports for return traffic
+  ingress {
+    protocol   = "tcp"
+    rule_no    = 94
+    action     = "allow"
+    cidr_block = module.vpc.vpc_cidr_block
+    from_port  = 1024
+    to_port    = 65535
+  }
+
+  # Inbound: Allow AWS VPC CNI webhook (61678)
+  ingress {
+    protocol   = "tcp"
+    rule_no    = 95
+    action     = "allow"
+    cidr_block = module.vpc.vpc_cidr_block
+    from_port  = 61678
+    to_port    = 61678
+  }
+
+  # Inbound: Allow VXLAN for CNI (if using Calico or similar)
+  ingress {
+    protocol   = "udp"
+    rule_no    = 96
+    action     = "allow"
+    cidr_block = module.vpc.vpc_cidr_block
+    from_port  = 4789
+    to_port    = 4789
+  }
+
+  # Inbound: Deny all other traffic
+  ingress {
+    protocol   = "-1"
     rule_no    = 100
     action     = "deny"
     cidr_block = "0.0.0.0/0"
     from_port  = 0
     to_port    = 0
   }
-
   ingress {
-    protocol        = -1
-    rule_no         = 101
-    action          = "deny"
+    protocol   = "-1"
+    rule_no    = 101
+    action     = "deny"
     ipv6_cidr_block = "::/0"
-    from_port       = 0
-    to_port         = 0
+    from_port  = 0
+    to_port    = 0
   }
 
-  # Outbound rules: Allow all (for responses; stateless, so necessary for return traffic)
+  # Outbound: Allow all
   egress {
-    protocol   = -1
+    protocol   = "-1"
     rule_no    = 100
     action     = "allow"
     cidr_block = "0.0.0.0/0"
     from_port  = 0
     to_port    = 0
   }
-
   egress {
-    protocol        = -1
-    rule_no         = 101
-    action          = "allow"
+    protocol   = "-1"
+    rule_no    = 101
+    action     = "allow"
     ipv6_cidr_block = "::/0"
-    from_port       = 0
-    to_port         = 0
+    from_port  = 0
+    to_port    = 0
   }
 
   tags = merge(var.tags, {

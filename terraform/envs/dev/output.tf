@@ -21,3 +21,11 @@ output "eks_cluster_endpoint" {
 output "eks_node_group_role_arn" {
   value = module.eks.node_group_role_arn
 }
+
+output "cluster_security_group_id" {
+  value = module.eks.cluster_security_group_id
+}
+
+output "node_security_group_id" {
+  value = module.eks.node_security_group_id
+}
