@@ -43,7 +43,8 @@
                 "ec2:DescribeAddressesAttribute",
                 "ec2:DescribeFlowLogs",
                 "ec2:DescribeNatGateways",
-                "ec2:DescribeInstances"
+                "ec2:DescribeInstances",
+                "ec2:DescribeLaunchTemplates"
             ],
             "Resource": "*"
         },
@@ -67,10 +68,22 @@
             ]
         },
         {
+            "Sid": "GithubCIEKDescribeAccess",
+            "Effect": "Allow",
+            "Action": [
+                "eks:DescribeCluster"
+            ],
+            "Resource": "*"
+        },
+        {
             "Sid": "GithubCIKMSCreateAndTagAccess",
             "Effect": "Allow",
             "Action": [
-                "kms:ListAliases"
+                "kms:ListAliases",
+                "kms:DescribeKey",
+                "kms:GetKeyPolicy",
+                "kms:GetKeyRotationStatus",
+                "kms:ListResourceTags"
             ],
             "Resource": "*"
         }
