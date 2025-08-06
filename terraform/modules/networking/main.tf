@@ -42,34 +42,47 @@ resource "aws_default_security_group" "default_eks" {
   vpc_id = module.vpc.vpc_id
   revoke_rules_on_delete = true
 
-  ingress = [
-    {
-      from_port   = 443
-      to_port     = 443
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-    },
-    {
-      from_port   = 53
-      to_port     = 53
-      protocol    = "udp"
-      cidr_blocks = ["0.0.0.0/0"]
-    }
-  ]
+  ingress {
+    description      = "Allow HTTPS"
+    from_port        = 443
+    to_port          = 443
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = []
+    prefix_list_ids  = []
+    security_groups  = []
+    self             = false
+  }
 
-  egress = [
-    {
-      from_port   = 0
-      to_port     = 0
-      protocol    = "-1"
-      cidr_blocks = ["0.0.0.0/0"]
-    }
-  ]
+  ingress {
+    description      = "Allow DNS"
+    from_port        = 53
+    to_port          = 53
+    protocol         = "udp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = []
+    prefix_list_ids  = []
+    security_groups  = []
+    self             = false
+  }
+
+  egress {
+    description      = "Allow all egress"
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = []
+    prefix_list_ids  = []
+    security_groups  = []
+    self             = false
+  }
 
   tags = merge(var.tags, {
-    Name = "${var.vpc_name}-default-eks-security-group",
+    Name = "${var.vpc_name}-default-eks-security-group"
   })
 }
+
 
 
 # Custom NACL with Well-Architected best-practice rules (restrictive: deny inbound, allow outbound)
