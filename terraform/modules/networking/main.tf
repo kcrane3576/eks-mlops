@@ -38,18 +38,39 @@ module "vpc" {
   })
 }
 
-resource "aws_default_security_group" "restrict_all" {
+resource "aws_default_security_group" "default_eks" {
   vpc_id = module.vpc.vpc_id
-
   revoke_rules_on_delete = true
 
-  ingress = []
-  egress  = []
+  ingress = [
+    {
+      from_port   = 443
+      to_port     = 443
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    },
+    {
+      from_port   = 53
+      to_port     = 53
+      protocol    = "udp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  ]
+
+  egress = [
+    {
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  ]
 
   tags = merge(var.tags, {
-    Name = "${var.vpc_name}-default-security-group",
+    Name = "${var.vpc_name}-default-eks-security-group",
   })
 }
+
 
 # Custom NACL with Well-Architected best-practice rules (restrictive: deny inbound, allow outbound)
 resource "aws_network_acl" "custom" {
