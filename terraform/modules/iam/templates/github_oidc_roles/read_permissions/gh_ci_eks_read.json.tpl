@@ -20,6 +20,14 @@
             "Resource": "arn:aws:iam::728852640881:role/*"
         },
         {
+            "Sid": "GithubCIIAMReadPolicyAccess",
+            "Effect": "Allow",
+            "Action": [
+                "iam:GetPolicy"
+            ],
+            "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/*"
+        },
+        {
             "Sid": "${EKS_SSM_READ_AMI}",
             "Effect": "Allow",
             "Action": [
