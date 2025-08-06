@@ -67,6 +67,14 @@
             ]
         },
         {
+            "Sid": "GithubCIEKDescribeAccess",
+            "Effect": "Allow",
+            "Action": [
+                "eks:DescribeCluster"
+            ],
+            "Resource": "*"
+        },
+        {
             "Sid": "GithubCIKMSCreateAndTagAccess",
             "Effect": "Allow",
             "Action": [
