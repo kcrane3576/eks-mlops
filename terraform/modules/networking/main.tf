@@ -37,19 +37,3 @@ module "vpc" {
     "kubernetes.io/cluster/${var.cluster_name}" = "owned"
   })
 }
-
-# Associate custom NACL with all private subnets (overrides default)
-resource "aws_network_acl_association" "private" {
-  count = length(module.vpc.private_subnets)
-
-  network_acl_id = aws_network_acl.custom.id
-  subnet_id      = module.vpc.private_subnets[count.index]
-}
-
-# Associate custom NACL with all public subnets (overrides default)
-resource "aws_network_acl_association" "public" {
-  count = length(module.vpc.public_subnets)
-
-  network_acl_id = aws_network_acl.custom.id
-  subnet_id      = module.vpc.public_subnets[count.index]
-}
