@@ -73,7 +73,8 @@
                 "kms:ListAliases",
                 "kms:DescribeKey",
                 "kms:GetKeyPolicy",
-                "kms:GetKeyRotationStatus"
+                "kms:GetKeyRotationStatus",
+                "kms:ListResourceTags"
             ],
             "Resource": "*"
         }
