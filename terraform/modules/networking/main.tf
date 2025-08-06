@@ -38,7 +38,7 @@ module "vpc" {
   })
 }
 
-resource "aws_default_security_group" "default_eks" {
+resource "aws_default_security_group" "default_vpc" {
   vpc_id = module.vpc.vpc_id
   revoke_rules_on_delete = true
 
