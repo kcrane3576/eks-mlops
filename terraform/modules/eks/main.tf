@@ -36,3 +36,17 @@ module "eks" {
     "kubernetes.io/cluster/${var.cluster_name}" = "owned"
   })
 }
+
+resource "aws_eks_access_policy_association" "ci_write_access" {
+  count = var.eks_cluster_access_policy != "" ? 1 : 0
+
+  cluster_name  = var.cluster_name
+  policy_arn    = var.eks_cluster_access_policy
+  principal_arn = var.write_role_arn
+
+  access_scope {
+    type = "cluster"
+  }
+
+  depends_on = [module.eks]
+}
