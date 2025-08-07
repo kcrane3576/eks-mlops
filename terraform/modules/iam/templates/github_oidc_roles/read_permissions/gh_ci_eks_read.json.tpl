@@ -79,8 +79,7 @@
             "Sid": "GithubCIEKDescribeAccess",
             "Effect": "Allow",
             "Action": [
-                "eks:DescribeCluster",
-                "eks:ListAccessEntries"
+                "eks:DescribeCluster"
             ],
             "Resource": "*"
         },
