@@ -42,9 +42,11 @@ module "access_analyzer" {
 module "eks" {
   source = "../../modules/eks"
 
-  cluster_name       = var.cluster_name
-  vpc_id             = module.networking.vpc_id
-  private_subnet_ids = module.networking.private_subnets
+  cluster_name              = var.cluster_name
+  vpc_id                    = module.networking.vpc_id
+  private_subnet_ids        = module.networking.private_subnets
+  eks_cluster_access_policy = var.eks_cluster_access_policy
+  write_role_arn            = var.write_role_arn
 
   tags = local.default_tags
 }
