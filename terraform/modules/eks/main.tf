@@ -33,6 +33,18 @@ module "eks" {
     }
   }
 
+  addons = {
+    coredns = {
+      most_recent = true
+    }
+    kube-proxy = {
+      most_recent = true
+    }
+    vpc-cni = {
+      most_recent = true
+    }
+  }
+
   tags = merge(var.tags, {
     "kubernetes.io/cluster/${var.cluster_name}" = "owned"
   })
