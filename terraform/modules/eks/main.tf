@@ -15,6 +15,20 @@ module "eks" {
   authentication_mode                      = "API_AND_CONFIG_MAP"
   endpoint_public_access                   = true
 
+  create_security_group = true
+
+  # Add inbound rules to the cluster SG for nodes to communicate
+  security_group_additional_rules = {
+    allow_nodes_egress = {
+      type                       = "ingress"
+      from_port                  = 0
+      to_port                    = 0
+      protocol                   = "-1"
+      description                = "Allow node egress to cluster"
+      source_node_security_group = true
+    }
+  }
+
   eks_managed_node_groups = {
     default = {
       create_security_group = true
@@ -27,6 +41,18 @@ module "eks" {
       # Optionally add labels, taints, or extra configs
       labels = {
         role = "worker"
+      }
+
+       # Add inbound rule for node-to-node communication
+      node_security_group_additional_rules = {
+        self = {
+          type    = "ingress"
+          from_port = 0
+          to_port   = 0
+          protocol  = "-1"
+          description = "Allow all node-to-node traffic"
+          self       = true
+        }
       }
 
       tags = {
