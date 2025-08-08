@@ -17,11 +17,12 @@ module "eks" {
 
   eks_managed_node_groups = {
     default = {
-      force_update_version = true
-      instance_types = ["t3.medium"]
-      min_size       = 1
-      max_size       = 3
-      desired_size   = 2
+      create_security_group = true
+      force_update_version  = true
+      instance_types        = ["t3.medium"]
+      min_size              = 1
+      max_size              = 3
+      desired_size          = 2
 
       # Optionally add labels, taints, or extra configs
       labels = {
