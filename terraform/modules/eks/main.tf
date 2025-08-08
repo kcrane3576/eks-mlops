@@ -19,13 +19,21 @@ module "eks" {
 
   # Add inbound rules to the cluster SG for nodes to communicate
   security_group_additional_rules = {
-    allow_nodes_egress = {
+    allow_nodes_to_cluster_https = {
       type                       = "ingress"
-      from_port                  = 0
-      to_port                    = 0
-      protocol                   = "-1"
-      description                = "Allow node egress to cluster"
+      from_port                  = 443
+      to_port                    = 443
+      protocol                   = "tcp"
+      description                = "Allow nodes to talk to control plane (HTTPS)"
       source_node_security_group = true
+    },
+    allow_all_egress = {
+      type        = "egress"
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      cidr_blocks = ["0.0.0.0/0"]
+      description = "Allow all outbound"
     }
   }
 
@@ -43,15 +51,15 @@ module "eks" {
         role = "worker"
       }
 
-       # Add inbound rule for node-to-node communication
+      # Add inbound rule for node-to-node communication
       node_security_group_additional_rules = {
         self = {
-          type    = "ingress"
-          from_port = 0
-          to_port   = 0
-          protocol  = "-1"
+          type        = "ingress"
+          from_port   = 0
+          to_port     = 0
+          protocol    = "-1"
           description = "Allow all node-to-node traffic"
-          self       = true
+          self        = true
         }
       }
 
