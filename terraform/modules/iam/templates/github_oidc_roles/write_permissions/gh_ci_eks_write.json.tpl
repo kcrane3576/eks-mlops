@@ -103,7 +103,6 @@
                 "eks:ListClusters",
                 "eks:CreateNodegroup",
                 "eks:DeleteNodegroup",
-                "eks:DescribeNodegroup",
                 "eks:ListNodegroups",
                 "eks:CreateAccessEntry",
                 "eks:ListAccessEntries",
