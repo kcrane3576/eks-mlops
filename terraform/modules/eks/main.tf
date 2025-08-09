@@ -12,7 +12,7 @@ module "eks" {
   enabled_log_types                        = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
   enable_kms_key_rotation                  = true
   cloudwatch_log_group_retention_in_days   = 365
-  authentication_mode                      = "API_AND_CONFIG_MAP"
+  authentication_mode                      = "API"
   endpoint_public_access                   = true
 
   create_security_group = true
@@ -69,7 +69,7 @@ module "eks" {
       most_recent = true
     }
     vpc-cni = {
-      most_recent = true
+      most_recent    = true
       before_compute = true
     }
   }
@@ -77,4 +77,13 @@ module "eks" {
   tags = merge(var.tags, {
     "kubernetes.io/cluster/${var.cluster_name}" = "owned"
   })
+}
+
+# Grant Kubernetes auth to the node role via the EKS API
+# (Use the SAME role your node group uses)
+resource "aws_eks_access_entry" "nodes" {
+  cluster_name      = module.eks.cluster_name
+  principal_arn     = module.eks.eks_managed_node_groups["default"].iam_role_arn
+  kubernetes_groups = ["system:bootstrappers", "system:nodes"]
+  user_name         = "system:node:{{EC2PrivateDNSName}}"
 }
