@@ -41,7 +41,7 @@
             }
         },
         {
-            "Sid": "${CLOUDWATCH_LOGS_LIST}",
+            "Sid": "LogsListTagsForVPCFlowLogs",
             "Effect": "Allow",
             "Action": [
                 "logs:ListTagsForResource"
