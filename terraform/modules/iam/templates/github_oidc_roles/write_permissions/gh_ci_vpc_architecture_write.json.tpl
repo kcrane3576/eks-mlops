@@ -2,11 +2,10 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "${VPC_DESCRIBE_DISASSOCIATE_WRITE}",
+            "Sid": "EC2VPCDescribeAndEIPDisassociate",
             "Effect": "Allow",
             "Action": [
                 "ec2:DescribeVpcs",
-                "ec2:DescribeTags",
                 "ec2:DescribeVpcAttribute",
                 "ec2:DescribeSubnets",
                 "ec2:DescribeRouteTables",
@@ -24,7 +23,7 @@
             "Resource": "*"
         },
         {
-            "Sid": "${VPC_CREATE_STRICT}",
+            "Sid": "EC2CreateCoreVPCResourcesEnforceTags",
             "Effect": "Allow",
             "Action": [
                 "ec2:CreateVpc",
@@ -50,7 +49,7 @@
             }
         },
         {
-            "Sid": "${VPC_CREATE_RELAXED}",
+            "Sid": "EC2CreateNetworkResourcesIfTagged",
             "Effect": "Allow",
             "Action": [
                 "ec2:CreateSubnet",
@@ -66,7 +65,7 @@
             }
         },
         {
-            "Sid": "${VPC_CREATE_RELAXED_NAT_GATEWAY}",
+            "Sid": "EC2CreateNatGateway",
             "Effect": "Allow",
             "Action": [
                 "ec2:CreateNatGateway"
@@ -74,7 +73,7 @@
             "Resource": "*"
         },
         {
-            "Sid": "${VPC_MODIFY_DELETE}",
+            "Sid": "EC2ModifyAndDeleteVPCResourcesByEnv",
             "Effect": "Allow",
             "Action": [
                 "ec2:DeleteVpc",
@@ -113,7 +112,7 @@
             }
         },
         {
-            "Sid": "${VPC_REPLACE_NACL_ASSOCIATION}",
+            "Sid": "EC2ReplaceNetworkACLAssociationByEnv",
             "Effect": "Allow",
             "Action": "ec2:ReplaceNetworkAclAssociation",
             "Resource": "*",
@@ -124,13 +123,13 @@
             }
         },
         {
-            "Sid": "${VPC_DISASSOCIATE_ROUTE_TABLE}",
+            "Sid": "EC2DisassociateRouteTable",
             "Effect": "Allow",
             "Action": "ec2:DisassociateRouteTable",
             "Resource": "*"
         },
         {
-            "Sid": "${VPC_REVOKE_SECURITY_GROUP_RULE}",
+            "Sid": "EC2RevokeSecurityGroupRulesByEnv",
             "Effect": "Allow",
             "Action": [
                 "ec2:RevokeSecurityGroupEgress",
@@ -146,7 +145,7 @@
             }
         },
         {
-            "Sid": "${VPC_CREATE_TAG}",
+            "Sid": "EC2CreateTagsForVPCResourcesEnforceKeys",
             "Effect": "Allow",
             "Action": "ec2:CreateTags",
             "Resource": [
@@ -174,8 +173,8 @@
                 }
             }
         },
-                {
-            "Sid": "${VPC_CREATE_TAG_EIP}",
+        {
+            "Sid": "EC2CreateTagsForElasticIPEnforceKeys",
             "Effect": "Allow",
             "Action": "ec2:CreateTags",
             "Resource": "*",
@@ -196,7 +195,7 @@
             }
         },
         {
-            "Sid": "${VPC_CHANGE_TAG}",
+            "Sid": "EC2DenyTagChangeAcrossVPCResourcesByEnv",
             "Effect": "Deny",
             "Action": "ec2:CreateTags",
             "Resource": [

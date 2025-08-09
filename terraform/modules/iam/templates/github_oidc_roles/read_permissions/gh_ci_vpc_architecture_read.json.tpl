@@ -2,7 +2,7 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "${VPC_DESCRIBE_DISASSOCIATE_WRITE}",
+            "Sid": "EC2DescribeVPCTags",
             "Effect": "Allow",
             "Action": [
                 "ec2:DescribeTags"
