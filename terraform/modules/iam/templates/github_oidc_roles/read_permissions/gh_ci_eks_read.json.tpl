@@ -82,7 +82,8 @@
                 "eks:DescribeCluster",
                 "eks:DescribeAccessEntry",
                 "eks:DescribeAddonVersions",
-                "eks:DescribeAddon"
+                "eks:DescribeAddon",
+                "eks:ListAssociatedAccessPolicies"
             ],
             "Resource": "*"
         },

@@ -112,7 +112,6 @@
                 "eks:DeleteAccessEntry",
                 "eks:AssociateAccessPolicy",
                 "eks:DisassociateAccessPolicy",
-                "eks:ListAssociatedAccessPolicies",
                 "eks:ListAccessPolicies",
                 "eks:CreateAddon",
                 "eks:UpdateAddon",
