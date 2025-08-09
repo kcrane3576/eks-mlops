@@ -79,7 +79,9 @@
             "Sid": "EKSDescribeCluster",
             "Effect": "Allow",
             "Action": [
-                "eks:DescribeCluster"
+                "eks:DescribeCluster",
+                "eks:DescribeAccessEntry",
+                "eks:DescribeAddonVersions"
             ],
             "Resource": "*"
         },
