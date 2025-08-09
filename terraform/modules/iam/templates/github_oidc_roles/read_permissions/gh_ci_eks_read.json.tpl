@@ -88,6 +88,14 @@
             "Resource": "*"
         },
         {
+            "Sid": "IAMGetOIDCProviders",
+            "Effect": "Allow",
+            "Action": [
+                "iam:GetOpenIDConnectProvider"
+            ],
+            "Resource": "*"
+        },
+        {
             "Sid": "KMSReadKeyMetadata",
             "Effect": "Allow",
             "Action": [

@@ -23,7 +23,6 @@
             "Action": [
                 "iam:CreateOpenIDConnectProvider",
                 "iam:DeleteOpenIDConnectProvider",
-                "iam:GetOpenIDConnectProvider",
                 "iam:ListOpenIDConnectProviders",
                 "iam:TagOpenIDConnectProvider"
             ],
