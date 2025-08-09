@@ -2,7 +2,7 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "${S3_READ}",
+            "Sid": "S3ReadTerraformState",
             "Effect": "Allow",
             "Action": [
                 "s3:ListBucket",
@@ -14,7 +14,7 @@
             ]
         },
         {
-            "Sid": "${DYNAMODB_READ}",
+            "Sid": "DynamoDBReadTerraformStateLock",
             "Effect": "Allow",
             "Action": [
                 "dynamodb:GetItem",
@@ -28,7 +28,7 @@
             }
         },
         {
-            "Sid": "${IAM_READ_SCOPE_ROLES}",
+            "Sid": "IAMReadVPCFlowLogRoles",
             "Effect": "Allow",
             "Action": [
                 "iam:GetRole",
@@ -39,7 +39,7 @@
             "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/vpc-flow-log-role-*"
         },
         {
-            "Sid": "${IAM_READ_SCOPE_POLICIES}",
+            "Sid": "IAMReadVPCFlowLogPolicies",
             "Effect": "Allow",
             "Action": [
                 "iam:GetPolicy",
