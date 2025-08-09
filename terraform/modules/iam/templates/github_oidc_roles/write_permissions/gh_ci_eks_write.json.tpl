@@ -75,7 +75,6 @@
                 "ec2:CreateLaunchTemplate",
                 "ec2:CreateLaunchTemplateVersion",
                 "ec2:DescribeLaunchTemplates",
-                "ec2:DescribeLaunchTemplateVersions",
                 "ec2:DeleteLaunchTemplate"
             ],
             "Resource": "*"

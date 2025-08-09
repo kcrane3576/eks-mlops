@@ -52,7 +52,8 @@
                 "ec2:DescribeFlowLogs",
                 "ec2:DescribeNatGateways",
                 "ec2:DescribeInstances",
-                "ec2:DescribeLaunchTemplates"
+                "ec2:DescribeLaunchTemplates",
+                "ec2:DescribeLaunchTemplateVersions"
             ],
             "Resource": "*"
         },
