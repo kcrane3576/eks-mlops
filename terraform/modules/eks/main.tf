@@ -32,6 +32,7 @@ module "eks" {
   eks_managed_node_groups = {
     default = {
       create_security_group = true
+      mi_type              = "AL2_x86_64"
       force_update_version  = true
       instance_types        = ["t3.medium"]
       min_size              = 1
@@ -43,16 +44,8 @@ module "eks" {
         role = "worker"
       }
 
-      # Add inbound rule for node-to-node communication
-      node_security_group_additional_rules = {
-        self = {
-          type        = "ingress"
-          from_port   = 0
-          to_port     = 0
-          protocol    = "-1"
-          description = "Allow all node-to-node traffic"
-          self        = true
-        }
+      iam_role_additional_policies = {
+        ssm = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
       }
 
       tags = {
