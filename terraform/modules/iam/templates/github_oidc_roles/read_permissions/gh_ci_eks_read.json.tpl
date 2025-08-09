@@ -2,7 +2,7 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "${IAM_GET_SCOPE_ROLES_READ}",
+            "Sid": "IAMGetRoleReadRole",
             "Effect": "Allow",
             "Action": [
                 "iam:GetRole"
@@ -10,7 +10,7 @@
             "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/${READ_ROLE_ARN}"
         },
         {
-            "Sid": "${IAM_GET_SCOPE_ROLES_NODE_GROUP}",
+            "Sid": "IAMReadNodeGroupRoles",
             "Effect": "Allow",
             "Action": [
                 "iam:GetRole",
@@ -20,15 +20,16 @@
             "Resource": "arn:aws:iam::728852640881:role/*"
         },
         {
-            "Sid": "GithubCIIAMReadPolicyAccess",
+            "Sid": "IAMGetPolicyInAccount",
             "Effect": "Allow",
             "Action": [
-                "iam:GetPolicy"
+                "iam:GetPolicy",
+                "iam:GetPolicyVersion"
             ],
             "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/*"
         },
         {
-            "Sid": "${EKS_SSM_READ_AMI}",
+            "Sid": "SSMGetEksOptimizedAMIParam",
             "Effect": "Allow",
             "Action": [
                 "ssm:GetParameter"
@@ -36,7 +37,7 @@
             "Resource": "arn:aws:ssm:*::parameter/aws/service/eks/optimized-ami*"
         },
         {
-            "Sid": "${VPC_DESCRIBE_DISASSOCIATE_READ}",
+            "Sid": "EC2DescribeNetworkForEKS",
             "Effect": "Allow",
             "Action": [
                 "ec2:DescribeVpcs",
@@ -52,12 +53,13 @@
                 "ec2:DescribeFlowLogs",
                 "ec2:DescribeNatGateways",
                 "ec2:DescribeInstances",
-                "ec2:DescribeLaunchTemplates"
+                "ec2:DescribeLaunchTemplates",
+                "ec2:DescribeLaunchTemplateVersions"
             ],
             "Resource": "*"
         },
         {
-            "Sid": "${CLOUDWATCH_LOGS_DESCRIBE_READ}",
+            "Sid": "LogsDescribeLogGroups",
             "Effect": "Allow",
             "Action": [
                 "logs:DescribeLogGroups"
@@ -65,7 +67,7 @@
             "Resource": "*"
         },
         {
-            "Sid": "${CLOUDWATCH_LOGS_LIST}",
+            "Sid": "LogsListTagsForEKSAndVPCLogs",
             "Effect": "Allow",
             "Action": [
                 "logs:ListTagsForResource"
@@ -76,15 +78,28 @@
             ]
         },
         {
-            "Sid": "GithubCIEKDescribeAccess",
+            "Sid": "EKSDescribeCluster",
             "Effect": "Allow",
             "Action": [
-                "eks:DescribeCluster"
+                "eks:DescribeCluster",
+                "eks:DescribeAccessEntry",
+                "eks:DescribeAddonVersions",
+                "eks:DescribeAddon",
+                "eks:DescribeNodegroup",
+                "eks:ListAssociatedAccessPolicies"
             ],
             "Resource": "*"
         },
         {
-            "Sid": "GithubCIKMSCreateAndTagAccess",
+            "Sid": "IAMGetOIDCProviders",
+            "Effect": "Allow",
+            "Action": [
+                "iam:GetOpenIDConnectProvider"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "KMSReadKeyMetadata",
             "Effect": "Allow",
             "Action": [
                 "kms:ListAliases",

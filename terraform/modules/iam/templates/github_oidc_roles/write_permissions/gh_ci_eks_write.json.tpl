@@ -2,7 +2,7 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "${IAM_GET_SCOPE_ROLES_NODE_GROUP}",
+            "Sid": "IAMManageNodeGroupRoles",
             "Effect": "Allow",
             "Action": [
                 "iam:CreateRole",
@@ -18,32 +18,30 @@
             "Resource": "arn:aws:iam::728852640881:role/*"
         },
         {
-            "Sid": "GithubCIIAMOIDCAccess",
+            "Sid": "IAMManageOIDCProviders",
             "Effect": "Allow",
             "Action": [
                 "iam:CreateOpenIDConnectProvider",
                 "iam:DeleteOpenIDConnectProvider",
-                "iam:GetOpenIDConnectProvider",
                 "iam:ListOpenIDConnectProviders",
                 "iam:TagOpenIDConnectProvider"
             ],
             "Resource": "*"
         },
         {
-            "Sid": "GithubCIIAMCreatePolicyAccess",
+            "Sid": "IAMManagePoliciesInAccount",
             "Effect": "Allow",
             "Action": [
                 "iam:CreatePolicy",
                 "iam:DeletePolicy",
                 "iam:TagPolicy",
                 "iam:GetPolicy",
-                "iam:GetPolicyVersion",
                 "iam:ListPolicyVersions"
             ],
             "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/*"
         },
         {
-            "Sid": "${IAM_GET_SCOPE_ROLES_WRITE}",
+            "Sid": "IAMGetWriteRole",
             "Effect": "Allow",
             "Action": [
                 "iam:GetRole"
@@ -51,7 +49,7 @@
             "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/${WRITE_ROLE_ARN}"
         },
         {
-            "Sid": "GithubCIEKSCloudwatchLogsCreateAccess",
+            "Sid": "LogsManageEKSLogGroups",
             "Effect": "Allow",
             "Action": [
                 "logs:CreateLogGroup",
@@ -62,7 +60,7 @@
             "Resource": "arn:aws:logs:${REGION}:${AWS_ACCOUNT_ID}:log-group:/aws/eks/*"
         },
         {
-            "Sid": "GithubCIEKSSecurityGroupsAndTags",
+            "Sid": "EC2ManageEKSSecurityGroupsAndTemplates",
             "Effect": "Allow",
             "Action": [
                 "ec2:RunInstances",
@@ -76,13 +74,12 @@
                 "ec2:CreateLaunchTemplate",
                 "ec2:CreateLaunchTemplateVersion",
                 "ec2:DescribeLaunchTemplates",
-                "ec2:DescribeLaunchTemplateVersions",
                 "ec2:DeleteLaunchTemplate"
             ],
             "Resource": "*"
         },
         {
-            "Sid": "GithubCIKMSCreateAndTagAccess",
+            "Sid": "KMSManageKeysAndAliases",
             "Effect": "Allow",
             "Action": [
                 "kms:CreateKey",
@@ -94,7 +91,7 @@
             "Resource": "*"
         },
         {
-            "Sid": "GithubCIEKSAccess",
+            "Sid": "EKSFullClusterAndAddonManagement",
             "Effect": "Allow",
             "Action": [
                 "eks:CreateCluster",
@@ -105,18 +102,13 @@
                 "eks:ListClusters",
                 "eks:CreateNodegroup",
                 "eks:DeleteNodegroup",
-                "eks:DescribeNodegroup",
                 "eks:ListNodegroups",
                 "eks:CreateAccessEntry",
-                "eks:DescribeAccessEntry",
                 "eks:ListAccessEntries",
                 "eks:DeleteAccessEntry",
                 "eks:AssociateAccessPolicy",
                 "eks:DisassociateAccessPolicy",
-                "eks:ListAssociatedAccessPolicies",
                 "eks:ListAccessPolicies",
-                "eks:DescribeAddonVersions",
-                "eks:DescribeAddon",
                 "eks:CreateAddon",
                 "eks:UpdateAddon",
                 "eks:DeleteAddon",
