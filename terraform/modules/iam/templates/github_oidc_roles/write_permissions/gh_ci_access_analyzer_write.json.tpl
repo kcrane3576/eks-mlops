@@ -43,7 +43,7 @@
             }
         },
         {
-            "Sid": "IamCreateSLRForAccessAnalyzer",
+            "Sid": "IAMCreateSLRForAccessAnalyzer",
             "Effect": "Allow",
             "Action": "iam:CreateServiceLinkedRole",
             "Resource": "arn:aws:iam::*:role/aws-service-role/access-analyzer.amazonaws.com/AWSServiceRoleForAccessAnalyzer",
