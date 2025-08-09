@@ -117,9 +117,6 @@ make generate-policies
 
 # Format Terraform code and enforce style
 make format
-
-# Run static security analysis (e.g., Checkov)
-make scan
 ```
 ---
 
