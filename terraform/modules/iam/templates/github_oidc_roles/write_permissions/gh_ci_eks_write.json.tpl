@@ -36,7 +36,6 @@
                 "iam:DeletePolicy",
                 "iam:TagPolicy",
                 "iam:GetPolicy",
-                "iam:GetPolicyVersion",
                 "iam:ListPolicyVersions"
             ],
             "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/*"

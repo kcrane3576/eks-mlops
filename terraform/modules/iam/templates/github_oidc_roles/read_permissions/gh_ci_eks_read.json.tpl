@@ -23,7 +23,8 @@
             "Sid": "IAMGetPolicyInAccount",
             "Effect": "Allow",
             "Action": [
-                "iam:GetPolicy"
+                "iam:GetPolicy",
+                "iam:GetPolicyVersion"
             ],
             "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/*"
         },
