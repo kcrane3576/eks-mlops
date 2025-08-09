@@ -81,7 +81,8 @@
             "Action": [
                 "eks:DescribeCluster",
                 "eks:DescribeAccessEntry",
-                "eks:DescribeAddonVersions"
+                "eks:DescribeAddonVersions",
+                "eks:DescribeAddon"
             ],
             "Resource": "*"
         },

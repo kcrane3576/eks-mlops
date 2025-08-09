@@ -114,7 +114,6 @@
                 "eks:DisassociateAccessPolicy",
                 "eks:ListAssociatedAccessPolicies",
                 "eks:ListAccessPolicies",
-                "eks:DescribeAddon",
                 "eks:CreateAddon",
                 "eks:UpdateAddon",
                 "eks:DeleteAddon",
