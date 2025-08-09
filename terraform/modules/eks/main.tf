@@ -78,11 +78,3 @@ module "eks" {
     "kubernetes.io/cluster/${var.cluster_name}" = "owned"
   })
 }
-
-# Grant Kubernetes auth to the node role via the EKS API
-# (Use the SAME role your node group uses)
-resource "aws_eks_access_entry" "nodes" {
-  cluster_name  = module.eks.cluster_name
-  principal_arn = module.eks.eks_managed_node_groups["default"].iam_role_arn
-  type          = "EC2_LINUX"
-}
