@@ -2,7 +2,7 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "${IAM_GET_SCOPE_ROLES_NODE_GROUP}",
+            "Sid": "IAMManageNodeGroupRoles",
             "Effect": "Allow",
             "Action": [
                 "iam:CreateRole",
@@ -18,7 +18,7 @@
             "Resource": "arn:aws:iam::728852640881:role/*"
         },
         {
-            "Sid": "GithubCIIAMOIDCAccess",
+            "Sid": "IAMManageOIDCProviders",
             "Effect": "Allow",
             "Action": [
                 "iam:CreateOpenIDConnectProvider",
@@ -30,7 +30,7 @@
             "Resource": "*"
         },
         {
-            "Sid": "GithubCIIAMCreatePolicyAccess",
+            "Sid": "IAMManagePoliciesInAccount",
             "Effect": "Allow",
             "Action": [
                 "iam:CreatePolicy",
@@ -43,7 +43,7 @@
             "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/*"
         },
         {
-            "Sid": "${IAM_GET_SCOPE_ROLES_WRITE}",
+            "Sid": "IAMGetWriteRole",
             "Effect": "Allow",
             "Action": [
                 "iam:GetRole"
@@ -51,7 +51,7 @@
             "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/${WRITE_ROLE_ARN}"
         },
         {
-            "Sid": "GithubCIEKSCloudwatchLogsCreateAccess",
+            "Sid": "LogsManageEKSLogGroups",
             "Effect": "Allow",
             "Action": [
                 "logs:CreateLogGroup",
@@ -62,7 +62,7 @@
             "Resource": "arn:aws:logs:${REGION}:${AWS_ACCOUNT_ID}:log-group:/aws/eks/*"
         },
         {
-            "Sid": "GithubCIEKSSecurityGroupsAndTags",
+            "Sid": "EC2ManageEKSSecurityGroupsAndTemplates",
             "Effect": "Allow",
             "Action": [
                 "ec2:RunInstances",
@@ -82,7 +82,7 @@
             "Resource": "*"
         },
         {
-            "Sid": "GithubCIKMSCreateAndTagAccess",
+            "Sid": "KMSManageKeysAndAliases",
             "Effect": "Allow",
             "Action": [
                 "kms:CreateKey",
@@ -94,7 +94,7 @@
             "Resource": "*"
         },
         {
-            "Sid": "GithubCIEKSAccess",
+            "Sid": "EKSFullClusterAndAddonManagement",
             "Effect": "Allow",
             "Action": [
                 "eks:CreateCluster",
