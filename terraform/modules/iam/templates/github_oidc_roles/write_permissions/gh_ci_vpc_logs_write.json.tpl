@@ -2,7 +2,7 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "${CLOUDWATCH_LOGS_DESCRIBE_WRITE}",
+            "Sid": "LogsDescribeVPCFlowLogsGroupsAndStreams",
             "Effect": "Allow",
             "Action": [
                 "logs:DescribeLogGroups",
@@ -11,7 +11,7 @@
             "Resource": "*"
         },
         {
-            "Sid": "${CLOUDWATCH_LOGS_PUT_TAG}",
+            "Sid": "LogsManageVPCFlowLogsEventsAndTags",
             "Effect": "Allow",
             "Action": [
                 "logs:PutLogEvents",
@@ -27,7 +27,7 @@
             }
         },
         {
-            "Sid": "${CLOUDWATCH_LOGS_CREATE}",
+            "Sid": "LogsCreateVPCFlowLogsGroupsAndStreams",
             "Effect": "Allow",
             "Action": [
                 "logs:CreateLogGroup",
@@ -49,7 +49,7 @@
             "Resource": "arn:aws:logs:${REGION}:${AWS_ACCOUNT_ID}:log-group:/aws/vpc-flow-log/*"
         },
         {
-            "Sid": "${CLOUDWATCH_LOGS_CREATE_FLOW_LOG}",
+            "Sid": "EC2CreateFlowLogsByEnv",
             "Effect": "Allow",
             "Action": [
                 "ec2:CreateFlowLogs"
@@ -62,7 +62,7 @@
             }
         },
         {
-            "Sid": "${CLOUDWATCH_LOGS_DELETE_FLOW_LOG}",
+            "Sid": "EC2DeleteFlowLogsByEnv",
             "Effect": "Allow",
             "Action": [
                 "ec2:DeleteFlowLogs"
@@ -75,7 +75,7 @@
             }
         },
         {
-            "Sid": "${CLOUDWATCH_LOGS_PASS_ROLE_FOR_FLOW_LOG}",
+            "Sid": "IAMPassRoleForVPCFlowLogs",
             "Effect": "Allow",
             "Action": "iam:PassRole",
             "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/vpc-flow-log-role-*",

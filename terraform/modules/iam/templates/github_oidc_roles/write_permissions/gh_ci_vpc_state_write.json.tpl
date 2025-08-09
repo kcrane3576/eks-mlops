@@ -2,7 +2,7 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "${S3_WRITE}",
+            "Sid": "S3WriteTerraformState",
             "Effect": "Allow",
             "Action": [
                 "s3:PutObject",
@@ -19,7 +19,7 @@
             }
         },
         {
-            "Sid": "${DYNAMODB_WRITE}",
+            "Sid": "DynamoDBWriteTerraformStateLock",
             "Effect": "Allow",
             "Action": [
                 "dynamodb:PutItem",
@@ -33,7 +33,7 @@
             }
         },
         {
-            "Sid": "${IAM_WRITE_SCOPE_ROLES}",
+            "Sid": "IAMManageVPCFlowLogRoles",
             "Effect": "Allow",
             "Action": [
                 "iam:CreateRole",
@@ -49,7 +49,7 @@
             }
         },
         {
-            "Sid": "${IAM_WRITE_SCOPE_POLICIES}",
+            "Sid": "IAMManageVPCFlowLogPolicies",
             "Effect": "Allow",
             "Action": [
                 "iam:CreatePolicy",
@@ -67,7 +67,7 @@
             }
         },
         {
-            "Sid": "${IAM_ATTACH_SCOPE_ROLE_POLICIES}",
+            "Sid": "IAMAttachVPCFlowLogRolePolicies",
             "Effect": "Allow",
             "Action": [
                 "iam:AttachRolePolicy",
@@ -78,7 +78,7 @@
             "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/vpc-flow-log-role-*"
         },
         {
-            "Sid": "${IAM_PASS_TO_WRITE_ROLE}",
+            "Sid": "IAMPassWriteRole",
             "Effect": "Allow",
             "Action": "iam:PassRole",
             "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/${WRITE_ROLE_ARN}"
