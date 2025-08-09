@@ -2,7 +2,7 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "${ACCESS_ANALYZER_CREATE_TAG}",
+            "Sid": "AccessAnalyzerCreateAnalyzerEnforceTags",
             "Effect": "Allow",
             "Action": [
                 "access-analyzer:CreateAnalyzer",
@@ -23,7 +23,7 @@
             }
         },
         {
-            "Sid": "${ACCESS_ANALYZER_DELETE}",
+            "Sid": "AccessAnalyzerDeleteAnalyzerByEnv",
             "Effect": "Allow",
             "Action": [
                 "access-analyzer:DeleteAnalyzer"
@@ -43,7 +43,7 @@
             }
         },
         {
-            "Sid": "${ACCESS_ANALYZER_CREATE_ROLE}",
+            "Sid": "IamCreateSLRForAccessAnalyzer",
             "Effect": "Allow",
             "Action": "iam:CreateServiceLinkedRole",
             "Resource": "arn:aws:iam::*:role/aws-service-role/access-analyzer.amazonaws.com/AWSServiceRoleForAccessAnalyzer",
