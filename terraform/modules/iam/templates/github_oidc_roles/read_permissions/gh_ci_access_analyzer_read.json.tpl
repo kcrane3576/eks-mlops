@@ -2,7 +2,7 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "${ACCESS_ANALYZER_GET_LIST}",
+            "Sid": "AccessAnalyzerReadAnalyzer",
             "Effect": "Allow",
             "Action": [
                 "access-analyzer:GetAnalyzer",
@@ -11,7 +11,7 @@
             "Resource": "*"
         },
         {
-            "Sid": "${ACCESS_ANALYZER_LIST}",
+            "Sid": "AccessAnalyzerListAccount",
             "Effect": "Allow",
             "Action": "access-analyzer:ListAnalyzers",
             "Resource": "*"
