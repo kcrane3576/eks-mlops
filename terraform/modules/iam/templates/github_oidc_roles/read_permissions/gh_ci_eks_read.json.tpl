@@ -29,12 +29,28 @@
             "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/*"
         },
         {
-            "Sid": "SSMGetEksOptimizedAMIParam",
+            "Sid": "SSMGetEksPublicAMIs",
             "Effect": "Allow",
             "Action": [
-                "ssm:GetParameter"
+                "ssm:GetParameter",
+                "ssm:GetParameters",
+                "ssm:GetParametersByPath",
+                "ssm:DescribeParameters"
             ],
-            "Resource": "arn:aws:ssm:*::parameter/aws/service/eks/optimized-ami*"
+            "Resource": [
+                "arn:aws:ssm:*:*:parameter/aws/service/eks/optimized-ami*",
+                "arn:aws:ssm:*:*:parameter/aws/service/bottlerocket/*",
+                "arn:aws:ssm:*:*:parameter/aws/service/eks/*",
+                "arn:aws:ssm:*:*:parameter/aws/service/al2023/*"
+            ]
+        },
+        {
+            "Sid": "EC2DescribeImagesForAMIResolution",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:DescribeImages"
+            ],
+            "Resource": "*"
         },
         {
             "Sid": "EC2DescribeNetworkForEKS",
