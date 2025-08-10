@@ -27,6 +27,14 @@ module "eks" {
       cidr_blocks = ["0.0.0.0/0"]
       description = "Allow all outbound"
     }
+    nodes_to_api_443 = {
+      description                = "Nodes to EKS API"
+      type                       = "ingress"
+      protocol                   = "tcp"
+      from_port                  = 443
+      to_port                    = 443
+      source_node_security_group = true
+    }
   }
 
   eks_managed_node_groups = {
