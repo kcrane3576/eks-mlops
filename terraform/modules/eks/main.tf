@@ -32,7 +32,7 @@ module "eks" {
   eks_managed_node_groups = {
     default = {
       create_security_group = true
-      mi_type              = "AL2_x86_64"
+      ami_type              = "AL2_x86_64"
       force_update_version  = true
       instance_types        = ["t3.medium"]
       min_size              = 1
@@ -44,26 +44,9 @@ module "eks" {
         role = "worker"
       }
 
-      node_security_group_additional_rules = {
-        cluster_to_nodes_10250 = {
-          description                   = "EKS control plane to kubelet"
-          type                          = "ingress"
-          protocol                      = "tcp"
-          from_port                     = 10250
-          to_port                       = 10250
-          source_cluster_security_group = true
-        }
-        # optional convenience
-        self_all = {
-          description = "Node to node traffic"
-          type        = "ingress"
-          protocol    = "-1"
-          from_port   = 0
-          to_port     = 0
-          self        = true
-        }
+      iam_role_additional_policies = {
+        ssm = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
       }
-
 
       tags = {
         Name = "${var.cluster_name}-node-group"
