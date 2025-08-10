@@ -44,9 +44,26 @@ module "eks" {
         role = "worker"
       }
 
-      iam_role_additional_policies = {
-        ssm = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+      node_security_group_additional_rules = {
+        cluster_to_nodes_10250 = {
+          description                   = "EKS control plane to kubelet"
+          type                          = "ingress"
+          protocol                      = "tcp"
+          from_port                     = 10250
+          to_port                       = 10250
+          source_cluster_security_group = true
+        }
+        # optional convenience
+        self_all = {
+          description = "Node to node traffic"
+          type        = "ingress"
+          protocol    = "-1"
+          from_port   = 0
+          to_port     = 0
+          self        = true
+        }
       }
+
 
       tags = {
         Name = "${var.cluster_name}-node-group"
