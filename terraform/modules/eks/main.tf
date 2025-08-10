@@ -33,17 +33,11 @@ module "eks" {
     default = {
       create_security_group = true
       ami_type              = "AL2023_x86_64_STANDARD"
-      ami_id                = "ami-0e4f74496bab1e588"
       force_update_version  = true
       instance_types        = ["t3.medium"]
       min_size              = 1
       max_size              = 3
       desired_size          = 2
-
-      launch_template = {
-        id      = aws_launch_template.eks_nodes.id
-        version = "$Latest"
-      }
 
       # Optionally add labels, taints, or extra configs
       labels = {
@@ -52,7 +46,6 @@ module "eks" {
 
       iam_role_additional_policies = {
         ssm    = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-        eksami = "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess"
       }
 
       tags = {
@@ -77,24 +70,4 @@ module "eks" {
   tags = merge(var.tags, {
     "kubernetes.io/cluster/${var.cluster_name}" = "owned"
   })
-}
-
-locals {
-  eks_user_data = <<-EOF
-    #!/bin/bash
-    /etc/eks/bootstrap.sh ${var.cluster_name} \
-      --kubelet-extra-args '--node-labels=role=worker'
-  EOF
-}
-
-resource "aws_launch_template" "eks_nodes" {
-  name_prefix = "${var.cluster_name}-nodes-"
-  user_data   = base64encode(local.eks_user_data)
-
-  # keep IMDS on so bootstrap can fetch metadata
-  metadata_options {
-    http_endpoint               = "enabled"
-    http_tokens                 = "required"
-    http_put_response_hop_limit = 2
-  }
 }
