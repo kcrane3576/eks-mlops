@@ -32,7 +32,7 @@ module "eks" {
   eks_managed_node_groups = {
     default = {
       create_security_group = true
-      ami_type              = "BOTTLEROCKET_x86_64"
+      ami_type             = "AL2023_x86_64_STANDARD"
       force_update_version  = true
       instance_types        = ["t3.medium"]
       min_size              = 1
@@ -46,6 +46,7 @@ module "eks" {
 
       iam_role_additional_policies = {
         ssm = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+        eksami = "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess"
       }
 
       tags = {
