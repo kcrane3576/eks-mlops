@@ -33,6 +33,7 @@ module "eks" {
     default = {
       create_security_group = true
       ami_type              = "AL2023_x86_64_STANDARD"
+      ami_id                = "ami-0e4f74496bab1e588"
       force_update_version  = true
       instance_types        = ["t3.medium"]
       min_size              = 1
