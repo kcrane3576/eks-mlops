@@ -46,6 +46,7 @@ module "eks" {
 
       iam_role_additional_policies = {
         ssm = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+        eksami = "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess"
       }
 
       tags = {
