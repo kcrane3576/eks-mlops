@@ -115,6 +115,23 @@
                 "eks:ListAddons"
             ],
             "Resource": "*"
+        },
+        {
+            "Sid": "IAMInstanceProfileForBastion",
+            "Effect": "Allow",
+            "Action": [
+                "iam:CreateInstanceProfile",
+                "iam:DeleteInstanceProfile",
+                "iam:AddRoleToInstanceProfile",
+                "iam:RemoveRoleFromInstanceProfile",
+                "iam:GetInstanceProfile",
+                "iam:ListInstanceProfilesForRole"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": { "aws:RequestTag/Environment": "${ENVIRONMENT}" },
+                "ForAnyValue:StringEquals": { "aws:TagKeys": ["Environment","Repo"] }
+            }
         }
     ]
 }
