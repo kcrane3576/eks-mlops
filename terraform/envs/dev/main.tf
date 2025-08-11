@@ -57,7 +57,6 @@ module "bastion" {
   vpc_id               = module.networking.vpc_id
   private_subnet_ids   = module.networking.private_subnets
   cluster_name         = module.eks.cluster_name
-  create_ssm_endpoints = false # set true only if your private subnets have no NAT
 
   depends_on = [module.eks]
 }
