@@ -23,3 +23,9 @@ variable "cluster_name" {
   type        = string
   description = "EKS cluster name for tags"
 }
+
+variable "tags" {
+  type        = map(string)
+  description = "Resource tags"
+  default     = {}
+}
