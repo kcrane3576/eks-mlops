@@ -1,3 +1,3 @@
-output "bastion_instance_id" {
+output "instance_id" {
   value = module.bastion.instance_id
 }
