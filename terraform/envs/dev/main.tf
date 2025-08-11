@@ -59,6 +59,8 @@ module "bastion" {
   cluster_name       = module.eks.cluster_name
 
   depends_on = [module.eks]
+
+  tags = local.default_tags
 }
 
 

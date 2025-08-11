@@ -218,6 +218,26 @@
                     "aws:TagKeys": ["Environment"]
                 }
             }
+        },
+        {
+            "Sid": "VPCInterfaceEndpointsForSSM",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:CreateVpcEndpoint",
+                "ec2:DeleteVpcEndpoints",
+                "ec2:ModifyVpcEndpoint",
+                "ec2:DescribeVpcEndpoints",
+                "ec2:DescribeVpcs",
+                "ec2:DescribeSubnets",
+                "ec2:DescribeRouteTables",
+                "ec2:CreateTags",
+                "ec2:DeleteTags"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": { "aws:RequestTag/Environment": "${ENVIRONMENT}" },
+                "ForAnyValue:StringEquals": { "aws:TagKeys": ["Environment","Repo"] }
+            }
         }
     ]
 }
