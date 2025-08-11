@@ -7,13 +7,15 @@ module "eks" {
   subnet_ids         = var.private_subnet_ids
   vpc_id             = var.vpc_id
 
-  enable_irsa                              = true
-  enable_cluster_creator_admin_permissions = true
-  enabled_log_types                        = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
-  enable_kms_key_rotation                  = true
-  cloudwatch_log_group_retention_in_days   = 365
-  authentication_mode                      = "API"
-  endpoint_public_access                   = true
+  enable_irsa         = true
+  authentication_mode = "API"
+
+  endpoint_private_access = true
+  endpoint_public_access  = false
+
+  enabled_log_types                      = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+  cloudwatch_log_group_retention_in_days = 365
+  enable_kms_key_rotation                = true
 
   create_security_group = true
 
