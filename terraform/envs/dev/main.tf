@@ -52,11 +52,11 @@ module "eks" {
 module "bastion" {
   source = "../../modules/bastion"
 
-  name                 = var.cluster_name
-  region               = var.region
-  vpc_id               = module.networking.vpc_id
-  private_subnet_ids   = module.networking.private_subnets
-  cluster_name         = module.eks.cluster_name
+  name               = var.cluster_name
+  region             = var.region
+  vpc_id             = module.networking.vpc_id
+  private_subnet_ids = module.networking.private_subnets
+  cluster_name       = module.eks.cluster_name
 
   depends_on = [module.eks]
 }
