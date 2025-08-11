@@ -40,6 +40,10 @@ resource "aws_iam_role_policy_attachment" "eks_describe_attach" {
 resource "aws_iam_instance_profile" "bastion" {
   name = "${var.name}-bastion-profile"
   role = aws_iam_role.bastion.name
+
+  tags = merge(var.tags, {
+    Name = "${var.name}-bastion-profile"
+  })
 }
 
 resource "aws_security_group" "bastion" {
@@ -53,7 +57,9 @@ resource "aws_security_group" "bastion" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = { Name = "${var.name}-bastion-sg" }
+  tags = merge(var.tags, {
+    Name = "${var.name}-bastion-sg"
+  })
 }
 
 data "aws_ami" "al2023" {
@@ -89,7 +95,9 @@ resource "aws_instance" "bastion" {
     http_tokens = "required"
   }
 
-  tags = { Name = "${var.name}-bastion" }
+  tags = merge(var.tags, {
+    Name = "${var.name}-bastion"
+  })
 }
 
 resource "aws_security_group" "endpoints" {
@@ -109,6 +117,10 @@ resource "aws_security_group" "endpoints" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  tags = merge(var.tags, {
+    Name = "${var.name}-vpc-endpoints-sg"
+  })
 }
 
 resource "aws_vpc_endpoint" "ssm" {
@@ -118,6 +130,10 @@ resource "aws_vpc_endpoint" "ssm" {
   subnet_ids          = var.private_subnet_ids
   private_dns_enabled = true
   security_group_ids  = [aws_security_group.endpoints.id]
+
+  tags = merge(var.tags, {
+    Name = "${var.name}-ssm-endpoint"
+  })
 }
 
 resource "aws_vpc_endpoint" "ssmmessages" {
@@ -127,6 +143,10 @@ resource "aws_vpc_endpoint" "ssmmessages" {
   subnet_ids          = var.private_subnet_ids
   private_dns_enabled = true
   security_group_ids  = [aws_security_group.endpoints.id]
+
+  tags = merge(var.tags, {
+    Name = "${var.name}-ssmmessages-endpoint"
+  })
 }
 
 resource "aws_vpc_endpoint" "ec2messages" {
@@ -136,6 +156,10 @@ resource "aws_vpc_endpoint" "ec2messages" {
   subnet_ids          = var.private_subnet_ids
   private_dns_enabled = true
   security_group_ids  = [aws_security_group.endpoints.id]
+
+  tags = merge(var.tags, {
+    Name = "${var.name}-ec2messages-endpoint"
+  })
 }
 
 resource "aws_eks_access_entry" "bastion" {
