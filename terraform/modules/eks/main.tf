@@ -32,10 +32,6 @@ module "eks" {
         role = "worker"
       }
 
-      iam_role_additional_policies = {
-        ssm    = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-      }
-
       tags = {
         Name = "${var.cluster_name}-node-group"
       }
