@@ -17,18 +17,6 @@ module "eks" {
 
   create_security_group = true
 
-  # Add inbound rules to the cluster SG for nodes to communicate
-  security_group_additional_rules = {
-    allow_all_egress = {
-      type        = "egress"
-      from_port   = 0
-      to_port     = 0
-      protocol    = "-1"
-      cidr_blocks = ["0.0.0.0/0"]
-      description = "Allow all outbound"
-    }
-  }
-
   eks_managed_node_groups = {
     default = {
       create_security_group = true
