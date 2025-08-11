@@ -29,3 +29,8 @@ output "cluster_security_group_id" {
 output "node_security_group_id" {
   value = module.eks.node_security_group_id
 }
+
+output "instance_id" {
+  sensitive = true
+  value     = module.bastion.instance_id
+}
