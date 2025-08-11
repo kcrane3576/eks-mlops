@@ -31,5 +31,6 @@ output "node_security_group_id" {
 }
 
 output "instance_id" {
-  value = module.bastion.instance_id
+  sensitive = true
+  value     = module.bastion.instance_id
 }

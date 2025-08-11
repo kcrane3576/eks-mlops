@@ -1,3 +1,4 @@
 output "instance_id" {
-  value = aws_instance.bastion
+  sensitive = true
+  value     = aws_instance.bastion
 }
