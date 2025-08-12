@@ -72,21 +72,28 @@ data "aws_ami" "al2023" {
 }
 
 locals {
-  user_data = <<-EOT
+  # EKS publishes kubectl artifacts in S3 us-west-2
+  eks_artifacts_region = "us-west-2"
+  kubectl_version_path = "1.29.0/2024-04-11" # keep in sync with your cluster minor
+  user_data            = <<-EOT
     #!/bin/bash
     set -euo pipefail
 
     # Keep OS current
     dnf -y update
 
-    # Ensure SSM Agent is installed and running on AL2023
+    # Ensure SSM Agent is present and running (AL2023)
     dnf -y install amazon-ssm-agent || true
     systemctl enable --now amazon-ssm-agent
 
-    # kubectl + helm
-    curl -sSL -o /usr/local/bin/kubectl https://amazon-eks.s3.${var.region}.amazonaws.com/1.29.0/2024-04-11/bin/linux/amd64/kubectl
-    chmod +x /usr/local/bin/kubectl
-    curl -sSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+    # AWS CLI (for aws s3 cp)
+    dnf -y install awscli
+
+    # Fetch kubectl privately via S3 gateway endpoint
+    mkdir -p /tmp/k8s
+    aws --region ${eks_artifacts_region} s3 cp "s3://amazon-eks/${kubectl_version_path}/bin/linux/amd64/kubectl" /tmp/k8s/kubectl
+    install -m 0755 /tmp/k8s/kubectl /usr/local/bin/kubectl
+    kubectl version --client || true
   EOT
 }
 
@@ -106,7 +113,8 @@ resource "aws_instance" "bastion" {
   depends_on = [
     aws_vpc_endpoint.ssm,
     aws_vpc_endpoint.ssmmessages,
-    aws_vpc_endpoint.ec2messages
+    aws_vpc_endpoint.ec2messages,
+    aws_vpc_endpoint.s3_gateway
   ]
 
   tags = merge(var.tags, {
