@@ -72,9 +72,8 @@ data "aws_ami" "al2023" {
 }
 
 locals {
-  # EKS publishes kubectl artifacts in S3 us-west-2
   eks_artifacts_region = "us-west-2"
-  kubectl_version_path = "1.29.0/2024-04-11" # keep in sync with your cluster minor
+  kubectl_version_path = "1.29.0/2024-04-11"
   user_data            = <<-EOT
     #!/bin/bash
     set -euo pipefail
@@ -91,7 +90,7 @@ locals {
 
     # Fetch kubectl privately via S3 gateway endpoint
     mkdir -p /tmp/k8s
-    aws --region ${eks_artifacts_region} s3 cp "s3://amazon-eks/${kubectl_version_path}/bin/linux/amd64/kubectl" /tmp/k8s/kubectl
+    aws --region ${local.eks_artifacts_region} s3 cp "s3://amazon-eks/${local.kubectl_version_path}/bin/linux/amd64/kubectl" /tmp/k8s/kubectl
     install -m 0755 /tmp/k8s/kubectl /usr/local/bin/kubectl
     kubectl version --client || true
   EOT

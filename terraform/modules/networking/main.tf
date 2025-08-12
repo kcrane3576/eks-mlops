@@ -39,10 +39,10 @@ module "vpc" {
 }
 
 resource "aws_vpc_endpoint" "s3_gateway" {
-  vpc_id            = module.networking.vpc_id
+  vpc_id            = module.vpc.vpc_id
   vpc_endpoint_type = "Gateway"
   service_name      = "com.amazonaws.${var.region}.s3"
-  route_table_ids   = module.networking.private_route_table_ids
+  route_table_ids   = module.vpc.private_route_table_ids
 
   # allow reads from the public amazon-eks bucket via the endpoint
   policy = jsonencode({
