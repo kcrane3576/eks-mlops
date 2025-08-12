@@ -75,7 +75,15 @@ locals {
   user_data = <<-EOT
     #!/bin/bash
     set -euo pipefail
+
+    # Keep OS current
     dnf -y update
+
+    # Ensure SSM Agent is installed and running on AL2023
+    dnf -y install amazon-ssm-agent || true
+    systemctl enable --now amazon-ssm-agent
+
+    # kubectl + helm
     curl -sSL -o /usr/local/bin/kubectl https://amazon-eks.s3.${var.region}.amazonaws.com/1.29.0/2024-04-11/bin/linux/amd64/kubectl
     chmod +x /usr/local/bin/kubectl
     curl -sSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
@@ -94,6 +102,12 @@ resource "aws_instance" "bastion" {
   metadata_options {
     http_tokens = "required"
   }
+
+  depends_on = [
+    aws_vpc_endpoint.ssm,
+    aws_vpc_endpoint.ssmmessages,
+    aws_vpc_endpoint.ec2messages
+  ]
 
   tags = merge(var.tags, {
     Name = "${var.name}-bastion"
