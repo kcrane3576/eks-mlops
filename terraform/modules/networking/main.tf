@@ -37,3 +37,30 @@ module "vpc" {
     "kubernetes.io/cluster/${var.cluster_name}" = "owned"
   })
 }
+
+resource "aws_vpc_endpoint" "s3_gateway" {
+  vpc_id            = module.vpc.vpc_id
+  vpc_endpoint_type = "Gateway"
+  service_name      = "com.amazonaws.${var.region}.s3"
+  route_table_ids   = module.vpc.private_route_table_ids
+
+  # allow reads from the public amazon-eks bucket via the endpoint
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Effect : "Allow",
+      Principal : "*",
+      Action : ["s3:GetObject", "s3:ListBucket"],
+      Resource : [
+        "arn:aws:s3:::amazon-eks",
+        "arn:aws:s3:::amazon-eks/*"
+      ]
+    }]
+  })
+
+  tags = {
+    Name        = "${var.vpc_name}-s3-endpoint"
+    Environment = var.environment
+    Repo        = var.repo_name
+  }
+}

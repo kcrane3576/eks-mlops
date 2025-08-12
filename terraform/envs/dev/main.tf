@@ -17,6 +17,7 @@ module "networking" {
   source = "../../modules/networking"
 
   vpc_name             = var.vpc_name
+  region               = var.region
   vpc_cidr             = var.vpc_cidr
   azs                  = var.azs
   private_subnets      = var.private_subnets
@@ -58,7 +59,10 @@ module "bastion" {
   private_subnet_ids = module.networking.private_subnets
   cluster_name       = module.eks.cluster_name
 
-  depends_on = [module.eks]
+  depends_on = [
+    module.eks,
+    module.networking
+  ]
 
   tags = local.default_tags
 }

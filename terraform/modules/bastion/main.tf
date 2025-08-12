@@ -72,21 +72,27 @@ data "aws_ami" "al2023" {
 }
 
 locals {
-  user_data = <<-EOT
+  eks_artifacts_region = "us-west-2"
+  kubectl_version_path = "1.29.0/2024-04-11"
+  user_data            = <<-EOT
     #!/bin/bash
     set -euo pipefail
 
     # Keep OS current
     dnf -y update
 
-    # Ensure SSM Agent is installed and running on AL2023
+    # Ensure SSM Agent is present and running (AL2023)
     dnf -y install amazon-ssm-agent || true
     systemctl enable --now amazon-ssm-agent
 
-    # kubectl + helm
-    curl -sSL -o /usr/local/bin/kubectl https://amazon-eks.s3.${var.region}.amazonaws.com/1.29.0/2024-04-11/bin/linux/amd64/kubectl
-    chmod +x /usr/local/bin/kubectl
-    curl -sSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+    # AWS CLI (for aws s3 cp)
+    dnf -y install awscli
+
+    # Fetch kubectl privately via S3 gateway endpoint
+    mkdir -p /tmp/k8s
+    aws --region ${local.eks_artifacts_region} s3 cp "s3://amazon-eks/${local.kubectl_version_path}/bin/linux/amd64/kubectl" /tmp/k8s/kubectl
+    install -m 0755 /tmp/k8s/kubectl /usr/local/bin/kubectl
+    kubectl version --client || true
   EOT
 }
 
