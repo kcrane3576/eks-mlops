@@ -59,7 +59,10 @@ module "bastion" {
   private_subnet_ids = module.networking.private_subnets
   cluster_name       = module.eks.cluster_name
 
-  depends_on = [module.eks]
+  depends_on = [
+    module.eks,
+    module.networking
+  ]
 
   tags = local.default_tags
 }

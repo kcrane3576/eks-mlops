@@ -112,8 +112,7 @@ resource "aws_instance" "bastion" {
   depends_on = [
     aws_vpc_endpoint.ssm,
     aws_vpc_endpoint.ssmmessages,
-    aws_vpc_endpoint.ec2messages,
-    module.networking
+    aws_vpc_endpoint.ec2messages
   ]
 
   tags = merge(var.tags, {
