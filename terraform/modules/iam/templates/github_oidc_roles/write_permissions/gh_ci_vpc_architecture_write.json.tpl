@@ -233,7 +233,8 @@
                 "ec2:CreateTags",
                 "ec2:DeleteTags",
                 "ec2:DescribePrefixLists",
-                "ec2:DescribeVpcEndpointServices"
+                "ec2:DescribeVpcEndpointServices",
+                "ec2:DescribeInstanceTypes"
             ],
             "Resource": "*"
         }
