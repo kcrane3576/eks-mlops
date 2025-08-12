@@ -233,11 +233,7 @@
                 "ec2:CreateTags",
                 "ec2:DeleteTags"
             ],
-            "Resource": "*",
-            "Condition": {
-                "StringEquals": { "aws:RequestTag/Environment": "${ENVIRONMENT}" },
-                "ForAnyValue:StringEquals": { "aws:TagKeys": ["Environment","Repo"] }
-            }
+            "Resource": "*"
         }
     ]
 }
