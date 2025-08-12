@@ -53,7 +53,7 @@ module "eks" {
 module "bastion" {
   source = "../../modules/bastion"
 
-  name                   = var.cluster_name
+  name                   = var.bastion_name
   region                 = var.region
   vpc_id                 = module.networking.vpc_id
   private_subnet_ids     = module.networking.private_subnets

@@ -13,7 +13,7 @@ resource "aws_iam_role" "bastion" {
   assume_role_policy = data.aws_iam_policy_document.ec2_assume.json
 
   tags = merge(var.tags, {
-    Name = "${var.name}-bastion-role"
+    Name = "${var.name}-role"
   })
 }
 
@@ -59,15 +59,15 @@ resource "aws_iam_role_policy_attachment" "bastion_s3_read_attach" {
 }
 
 resource "aws_iam_instance_profile" "bastion" {
-  name = "${var.name}-bastion-profile"
+  name = "${var.name}-profile"
   role = aws_iam_role.bastion.name
   tags = merge(var.tags, {
-    Name = "${var.name}-bastion-profile"
+    Name = "${var.name}-profile"
   })
 }
 
 resource "aws_security_group" "bastion" {
-  name   = "${var.name}-bastion-sg"
+  name   = "${var.name}-sg"
   vpc_id = var.vpc_id
 
   egress {
@@ -78,7 +78,7 @@ resource "aws_security_group" "bastion" {
   }
 
   tags = merge(var.tags, {
-    Name = "${var.name}-bastion-sg"
+    Name = "${var.name}-sg"
   })
 }
 
@@ -194,7 +194,7 @@ resource "aws_instance" "bastion" {
   ]
 
   tags = merge(var.tags, {
-    Name                = "${var.name}-bastion",
+    Name                = "${var.name}",
     S3GatewayEndpointId = var.s3_gateway_endpoint_id
   })
 }

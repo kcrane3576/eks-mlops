@@ -30,6 +30,7 @@ jobs:
       TF_VAR_private_subnets: ${{ secrets.TF_VAR_DEV_PRIVATE_SUBNETS }}
       TF_VAR_public_subnets: ${{ secrets.TF_VAR_DEV_PUBLIC_SUBNETS }}
       TF_VAR_cluster_name: ${{ secrets.TF_VAR_DEV_CLUSTER_NAME }}
+      TF_VAR_bastion_name: ${{ secrets.TF_VAR_DEV_BASTION_NAME }}
       TF_VAR_s3_bucket_name: ${{ secrets.TF_VAR_DEV_S3_BUCKET_NAME }}
       TF_VAR_dynamodb_table_name: ${{ secrets.TF_VAR_DEV_DYNAMODB_TABLE_NAME }}
       ROLE_TO_ASSUME: ${{ secrets.TF_VAR_DEV_READ_ROLE_ARN }}
