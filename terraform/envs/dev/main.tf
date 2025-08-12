@@ -17,6 +17,7 @@ module "networking" {
   source = "../../modules/networking"
 
   vpc_name             = var.vpc_name
+  region               = var.region
   vpc_cidr             = var.vpc_cidr
   azs                  = var.azs
   private_subnets      = var.private_subnets
