@@ -31,7 +31,7 @@ module "vpc" {
     "kubernetes.io/role/elb" = "1"
   })
 
-  private_subnet_tags = merge(var.tags, { // Updated: Merge Environment tag for private subnets
+  private_subnet_tags = merge(var.tags, {
     Name                                        = "${var.vpc_name}-private-subnets",
     "kubernetes.io/role/internal-elb"           = "1",
     "kubernetes.io/cluster/${var.cluster_name}" = "owned"
@@ -44,23 +44,8 @@ resource "aws_vpc_endpoint" "s3_gateway" {
   service_name      = "com.amazonaws.${var.region}.s3"
   route_table_ids   = module.vpc.private_route_table_ids
 
-  # allow reads from the public amazon-eks bucket via the endpoint
-  policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [{
-      Effect : "Allow",
-      Principal : "*",
-      Action : ["s3:GetObject", "s3:ListBucket"],
-      Resource : [
-        "arn:aws:s3:::amazon-eks",
-        "arn:aws:s3:::amazon-eks/*"
-      ]
-    }]
-  })
 
-  tags = {
-    Name        = "${var.vpc_name}-s3-endpoint"
-    Environment = var.environment
-    Repo        = var.repo_name
-  }
+  tags = merge(var.tags, {
+    Name = "${var.vpc_name}-s3-endpoint"
+  })
 }
