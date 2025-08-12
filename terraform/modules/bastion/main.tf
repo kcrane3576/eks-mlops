@@ -113,7 +113,7 @@ resource "aws_instance" "bastion" {
     aws_vpc_endpoint.ssm,
     aws_vpc_endpoint.ssmmessages,
     aws_vpc_endpoint.ec2messages,
-    aws_vpc_endpoint.s3_gateway
+    module.networking
   ]
 
   tags = merge(var.tags, {
