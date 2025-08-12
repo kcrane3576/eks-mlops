@@ -231,7 +231,9 @@
                 "ec2:DescribeSubnets",
                 "ec2:DescribeRouteTables",
                 "ec2:CreateTags",
-                "ec2:DeleteTags"
+                "ec2:DeleteTags",
+                "ec2:DescribePrefixLists",
+                "ec2:DescribeVpcEndpointServices"
             ],
             "Resource": "*"
         }
