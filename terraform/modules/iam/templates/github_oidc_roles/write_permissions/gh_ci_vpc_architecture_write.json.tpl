@@ -16,7 +16,6 @@
                 "ec2:DescribeFlowLogs",
                 "ec2:DescribeAvailabilityZones",
                 "ec2:DescribeNatGateways",
-                "ec2:DescribeNetworkInterfaces",
                 "ec2:DisassociateAddress",
                 "ec2:DescribeNetworkAcls"
             ],
@@ -226,18 +225,12 @@
                 "ec2:CreateVpcEndpoint",
                 "ec2:DeleteVpcEndpoints",
                 "ec2:ModifyVpcEndpoint",
-                "ec2:DescribeVpcEndpoints",
                 "ec2:DescribeVpcs",
                 "ec2:DescribeSubnets",
                 "ec2:DescribeRouteTables",
                 "ec2:CreateTags",
                 "ec2:DeleteTags",
-                "ec2:DescribePrefixLists",
                 "ec2:DescribeVpcEndpointServices",
-                "ec2:DescribeInstanceTypes",
-                "ec2:DescribeInstanceAttribute",
-                "ec2:DescribeVolumes",
-                "ec2:DescribeInstanceCreditSpecifications",
                 "ec2:TerminateInstances"
             ],
             "Resource": "*"
