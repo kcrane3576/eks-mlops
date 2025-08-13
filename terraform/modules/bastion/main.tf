@@ -164,7 +164,7 @@ data "aws_ami" "al2023" {
 
 locals {
   eks_artifacts_region     = "us-west-2"
-  kubernetes_minor_version = "1.29"
+  kubernetes_minor_version = var.kubernetes_minor_version
 
   user_data = <<-EOT
     #!/bin/bash
