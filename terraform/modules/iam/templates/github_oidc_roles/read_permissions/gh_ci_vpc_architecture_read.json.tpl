@@ -10,7 +10,8 @@
                 "ec2:DescribePrefixLists",
                 "ec2:DescribeNetworkInterfaces",
                 "ec2:DescribeInstanceTypes",
-                "ec2:DescribeInstanceAttribute"
+                "ec2:DescribeInstanceAttribute",
+                "ec2:DescribeVolumes"
             ],
             "Resource": "*"
         }
