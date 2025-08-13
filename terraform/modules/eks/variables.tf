@@ -14,6 +14,11 @@ variable "cluster_name" {
   description = "EKS cluster name for tags"
 }
 
+variable "bastion_sg_id" {
+  type        = string
+  description = "Bastion Security Group ID"
+}
+
 variable "tags" {
   type        = map(string)
   description = "Resource tags"

@@ -46,6 +46,7 @@ module "eks" {
   cluster_name       = var.cluster_name
   vpc_id             = module.networking.vpc_id
   private_subnet_ids = module.networking.private_subnets
+  bastion_sg_id      = module.bastion.security_group_id
 
   tags = local.default_tags
 }
