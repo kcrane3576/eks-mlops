@@ -18,16 +18,6 @@ module "eks" {
   enable_kms_key_rotation                = true
 
   create_security_group = true
-  security_group_additional_rules = {
-    bastion_to_api_443 = {
-      description              = "Allow bastion to reach EKS API"
-      protocol                 = "tcp"
-      from_port                = 443
-      to_port                  = 443
-      type                     = "ingress"
-      source_security_group_id = var.bastion_sg_id
-    }
-  }
 
   eks_managed_node_groups = {
     default = {
