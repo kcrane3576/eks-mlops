@@ -5,7 +5,8 @@
             "Sid": "EC2DescribeVPCTags",
             "Effect": "Allow",
             "Action": [
-                "ec2:DescribeTags"
+                "ec2:DescribeTags",
+                "ec2:DescribeVpcEndpoints"
             ],
             "Resource": "*"
         }
