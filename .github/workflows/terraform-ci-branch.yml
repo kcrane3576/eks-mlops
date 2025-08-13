@@ -22,6 +22,7 @@ jobs:
       TF_VAR_enable_vpc_flow_logs: ${{ secrets.TF_VAR_ENABLE_VPC_FLOW_LOGS }}
       TF_VAR_tags: ${{ secrets.TF_VAR_TAGS }}
       TF_VAR_s3_bucket_key: ${{ secrets.TF_VAR_S3_BUCKET_KEY }}
+      TF_VAR_kubernetes_minor_version: ${{ secrets.TF_VAR_KUBERNETES_MINOR_VERSION }}
 
       TF_VAR_region: ${{ secrets.TF_VAR_DEV_REGION }}
       TF_VAR_vpc_name: ${{ secrets.TF_VAR_DEV_VPC_NAME }}

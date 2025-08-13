@@ -37,6 +37,11 @@ variable "enable_vpc_flow_logs" {
   default     = true
 }
 
+variable "kubernetes_minor_version" {
+  type        = string
+  description = "Kubernetes minor version"
+}
+
 variable "cluster_name" {
   type        = string
   description = "EKS cluster name for tags"
