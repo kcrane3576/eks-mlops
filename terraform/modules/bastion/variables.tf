@@ -24,6 +24,11 @@ variable "cluster_name" {
   description = "EKS cluster name for tags"
 }
 
+variable "cluster_primary_security_group_id" {
+  type        = string
+  description = "Primary SG of the EKS control plane"
+}
+
 variable "s3_gateway_endpoint_id" {
   type        = string
   description = "ID of the S3 Gateway VPC endpoint from the networking module for private kubectl downloads."
