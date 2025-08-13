@@ -82,6 +82,15 @@ resource "aws_security_group" "bastion" {
   })
 }
 
+resource "aws_vpc_security_group_ingress_rule" "bastion_to_eks_api" {
+  security_group_id            = var.cluster_primary_security_group_id
+  description                  = "Allow bastion to reach EKS API"
+  ip_protocol                  = "tcp"
+  from_port                    = 443
+  to_port                      = 443
+  referenced_security_group_id = aws_security_group.bastion.id
+}
+
 resource "aws_security_group" "endpoints" {
   name   = "${var.name}-vpc-endpoints-sg"
   vpc_id = var.vpc_id
@@ -187,7 +196,6 @@ locals {
     kubectl version --client || true
   EOT
 }
-
 
 resource "aws_instance" "bastion" {
   ami                         = data.aws_ami.al2023.id

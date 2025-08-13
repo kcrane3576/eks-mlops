@@ -53,12 +53,13 @@ module "eks" {
 module "bastion" {
   source = "../../modules/bastion"
 
-  name                   = var.bastion_name
-  region                 = var.region
-  vpc_id                 = module.networking.vpc_id
-  private_subnet_ids     = module.networking.private_subnets
-  cluster_name           = module.eks.cluster_name
-  s3_gateway_endpoint_id = module.networking.s3_gateway_endpoint_id
+  name                              = var.bastion_name
+  region                            = var.region
+  vpc_id                            = module.networking.vpc_id
+  private_subnet_ids                = module.networking.private_subnets
+  cluster_name                      = module.eks.cluster_name
+  cluster_primary_security_group_id = module.eks.cluster_primary_security_group_id
+  s3_gateway_endpoint_id            = module.networking.s3_gateway_endpoint_id
 
   depends_on = [module.eks]
 
