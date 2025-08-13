@@ -29,6 +29,14 @@
             "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/*"
         },
         {
+            "Sid": "IAMInstanceProfileForBastion",
+            "Effect": "Allow",
+            "Action": [
+                "iam:GetInstanceProfile"
+            ],
+            "Resource": "*"
+        },
+        {
             "Sid": "SSMGetEksPublicAMIs",
             "Effect": "Allow",
             "Action": [
