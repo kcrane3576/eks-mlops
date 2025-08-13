@@ -43,9 +43,10 @@ module "access_analyzer" {
 module "eks" {
   source = "../../modules/eks"
 
-  cluster_name       = var.cluster_name
-  vpc_id             = module.networking.vpc_id
-  private_subnet_ids = module.networking.private_subnets
+  kubernetes_minor_version = var.kubernetes_minor_version
+  cluster_name             = var.cluster_name
+  vpc_id                   = module.networking.vpc_id
+  private_subnet_ids       = module.networking.private_subnets
 
   tags = local.default_tags
 }
@@ -57,6 +58,7 @@ module "bastion" {
   region                            = var.region
   vpc_id                            = module.networking.vpc_id
   private_subnet_ids                = module.networking.private_subnets
+  kubernetes_minor_version          = var.kubernetes_minor_version
   cluster_name                      = module.eks.cluster_name
   cluster_primary_security_group_id = module.eks.cluster_primary_security_group_id
   s3_gateway_endpoint_id            = module.networking.s3_gateway_endpoint_id
