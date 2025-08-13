@@ -231,7 +231,6 @@
                 "ec2:CreateTags",
                 "ec2:DeleteTags",
                 "ec2:DescribeVpcEndpointServices",
-                "ec2:DescribeInstanceTypes",
                 "ec2:DescribeInstanceAttribute",
                 "ec2:DescribeVolumes",
                 "ec2:DescribeInstanceCreditSpecifications",

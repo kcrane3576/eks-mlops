@@ -8,7 +8,8 @@
                 "ec2:DescribeTags",
                 "ec2:DescribeVpcEndpoints",
                 "ec2:DescribePrefixLists",
-                "ec2:DescribeNetworkInterfaces"
+                "ec2:DescribeNetworkInterfaces",
+                "ec2:DescribeInstanceTypes"
             ],
             "Resource": "*"
         }
