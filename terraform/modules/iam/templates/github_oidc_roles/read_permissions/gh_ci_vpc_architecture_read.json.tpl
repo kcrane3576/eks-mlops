@@ -9,7 +9,8 @@
                 "ec2:DescribeVpcEndpoints",
                 "ec2:DescribePrefixLists",
                 "ec2:DescribeNetworkInterfaces",
-                "ec2:DescribeInstanceTypes"
+                "ec2:DescribeInstanceTypes",
+                "ec2:DescribeInstanceAttribute"
             ],
             "Resource": "*"
         }
