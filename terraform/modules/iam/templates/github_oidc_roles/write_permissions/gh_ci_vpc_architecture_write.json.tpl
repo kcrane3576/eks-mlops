@@ -16,7 +16,6 @@
                 "ec2:DescribeFlowLogs",
                 "ec2:DescribeAvailabilityZones",
                 "ec2:DescribeNatGateways",
-                "ec2:DescribeNetworkInterfaces",
                 "ec2:DisassociateAddress",
                 "ec2:DescribeNetworkAcls"
             ],
