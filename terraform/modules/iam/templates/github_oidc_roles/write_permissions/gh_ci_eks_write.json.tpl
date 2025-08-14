@@ -15,7 +15,7 @@
                 "iam:ListInstanceProfilesForRole",
                 "iam:CreateServiceLinkedRole"
             ],
-            "Resource": "arn:aws:iam::728852640881:role/*"
+            "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/*"
         },
         {
             "Sid": "IAMManageOIDCProviders",
