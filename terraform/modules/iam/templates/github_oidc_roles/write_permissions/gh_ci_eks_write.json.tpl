@@ -46,7 +46,7 @@
             "Action": [
                 "iam:GetRole"
             ],
-            "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/${WRITE_ROLE_ARN}"
+            "Resource": "${WRITE_ROLE_ARN}"
         },
         {
             "Sid": "LogsManageEKSLogGroups",
