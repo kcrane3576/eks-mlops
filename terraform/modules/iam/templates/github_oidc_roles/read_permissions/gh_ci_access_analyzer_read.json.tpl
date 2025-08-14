@@ -8,7 +8,7 @@
                 "access-analyzer:GetAnalyzer",
                 "access-analyzer:ListTagsForResource"
             ],
-            "Resource": "*"
+            "Resource": "arn:aws:access-analyzer:${REGION}:${AWS_ACCOUNT_ID}:analyzer/${REPO_NAME}-access-analyzer"
         },
         {
             "Sid": "AccessAnalyzerListAccount",

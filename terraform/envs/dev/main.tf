@@ -33,8 +33,7 @@ module "networking" {
 module "access_analyzer" {
   source = "../../modules/iam/access_analyzer"
 
-  repo_name   = var.repo_name
-  environment = var.environment
+  access_analyzer_name = "${var.repo_name}-access-analyzer"
 
   tags = local.default_tags
 }
