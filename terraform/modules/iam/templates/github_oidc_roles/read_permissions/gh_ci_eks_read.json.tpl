@@ -20,6 +20,14 @@
             "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/default-eks-node-group-*"
         },
         {
+            "Sid": "IAMGetClusterServiceRoleByPattern",
+            "Effect": "Allow",
+            "Action": [
+                "iam:GetRole"
+            ],
+            "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/${CLUSTER_NAME}-*"
+        },
+        {
             "Sid": "IAMGetPolicyInAccount",
             "Effect": "Allow",
             "Action": [
