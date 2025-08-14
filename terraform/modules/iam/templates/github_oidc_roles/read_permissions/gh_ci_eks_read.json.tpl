@@ -124,7 +124,9 @@
             "Resource": [
                 "arn:aws:eks:${REGION}:${AWS_ACCOUNT_ID}:cluster/${CLUSTER_NAME}",
                 "arn:aws:eks:${REGION}:${AWS_ACCOUNT_ID}:nodegroup/${CLUSTER_NAME}/*",
-                "arn:aws:eks:${REGION}:${AWS_ACCOUNT_ID}:addon/${CLUSTER_NAME}/*"
+                "arn:aws:eks:${REGION}:${AWS_ACCOUNT_ID}:addon/${CLUSTER_NAME}/*",
+                "arn:aws:eks:${REGION}:${AWS_ACCOUNT_ID}:access-entry/${CLUSTER_NAME}/role/${AWS_ACCOUNT_ID}/*"
+
             ]
         },
         {
