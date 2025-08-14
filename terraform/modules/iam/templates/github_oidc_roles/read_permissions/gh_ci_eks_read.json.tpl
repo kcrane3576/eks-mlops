@@ -7,7 +7,7 @@
             "Action": [
                 "iam:GetRole"
             ],
-            "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/${READ_ROLE_ARN}"
+            "Resource": "${READ_ROLE_ARN}"
         },
         {
             "Sid": "IAMReadNodeGroupRoles",
@@ -17,7 +17,7 @@
                 "iam:ListRolePolicies",
                 "iam:ListAttachedRolePolicies"
             ],
-            "Resource": "arn:aws:iam::728852640881:role/*"
+            "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/default-eks-node-group-*"
         },
         {
             "Sid": "IAMGetPolicyInAccount",
@@ -34,7 +34,7 @@
             "Action": [
                 "iam:GetInstanceProfile"
             ],
-            "Resource": "*"
+            "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:instance-profile/*"
         },
         {
             "Sid": "SSMGetEksPublicAMIs",
@@ -46,10 +46,8 @@
                 "ssm:DescribeParameters"
             ],
             "Resource": [
-                "arn:aws:ssm:*:*:parameter/aws/service/eks/optimized-ami*",
-                "arn:aws:ssm:*:*:parameter/aws/service/bottlerocket/*",
-                "arn:aws:ssm:*:*:parameter/aws/service/eks/*",
-                "arn:aws:ssm:*:*:parameter/aws/service/al2023/*"
+                "arn:aws:ssm:${REGION}:*:parameter/aws/service/eks/*",
+                "arn:aws:ssm:${REGION}:*:parameter/aws/service/al2023/*"
             ]
         },
         {
@@ -98,19 +96,30 @@
             ],
             "Resource": [
                 "arn:aws:logs:${REGION}:${AWS_ACCOUNT_ID}:log-group:/aws/vpc-flow-log/*",
-                "arn:aws:logs:${REGION}:${AWS_ACCOUNT_ID}:log-group:/aws/eks/*"
+                "arn:aws:logs:${REGION}:${AWS_ACCOUNT_ID}:log-group:/aws/eks/${CLUSTER_NAME}/cluster"
             ]
         },
         {
-            "Sid": "EKSDescribeCluster",
+            "Sid": "EKSDescribeClusterScoped",
             "Effect": "Allow",
             "Action": [
                 "eks:DescribeCluster",
                 "eks:DescribeAccessEntry",
-                "eks:DescribeAddonVersions",
                 "eks:DescribeAddon",
                 "eks:DescribeNodegroup",
                 "eks:ListAssociatedAccessPolicies"
+            ],
+            "Resource": [
+                "arn:aws:eks:${REGION}:${AWS_ACCOUNT_ID}:cluster/${CLUSTER_NAME}",
+                "arn:aws:eks:${REGION}:${AWS_ACCOUNT_ID}:nodegroup/${CLUSTER_NAME}/*",
+                "arn:aws:eks:${REGION}:${AWS_ACCOUNT_ID}:addon/${CLUSTER_NAME}/*"
+            ]
+        },
+        {
+            "Sid": "EKSDescribeAddonVersionsAny",
+            "Effect": "Allow",
+            "Action": [
+                "eks:DescribeAddonVersions"
             ],
             "Resource": "*"
         },
@@ -120,7 +129,7 @@
             "Action": [
                 "iam:GetOpenIDConnectProvider"
             ],
-            "Resource": "*"
+            "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:oidc-provider/oidc.eks.${REGION}.amazonaws.com/id/*"
         },
         {
             "Sid": "KMSReadKeyMetadata",
