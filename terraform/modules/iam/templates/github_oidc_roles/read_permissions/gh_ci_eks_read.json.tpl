@@ -10,22 +10,17 @@
             "Resource": "${READ_ROLE_ARN}"
         },
         {
-            "Sid": "IAMReadNodeGroupRoles",
+            "Sid": "IAMReadClusterAndNodeGroupRoles",
             "Effect": "Allow",
             "Action": [
                 "iam:GetRole",
                 "iam:ListRolePolicies",
                 "iam:ListAttachedRolePolicies"
             ],
-            "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/default-eks-node-group-*"
-        },
-        {
-            "Sid": "IAMGetClusterServiceRoleByPattern",
-            "Effect": "Allow",
-            "Action": [
-                "iam:GetRole"
-            ],
-            "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/${CLUSTER_NAME}-*"
+            "Resource": [
+                "arn:aws:iam::${AWS_ACCOUNT_ID}:role/default-eks-node-group-*",
+                "arn:aws:iam::${AWS_ACCOUNT_ID}:role/${CLUSTER_NAME}-*"
+            ]
         },
         {
             "Sid": "IAMGetPolicyInAccount",
