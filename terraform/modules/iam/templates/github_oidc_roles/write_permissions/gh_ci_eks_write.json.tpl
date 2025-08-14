@@ -54,7 +54,7 @@
             "Action": [
                 "iam:GetRole
             ],
-            "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/*-cluster-*"
+            "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/${CLUSTER_NAME}-*"
         },
         {
             "Sid": "LogsManageEKSLogGroups",
