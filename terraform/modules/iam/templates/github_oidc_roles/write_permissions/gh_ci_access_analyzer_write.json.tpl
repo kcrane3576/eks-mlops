@@ -28,7 +28,7 @@
             "Action": [
                 "access-analyzer:DeleteAnalyzer"
             ],
-            "Resource": "*",
+            "Resource": "arn:aws:access-analyzer:${REGION}:${AWS_ACCOUNT_ID}:analyzer/${REPO_NAME}-access-analyzer",
             "Condition": {
                 "StringEquals": {
                     "aws:ResourceTag/Environment": "${ENVIRONMENT}"
