@@ -49,10 +49,17 @@
             "Resource": "${WRITE_ROLE_ARN}"
         },
         {
+            "Sid": "LogsCreateGroupForCluster",
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogGroup"
+            ],
+            "Resource": "*"
+        },
+        {
             "Sid": "LogsManageOnlyThisClusterGroup",
             "Effect": "Allow",
             "Action": [
-                "logs:CreateLogGroup",
                 "logs:DeleteLogGroup",
                 "logs:TagResource",
                 "logs:PutRetentionPolicy"
