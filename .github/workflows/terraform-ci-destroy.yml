@@ -38,7 +38,9 @@ jobs:
       TF_VAR_bastion_name: ${{ secrets.TF_VAR_DEV_BASTION_NAME }}
       TF_VAR_s3_bucket_name: ${{ secrets.TF_VAR_DEV_S3_BUCKET_NAME }}
       TF_VAR_dynamodb_table_name: ${{ secrets.TF_VAR_DEV_DYNAMODB_TABLE_NAME }}
-      ROLE_TO_ASSUME: ${{ secrets.TF_VAR_DEV_WRITE_ROLE_ARN }}
+      TF_VAR_ci_write_role_arn: ${{ secrets.TF_VAR_DEV_WRITE_ROLE_ARN }}
+      TF_VAR_enable_k8s_bootstrap: false
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -46,7 +48,7 @@ jobs:
       - name: Configure AWS credentials (Write)
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: ${{ env.ROLE_TO_ASSUME }}
+          role-to-assume: ${{ env.TF_VAR_ci_write_role_arn }}
           aws-region: ${{ env.TF_VAR_region }}
 
       - name: Setup Terraform
