@@ -54,7 +54,17 @@
             "Action": [
                 "logs:CreateLogGroup"
             ],
-            "Resource": "*"
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": {
+                    "aws:RequestTag/Name": "${CLUSTER_NAME}",
+                    "aws:RequestTag/Repo": "${REPO_NAME}",
+                    "aws:RequestTag/Environment": "${ENVIRONMENT}"
+                },
+                "ForAllValues:StringEquals": {
+                    "aws:TagKeys": ["Name","Repo","Environment"]
+                }
+            }
         },
         {
             "Sid": "LogsTagOnCreateForClusterGroup",
@@ -66,6 +76,9 @@
                     "aws:RequestTag/Name": "${CLUSTER_NAME}",
                     "aws:RequestTag/Repo": "${REPO_NAME}",
                     "aws:RequestTag/Environment": "${ENVIRONMENT}"
+                },
+                "ForAllValues:StringEquals": {
+                    "aws:TagKeys": ["Name","Repo","Environment"]
                 }
             }
         },
