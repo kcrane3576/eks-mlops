@@ -49,34 +49,22 @@
             "Resource": "${WRITE_ROLE_ARN}"
         },
         {
-            "Sid": "LogsCreateGroupForCluster",
+            "Sid": "LogsCreateLogGroupAndTagResource",
             "Effect": "Allow",
             "Action": [
-                "logs:CreateLogGroup"
+                "logs:CreateLogGroup",
+                "logs:TagResource"
             ],
             "Resource": "*"
         },
         {
-            "Sid": "LogsTagOnCreateForClusterGroup",
-            "Effect": "Allow",
-            "Action": "logs:TagResource",
-            "Resource": "*"
-        },
-        {
-            "Sid": "LogsManageOnlyThisClusterGroup",
+            "Sid": "LogsRetentionAndDeleteOnClusterGroup",
             "Effect": "Allow",
             "Action": [
-                "logs:DeleteLogGroup",
-                "logs:PutRetentionPolicy"
+                "logs:PutRetentionPolicy",
+                "logs:DeleteLogGroup"
             ],
-            "Resource": "arn:aws:logs:${REGION}:${AWS_ACCOUNT_ID}:log-group:/aws/eks/${CLUSTER_NAME}/cluster",
-            "Condition": {
-                "StringEquals": {
-                    "aws:ResourceTag/Name": "${CLUSTER_NAME}",
-                    "aws:ResourceTag/Repo": "${REPO_NAME}",
-                    "aws:ResourceTag/Environment": "${ENVIRONMENT}"
-                }
-            }
+            "Resource": "arn:aws:logs:${REGION}:${AWS_ACCOUNT_ID}:log-group:/aws/eks/${CLUSTER_NAME}/cluster:*"
         },
         {
             "Sid": "EC2ManageEKSSecurityGroupsAndTemplates",
