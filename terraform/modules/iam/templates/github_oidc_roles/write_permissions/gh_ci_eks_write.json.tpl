@@ -54,17 +54,43 @@
             "Action": [
                 "logs:CreateLogGroup"
             ],
-            "Resource": "*"
+            "Resource": "*",
+            "Condition": {
+                "ForAllValues:StringEquals": {
+                    "aws:RequestTag/Name": "${CLUSTER_NAME}",
+                    "aws:RequestTag/Repo": "${REPO}",
+                    "aws:RequestTag/Environment": "${ENVIRONMENT}"
+                }
+            }
+        },
+        {
+            "Sid": "LogsTagOnCreateForClusterGroup",
+            "Effect": "Allow",
+            "Action": "logs:TagResource",
+            "Resource": "*",
+            "Condition": {
+                "ForAllValues:StringEquals": {
+                    "aws:RequestTag/Name": "${CLUSTER_NAME}",
+                    "aws:RequestTag/Repo": "${REPO}",
+                    "aws:RequestTag/Environment": "${ENVIRONMENT}"
+                }
+            }
         },
         {
             "Sid": "LogsManageOnlyThisClusterGroup",
             "Effect": "Allow",
             "Action": [
                 "logs:DeleteLogGroup",
-                "logs:TagResource",
                 "logs:PutRetentionPolicy"
             ],
-            "Resource": "arn:aws:logs:${REGION}:${AWS_ACCOUNT_ID}:log-group:/aws/eks/${CLUSTER_NAME}/cluster"
+            "Resource": "arn:aws:logs:${REGION}:${AWS_ACCOUNT_ID}:log-group:/aws/eks/${CLUSTER_NAME}/cluster",
+            "Condition": {
+                "StringEquals": {
+                    "aws:ResourceTag/Name": "${CLUSTER_NAME}",
+                    "aws:ResourceTag/Repo": "${REPO}",
+                    "aws:ResourceTag/Environment": "${ENVIRONMENT}"
+                }
+            }
         },
         {
             "Sid": "EC2ManageEKSSecurityGroupsAndTemplates",
