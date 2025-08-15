@@ -56,9 +56,9 @@
             ],
             "Resource": "*",
             "Condition": {
-                "ForAllValues:StringEquals": {
+                "StringEquals": {
                     "aws:RequestTag/Name": "${CLUSTER_NAME}",
-                    "aws:RequestTag/Repo": "${REPO}",
+                    "aws:RequestTag/Repo": "${REPO_NAME}",
                     "aws:RequestTag/Environment": "${ENVIRONMENT}"
                 }
             }
@@ -69,9 +69,9 @@
             "Action": "logs:TagResource",
             "Resource": "*",
             "Condition": {
-                "ForAllValues:StringEquals": {
+                "StringEquals": {
                     "aws:RequestTag/Name": "${CLUSTER_NAME}",
-                    "aws:RequestTag/Repo": "${REPO}",
+                    "aws:RequestTag/Repo": "${REPO_NAME}",
                     "aws:RequestTag/Environment": "${ENVIRONMENT}"
                 }
             }
@@ -87,7 +87,7 @@
             "Condition": {
                 "StringEquals": {
                     "aws:ResourceTag/Name": "${CLUSTER_NAME}",
-                    "aws:ResourceTag/Repo": "${REPO}",
+                    "aws:ResourceTag/Repo": "${REPO_NAME}",
                     "aws:ResourceTag/Environment": "${ENVIRONMENT}"
                 }
             }
