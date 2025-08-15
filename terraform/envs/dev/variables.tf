@@ -6,6 +6,7 @@ variable "region" {
 variable "ci_write_role_arn" {
   type        = string
   description = "CI Write role ARN"
+  default     = ""
 }
 
 variable "ci_read_role_arn" {

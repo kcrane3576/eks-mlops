@@ -38,6 +38,7 @@ jobs:
       TF_VAR_bastion_name: ${{ secrets.TF_VAR_DEV_BASTION_NAME }}
       TF_VAR_s3_bucket_name: ${{ secrets.TF_VAR_DEV_S3_BUCKET_NAME }}
       TF_VAR_dynamodb_table_name: ${{ secrets.TF_VAR_DEV_DYNAMODB_TABLE_NAME }}
+      TF_VAR_ci_read_role_arn: ${{ secrets.TF_VAR_DEV_READ_ROLE_ARN }}
       TF_VAR_ci_write_role_arn: ${{ secrets.TF_VAR_DEV_WRITE_ROLE_ARN }}
       TF_VAR_enable_k8s_bootstrap: false
 
