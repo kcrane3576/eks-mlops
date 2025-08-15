@@ -49,7 +49,7 @@
             "Resource": "${WRITE_ROLE_ARN}"
         },
         {
-            "Sid": "LogsManageEKSLogGroups",
+            "Sid": "LogsManageOnlyThisClusterGroup",
             "Effect": "Allow",
             "Action": [
                 "logs:CreateLogGroup",
@@ -57,7 +57,7 @@
                 "logs:TagResource",
                 "logs:PutRetentionPolicy"
             ],
-            "Resource": "arn:aws:logs:${REGION}:${AWS_ACCOUNT_ID}:log-group:/aws/eks/*"
+            "Resource": "arn:aws:logs:${REGION}:${AWS_ACCOUNT_ID}:log-group:/aws/eks/${CLUSTER_NAME}/cluster"
         },
         {
             "Sid": "EC2ManageEKSSecurityGroupsAndTemplates",
