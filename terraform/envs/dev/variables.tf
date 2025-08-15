@@ -3,6 +3,17 @@ variable "region" {
   description = "AWS region"
 }
 
+variable "ci_write_role_arn" {
+  type        = string
+  description = "CI Write role ARN"
+  default     = ""
+}
+
+variable "ci_read_role_arn" {
+  type        = string
+  description = "CI Read role ARN"
+}
+
 variable "vpc_name" {
   type        = string
   description = "VPC name"
@@ -45,6 +56,12 @@ variable "kubernetes_minor_version" {
 variable "cluster_name" {
   type        = string
   description = "EKS cluster name for tags"
+}
+
+variable "enable_k8s_bootstrap" {
+  type        = bool
+  default     = false
+  description = "Enable Kubernetes/Helm resources from Terraform."
 }
 
 variable "bastion_name" {
