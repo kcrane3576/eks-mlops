@@ -43,6 +43,6 @@ output "instance_id" {
   value     = module.bastion.instance_id
 }
 
-output "ops_read_role_arn" {
-  value = aws_iam_role.ops_read.arn
+output "ops_admin_role_arn" {
+  value = aws_iam_role.ops_admin.arn
 }
