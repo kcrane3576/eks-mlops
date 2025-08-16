@@ -8,8 +8,9 @@ data "aws_iam_policy_document" "ec2_assume" {
   }
 }
 
-# account id for scoping
-data "aws_caller_identity" "current" {}
+# Used to dynamically resolve the AWS account ID so we can build role ARNs
+# without hardcoding account numbers (keeps policies portable across environments)
+data "aws_caller_identity" "current_account" {}
 
 resource "aws_iam_policy" "bastion_eks_describe_cluster" {
   name        = "${var.name}-eks-describe-cluster"
@@ -19,7 +20,7 @@ resource "aws_iam_policy" "bastion_eks_describe_cluster" {
     Statement = [{
       Effect   = "Allow",
       Action   = ["eks:DescribeCluster"],
-      Resource = "arn:aws:eks:${var.region}:${data.aws_caller_identity.current.account_id}:cluster/${var.cluster_name}"
+      Resource = "arn:aws:eks:${var.region}:${data.aws_caller_identity.current_account.account_id}:cluster/${var.cluster_name}"
     }]
   })
 }
