@@ -20,7 +20,7 @@
                 "arn:aws:iam::${AWS_ACCOUNT_ID}:role/${CLUSTER_NAME}-*",
                 "arn:aws:iam::${AWS_ACCOUNT_ID}:role/${BASTION_NAME}-*",
                 "arn:aws:iam::${AWS_ACCOUNT_ID}:role/aws-service-role/eks-nodegroup.amazonaws.com/AWSServiceRoleForAmazonEKSNodegroup",
-                "arn:aws:iam::${AWS_ACCOUNT_ID}:role/*-ops-read"
+                "arn:aws:iam::${AWS_ACCOUNT_ID}:role/*-ops-admin"
             ]
         },
         {
