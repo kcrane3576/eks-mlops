@@ -22,24 +22,6 @@ resource "aws_iam_role_policy_attachment" "ssm_core" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
 
-resource "aws_iam_policy" "eks_describe" {
-  name        = "${var.name}-eks-describe"
-  description = "Allow bastion to describe EKS cluster"
-  policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [{
-      Effect : "Allow",
-      Action : ["eks:DescribeCluster"],
-      Resource : "*"
-    }]
-  })
-}
-
-resource "aws_iam_role_policy_attachment" "eks_describe_attach" {
-  role       = aws_iam_role.bastion.name
-  policy_arn = aws_iam_policy.eks_describe.arn
-}
-
 # Allow pulling kubectl from amazon-eks S3 bucket (us-west-2)
 resource "aws_iam_policy" "bastion_s3_read_eks_artifacts" {
   name        = "${var.name}-s3-read-amazon-eks"
@@ -191,9 +173,9 @@ locals {
 
     echo "Downloading kubectl from s3://amazon-eks/$LATEST_PATH"
     aws --region ${local.eks_artifacts_region} s3 cp "s3://amazon-eks/$LATEST_PATH" /tmp/k8s/kubectl
-
     install -m 0755 /tmp/k8s/kubectl /usr/local/bin/kubectl
     kubectl version --client || true
+
   EOT
 }
 
@@ -220,18 +202,4 @@ resource "aws_instance" "bastion" {
     Name                = "${var.name}",
     S3GatewayEndpointId = var.s3_gateway_endpoint_id
   })
-}
-
-resource "aws_eks_access_entry" "bastion" {
-  cluster_name  = var.cluster_name
-  principal_arn = aws_iam_role.bastion.arn
-  type          = "STANDARD"
-}
-
-resource "aws_eks_access_policy_association" "bastion_admin" {
-  cluster_name  = var.cluster_name
-  principal_arn = aws_iam_role.bastion.arn
-  policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
-  access_scope { type = "cluster" }
-  depends_on = [aws_eks_access_entry.bastion]
 }
