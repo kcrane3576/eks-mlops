@@ -12,7 +12,7 @@ data "aws_iam_policy_document" "ops_read_trust" {
 resource "aws_iam_role" "ops_read" {
   name               = "${var.environment}-ops-read"
   assume_role_policy = data.aws_iam_policy_document.ops_read_trust.json
-  tags               = merge(
+  tags = merge(
     local.default_tags, {
       Name = "${var.environment}-ops-read"
     }
@@ -22,8 +22,8 @@ resource "aws_iam_role" "ops_read" {
 # 2) Minimal AWS reads used by Bastion
 data "aws_iam_policy_document" "ops_read" {
   statement {
-    sid     = "EKSReads"
-    effect  = "Allow"
+    sid    = "EKSReads"
+    effect = "Allow"
     actions = [
       "eks:DescribeCluster",
       "eks:ListAddons",
