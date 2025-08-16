@@ -176,6 +176,21 @@ locals {
     install -m 0755 /tmp/k8s/kubectl /usr/local/bin/kubectl
     kubectl version --client || true
 
+    # --- Helm & Kustomize ---
+    dnf -y install tar gzip curl jq || true
+
+    # Helm v3
+    curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash || true
+    helm version || true
+
+    # Kustomize (latest)
+    K_VER=$(curl -s https://api.github.com/repos/kubernetes-sigs/kustomize/releases \
+      | jq -r '.[0].tag_name' | sed 's/kustomize\///')
+    curl -fsSL "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/$${K_VER}/kustomize_$${K_VER}_linux_amd64.tar.gz" \
+      -o /tmp/kustomize.tgz || true
+    tar -xzf /tmp/kustomize.tgz -C /usr/local/bin/ || true
+    kustomize version || true
+
   EOT
 }
 
