@@ -8,6 +8,27 @@ data "aws_iam_policy_document" "ec2_assume" {
   }
 }
 
+# account id for scoping
+data "aws_caller_identity" "current" {}
+
+resource "aws_iam_policy" "bastion_eks_describe_cluster" {
+  name        = "${var.name}-eks-describe-cluster"
+  description = "Allow bastion to DescribeCluster for kubeconfig generation"
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Effect   = "Allow",
+      Action   = ["eks:DescribeCluster"],
+      Resource = "arn:aws:eks:${var.region}:${data.aws_caller_identity.current.account_id}:cluster/${var.cluster_name}"
+    }]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "bastion_eks_describe_cluster_attach" {
+  role       = aws_iam_role.bastion.name
+  policy_arn = aws_iam_policy.bastion_eks_describe_cluster.arn
+}
+
 resource "aws_iam_role" "bastion" {
   name               = "${var.name}-role"
   assume_role_policy = data.aws_iam_policy_document.ec2_assume.json
