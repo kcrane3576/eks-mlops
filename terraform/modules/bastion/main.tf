@@ -186,7 +186,7 @@ locals {
     # Kustomize (latest)
     K_VER=$(curl -s https://api.github.com/repos/kubernetes-sigs/kustomize/releases \
       | jq -r '.[0].tag_name' | sed 's/kustomize\///')
-    curl -fsSL "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/${K_VER}/kustomize_${K_VER}_linux_amd64.tar.gz" \
+    curl -fsSL "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/$${K_VER}/kustomize_$${K_VER}_linux_amd64.tar.gz" \
       -o /tmp/kustomize.tgz || true
     tar -xzf /tmp/kustomize.tgz -C /usr/local/bin/ || true
     kustomize version || true
