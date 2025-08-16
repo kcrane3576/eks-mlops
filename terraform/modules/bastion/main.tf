@@ -167,53 +167,14 @@ data "aws_ami" "al2023" {
 }
 
 locals {
-  eks_artifacts_region     = "us-west-2"
-  kubernetes_minor_version = var.kubernetes_minor_version
-
-  user_data = <<-EOT
-    #!/bin/bash
-    set -euo pipefail
-
-    dnf -y update
-    dnf -y install amazon-ssm-agent awscli jq || true
-    systemctl enable --now amazon-ssm-agent
-
-    mkdir -p /tmp/k8s
-
-    echo "Finding latest kubectl for ${local.kubernetes_minor_version}..."
-    LATEST_PATH=$(aws --region ${local.eks_artifacts_region} s3 ls s3://amazon-eks/ --recursive \
-      | grep "bin/linux/amd64/kubectl$" \
-      | grep "^.*${local.kubernetes_minor_version}\\." \
-      | sort \
-      | tail -n 1 \
-      | awk '{print $4}')
-
-    if [ -z "$LATEST_PATH" ]; then
-      echo "ERROR: Could not find kubectl for ${local.kubernetes_minor_version} in S3 bucket amazon-eks"
-      exit 1
-    fi
-
-    echo "Downloading kubectl from s3://amazon-eks/$LATEST_PATH"
-    aws --region ${local.eks_artifacts_region} s3 cp "s3://amazon-eks/$LATEST_PATH" /tmp/k8s/kubectl
-    install -m 0755 /tmp/k8s/kubectl /usr/local/bin/kubectl
-    kubectl version --client || true
-
-    # --- Helm & Kustomize ---
-    dnf -y install tar gzip curl jq || true
-
-    # Helm v3
-    curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash || true
-    helm version || true
-
-    # Kustomize (latest)
-    K_VER=$(curl -s https://api.github.com/repos/kubernetes-sigs/kustomize/releases \
-      | jq -r '.[0].tag_name' | sed 's/kustomize\///')
-    curl -fsSL "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/$${K_VER}/kustomize_$${K_VER}_linux_amd64.tar.gz" \
-      -o /tmp/kustomize.tgz || true
-    tar -xzf /tmp/kustomize.tgz -C /usr/local/bin/ || true
-    kustomize version || true
-
-  EOT
+  user_data = templatefile("${path.module}/scripts/bootstrap.sh", {
+    region        = var.region
+    cluster_name  = var.cluster_name
+    environment   = var.environment
+    account_id    = data.aws_caller_identity.current_account.account_id
+    eks_minor     = var.kubernetes_minor_version
+    eks_artifacts = "us-west-2"
+  })
 }
 
 resource "aws_instance" "bastion" {
