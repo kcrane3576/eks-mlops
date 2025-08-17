@@ -179,7 +179,7 @@ locals {
     KUBERNETES_MINOR_VERSION="${var.kubernetes_minor_version}"
     EKS_ARTIFACTS_REGION="us-west-2"
 
-    $(file("${path.module}/scripts/bootstrap.sh"))
+    ${file("${path.module}/scripts/bootstrap.sh")}
   EOT
 }
 
