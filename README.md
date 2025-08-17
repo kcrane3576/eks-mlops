@@ -125,5 +125,5 @@ Branch template
 ```shell
     git checkout main && \
     git pull origin main && \
-    git checkout -b <branch_name>
+    git checkout -b extend-bastion-role-access
 ```
