@@ -63,6 +63,7 @@ module "bastion" {
 
   name                              = var.bastion_name
   region                            = var.region
+  environment                       = var.environment
   vpc_id                            = module.networking.vpc_id
   private_subnet_ids                = module.networking.private_subnets
   kubernetes_minor_version          = var.kubernetes_minor_version

@@ -11,7 +11,7 @@ data "aws_iam_policy_document" "ops_admin_trust" {
 resource "aws_iam_role" "ops_admin" {
   name               = "${var.environment}-ops-admin"
   assume_role_policy = data.aws_iam_policy_document.ops_admin_trust.json
-  tags               = merge(
+  tags = merge(
     local.default_tags, {
       Name = "${var.environment}-ops-admin"
     }
@@ -20,7 +20,7 @@ resource "aws_iam_role" "ops_admin" {
 
 data "aws_iam_policy_document" "ops_admin_read" {
   statement {
-    effect  = "Allow"
+    effect = "Allow"
     actions = [
       "eks:DescribeCluster",
       "eks:ListAddons",
