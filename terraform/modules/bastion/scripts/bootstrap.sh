@@ -55,7 +55,7 @@ mkdir -p "$BIN_DIR"
 install -m 0755 "$TMPD/kustomize" "$BIN_DIR/kustomize"
 
 # add ~/.local/bin to PATH if not already
-if [ "$(echo ":$PATH:" | grep -q ":$BIN_DIR:" && echo found || echo notfound)" = "notfound" ]; then
+if [ -z "$(echo ":$PATH:" | grep ":$BIN_DIR:")" ]; then
   echo "export PATH=\"$BIN_DIR:\$PATH\"" >> "$HOME/.bashrc"
   export PATH="$BIN_DIR:$PATH"
 fi
