@@ -168,6 +168,10 @@ data "aws_ami" "al2023" {
 
 locals {
   user_data = <<-EOT
+    #!/bin/bash
+    set -euo pipefail
+
+    # Terraform-injected vars
     REGION="${var.region}"
     CLUSTER="${var.cluster_name}"
     ENV="${var.environment}"
