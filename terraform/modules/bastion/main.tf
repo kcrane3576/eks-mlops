@@ -172,7 +172,7 @@ locals {
     set -euo pipefail
 
     # cloud-init can run with HOME unset when set -u is on
-    : "${HOME:=/root}"
+    : "$${HOME:=/root}"
 
     # ensure PATH has /usr/local/bin early so kustomize works right away
     export PATH="/usr/local/bin:/usr/sbin:/sbin:/usr/bin:/bin:$PATH"
