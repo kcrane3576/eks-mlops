@@ -32,7 +32,7 @@ helm version || true
 
 # --- Kustomize ---
 K_TAG=$(curl -s https://api.github.com/repos/kubernetes-sigs/kustomize/releases | jq -r '.[0].tag_name')
-K_FILE_VER="\${K_TAG#kustomize/}"   # "kustomize/vX.Y.Z" -> "vX.Y.Z"
+K_FILE_VER="$${K_TAG#kustomize/}"   # "kustomize/vX.Y.Z" -> "vX.Y.Z"
 curl -fsSL "https://github.com/kubernetes-sigs/kustomize/releases/download/$K_TAG/kustomize_$K_FILE_VER_linux_amd64.tar.gz" -o /tmp/kustomize.tgz || true
 if [ -s /tmp/kustomize.tgz ]; then
   tar -xzf /tmp/kustomize.tgz -C /tmp/ || true
