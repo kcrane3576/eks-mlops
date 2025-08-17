@@ -46,19 +46,8 @@ echo "Downloading: $URL"
 curl -fsSL "$URL" -o "$TMPD/kustomize.tgz"
 tar -xzf "$TMPD/kustomize.tgz" -C "$TMPD"
 
-# ensure ~/.local/bin exists
-BIN_DIR="$HOME/.local/bin"
-mkdir -p "$BIN_DIR"
-install -m 0755 "$TMPD/kustomize" "$BIN_DIR/kustomize"
-
-# add ~/.local/bin to PATH if not already
-case ":${PATH}:" in
-  *":${BIN_DIR}:"*) : ;;  # already in PATH
-  *)
-    echo "export PATH=\"${BIN_DIR}:$PATH\"" >> "$HOME/.bashrc"
-    export PATH="${BIN_DIR}:$PATH"
-    ;;
-esac
+# install into /usr/local/bin (already in PATH)
+install -m 0755 "$TMPD/kustomize" /usr/local/bin/kustomize
 
 kustomize version || true
 
