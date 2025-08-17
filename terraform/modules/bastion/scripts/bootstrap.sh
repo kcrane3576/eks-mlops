@@ -30,13 +30,18 @@ curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 |
 helm version || true
 
 # --- Kustomize ---
-K_TAG=$(curl -s https://api.github.com/repos/kubernetes-sigs/kustomize/releases \
-  | jq -r '.[0].tag_name')                 # e.g. "kustomize/v5.4.3"
-K_FILE_VER="${K_TAG#kustomize/}"           # e.g. "v5.4.3"
-curl -fsSL "https://github.com/kubernetes-sigs/kustomize/releases/download/$${K_TAG}/kustomize_$${K_FILE_VER}_linux_amd64.tar.gz" \
-  -o /tmp/kustomize.tgz || true
-tar -xzf /tmp/kustomize.tgz -C /usr/local/bin/ || true
-kustomize version || true
+K_TAG=$(curl -s https://api.github.com/repos/kubernetes-sigs/kustomize/releases | jq -r '.[0].tag_name')
+K_FILE_VER="${K_TAG#kustomize/}"   # strip "kustomize/" -> "v5.4.x"
+curl -fsSL "https://github.com/kubernetes-sigs/kustomize/releases/download/$K_TAG/kustomize_$K_FILE_VER_linux_amd64.tar.gz" -o /tmp/kustomize.tgz || true
+
+if [ -s /tmp/kustomize.tgz ]; then
+  tar -xzf /tmp/kustomize.tgz -C /tmp/ || true
+  # The archive contains a single "kustomize" binary in the root
+  install -m 0755 /tmp/kustomize /usr/local/bin/kustomize || true
+  kustomize version || true
+else
+  echo "WARNING: Kustomize tarball not downloaded (404 or empty). Skipping install."
+fi
 
 # --- Kubeconfig (defer to first login) ---
 echo "Installing first-login kubeconfig hook..."
