@@ -30,9 +30,10 @@ curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 |
 helm version || true
 
 # --- Kustomize ---
-K_VER=$(curl -s https://api.github.com/repos/kubernetes-sigs/kustomize/releases \
-  | jq -r '.[0].tag_name' | sed 's/kustomize\///')
-curl -fsSL "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/$${K_VER}/kustomize_$${K_VER}_linux_amd64.tar.gz" \
+K_TAG=$(curl -s https://api.github.com/repos/kubernetes-sigs/kustomize/releases \
+  | jq -r '.[0].tag_name')                 # e.g. "kustomize/v5.4.3"
+K_FILE_VER="${K_TAG#kustomize/}"           # e.g. "v5.4.3"
+curl -fsSL "https://github.com/kubernetes-sigs/kustomize/releases/download/$${K_TAG}/kustomize_$${K_FILE_VER}_linux_amd64.tar.gz" \
   -o /tmp/kustomize.tgz || true
 tar -xzf /tmp/kustomize.tgz -C /usr/local/bin/ || true
 kustomize version || true
