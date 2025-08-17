@@ -37,18 +37,32 @@ curl -fsSL "https://github.com/kubernetes-sigs/kustomize/releases/download/kusto
 tar -xzf /tmp/kustomize.tgz -C /usr/local/bin/ || true
 kustomize version || true
 
-# --- Kubeconfig ---
-echo "Bootstrapping kubeconfig for ${CLUSTER} in ${REGION}..."
-aws eks update-kubeconfig \
-  --name "${CLUSTER}" \
-  --region "${REGION}" \
-  --role "arn:aws:iam::${ACCOUNT_ID}:role/${ENV}-ops-admin" || true
+# --- Kubeconfig (for ssm-user) ---
+echo "Bootstrapping kubeconfig for ${CLUSTER} in ${REGION} (writing to ssm-user HOME)..."
 
-# Patch client-exec api version and interactiveMode
-if grep -q 'client.authentication.k8s.io/v1beta1' ~/.kube/config; then
-  sed -i 's#client.authentication.k8s.io/v1beta1#client.authentication.k8s.io/v1#g' ~/.kube/config
-fi
+# Ensure ssm-user's kube dir exists and is owned correctly
+install -d -m 700 -o ssm-user -g ssm-user /home/ssm-user/.kube
 
-if ! grep -q 'interactiveMode:' ~/.kube/config; then
-  sed -i '/command: aws/a\ \ \ \ interactiveMode: Never' ~/.kube/config
-fi
+# IMPORTANT:
+# - This runs as ssm-user so the kubeconfig goes to /home/ssm-user/.kube/config
+# - Bastion role MUST have eks:DescribeCluster on the cluster ARN
+# - --role is the role the aws-iam-authenticator will assume when kubectl requests a token
+runuser -l ssm-user -c "aws eks update-kubeconfig \
+  --name '${CLUSTER}' \
+  --region '${REGION}' \
+  --role 'arn:aws:iam::${ACCOUNT_ID}:role/${ENV}-ops-admin'"
+
+# Normalize client auth API to v1 in ssm-user's kubeconfig
+runuser -l ssm-user -c \"sed -i 's#client.authentication.k8s.io/v1beta1#client.authentication.k8s.io/v1#g' ~/.kube/config\"
+
+# Insert 'interactiveMode: Never' precisely under 'command: aws' if missing
+runuser -l ssm-user -c "awk '
+  {
+    print
+    if (!added && \$0 ~ /^[[:space:]]*command:[[:space:]]aws$/) {
+      match(\$0, /^[[:space:]]*/); pad=substr(\$0,1,RLENGTH);
+      print pad \"interactiveMode: Never\"
+      added=1
+    }
+  }
+' ~/.kube/config > ~/.kube/config.new && mv ~/.kube/config.new ~/.kube/config"
