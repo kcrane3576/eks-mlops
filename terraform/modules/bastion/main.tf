@@ -167,14 +167,16 @@ data "aws_ami" "al2023" {
 }
 
 locals {
-  user_data = templatefile("${path.module}/scripts/bootstrap.sh", {
-    REGION                   = var.region
-    CLUSTER                  = var.cluster_name
-    ENV                      = var.environment
-    ACCOUNT_ID               = data.aws_caller_identity.current_account.account_id
-    KUBERNETES_MINOR_VERSION = var.kubernetes_minor_version
-    EKS_ARTIFACTS_REGION     = "us-west-2"
-  })
+  user_data = <<-EOT
+    REGION="${var.region}"
+    CLUSTER="${var.cluster_name}"
+    ENV="${var.environment}"
+    ACCOUNT_ID="${data.aws_caller_identity.current_account.account_id}"
+    KUBERNETES_MINOR_VERSION="${var.kubernetes_minor_version}"
+    EKS_ARTIFACTS_REGION="us-west-2"
+
+    $(file("${path.module}/scripts/bootstrap.sh"))
+  EOT
 }
 
 resource "aws_instance" "bastion" {

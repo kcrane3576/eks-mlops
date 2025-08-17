@@ -31,16 +31,36 @@ curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 |
 helm version || true
 
 # --- Kustomize ---
-K_TAG=$(curl -s https://api.github.com/repos/kubernetes-sigs/kustomize/releases | jq -r '.[0].tag_name')
-K_FILE_VER="$${K_TAG#kustomize/}"   # "kustomize/vX.Y.Z" -> "vX.Y.Z"
-curl -fsSL "https://github.com/kubernetes-sigs/kustomize/releases/download/$${K_TAG}/kustomize_$${K_FILE_VER}_linux_amd64.tar.gz" -o /tmp/kustomize.tgz || true
-if [ -s /tmp/kustomize.tgz ]; then
-  tar -xzf /tmp/kustomize.tgz -C /tmp/ || true
-  install -m 0755 /tmp/kustomize /usr/local/bin/kustomize || true
-  kustomize version || true
-else
-  echo "WARNING: Kustomize tarball not downloaded; skipping install."
+K_TAG=$(curl -fsSL https://api.github.com/repos/kubernetes-sigs/kustomize/releases \
+  | jq -r '[.[] | select(.tag_name | startswith("kustomize/"))][0].tag_name')
+if [ -z "$K_TAG" ] || ! echo "$K_TAG" | grep -q '^kustomize/'; then
+  K_TAG=$(curl -fsSL https://api.github.com/repos/kubernetes-sigs/kustomize/releases/latest \
+    | jq -r '.tag_name')
 fi
+
+K_FILE_VER="${K_TAG#kustomize/}"
+URL="https://github.com/kubernetes-sigs/kustomize/releases/download/${K_TAG}/kustomize_${K_FILE_VER}_linux_amd64.tar.gz"
+
+TMPD="$(mktemp -d)"
+echo "Downloading: $URL"
+curl -fsSL "$URL" -o "$TMPD/kustomize.tgz"
+tar -xzf "$TMPD/kustomize.tgz" -C "$TMPD"
+
+# ensure ~/.local/bin exists
+BIN_DIR="$HOME/.local/bin"
+mkdir -p "$BIN_DIR"
+install -m 0755 "$TMPD/kustomize" "$BIN_DIR/kustomize"
+
+# add ~/.local/bin to PATH if not already
+case ":${PATH}:" in
+  *":${BIN_DIR}:"*) : ;;  # already in PATH
+  *)
+    echo "export PATH=\"${BIN_DIR}:$PATH\"" >> "$HOME/.bashrc"
+    export PATH="${BIN_DIR}:$PATH"
+    ;;
+esac
+
+kustomize version || true
 
 # --- Kubeconfig (root) ---
 # Requires: bastion instance role has eks:DescribeCluster on the cluster ARN.
