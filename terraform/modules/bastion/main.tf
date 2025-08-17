@@ -168,12 +168,12 @@ data "aws_ami" "al2023" {
 
 locals {
   user_data = templatefile("${path.module}/scripts/bootstrap.sh", {
-    region        = var.region
-    cluster_name  = var.cluster_name
-    environment   = var.environment
-    account_id    = data.aws_caller_identity.current_account.account_id
-    eks_minor     = var.kubernetes_minor_version
-    eks_artifacts = "us-west-2"
+    REGION                   = var.region
+    CLUSTER                  = var.cluster_name
+    ENV                      = var.environment
+    ACCOUNT_ID               = data.aws_caller_identity.current_account.account_id
+    KUBERNETES_MINOR_VERSION = var.kubernetes_minor_version
+    EKS_ARTIFACTS_REGION     = "us-west-2"
   })
 }
 

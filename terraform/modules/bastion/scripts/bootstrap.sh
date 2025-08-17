@@ -1,14 +1,6 @@
 #!/bin/bash
 set -euo pipefail
 
-# Vars injected from Bastion locals
-REGION="${region}"
-CLUSTER="${cluster_name}"
-ENV="${environment}"
-ACCOUNT_ID="${account_id}"
-KUBERNETES_MINOR_VERSION="${eks_minor}"
-EKS_ARTIFACTS_REGION="${eks_artifacts}"
-
 dnf -y update
 dnf -y install amazon-ssm-agent awscli jq tar gzip curl || true
 systemctl enable --now amazon-ssm-agent
