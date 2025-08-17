@@ -31,7 +31,6 @@ curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 |
 helm version || true
 
 # --- Kustomize ---
-# --- Kustomize ---
 # fetch latest valid tag
 K_TAG=$(curl -fsSL https://api.github.com/repos/kubernetes-sigs/kustomize/releases \
   | jq -r '[.[] | select(.tag_name | startswith("kustomize/"))][0].tag_name')
@@ -56,15 +55,13 @@ mkdir -p "$BIN_DIR"
 install -m 0755 "$TMPD/kustomize" "$BIN_DIR/kustomize"
 
 # add ~/.local/bin to PATH if not already
-case ":$PATH:" in *":$BIN_DIR:"*) : ;; *)
+if ! echo ":$PATH:" | grep -q ":$BIN_DIR:"; then
   echo "export PATH=\"$BIN_DIR:\$PATH\"" >> "$HOME/.bashrc"
   export PATH="$BIN_DIR:$PATH"
-esac
+fi
 
 # verify
 kustomize version
-
-
 
 # --- Kubeconfig (root) ---
 # Requires: bastion instance role has eks:DescribeCluster on the cluster ARN.
