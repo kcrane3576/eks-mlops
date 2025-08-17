@@ -171,6 +171,16 @@ locals {
     #!/bin/bash
     set -euo pipefail
 
+    # cloud-init can run with HOME unset when set -u is on
+    : "$${HOME:=/root}"
+
+    # ensure PATH has /usr/local/bin early so kustomize works right away
+    export PATH="/usr/local/bin:/usr/sbin:/sbin:/usr/bin:/bin:$PATH"
+
+    # persist PATH for future shells
+    echo 'export PATH="/usr/local/bin:$PATH"' >/etc/profile.d/00-localbin.sh
+    chmod 0644 /etc/profile.d/00-localbin.sh
+
     # Terraform-injected vars
     REGION="${var.region}"
     CLUSTER="${var.cluster_name}"
