@@ -2,7 +2,7 @@
 set -euo pipefail
 
 dnf -y update
-dnf -y install amazon-ssm-agent awscli jq tar gzip curl || true
+dnf -y install amazon-ssm-agent awscli jq tar gzip || true
 systemctl enable --now amazon-ssm-agent
 
 mkdir -p /tmp/k8s
