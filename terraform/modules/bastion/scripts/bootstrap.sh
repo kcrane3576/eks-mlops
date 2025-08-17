@@ -38,32 +38,61 @@ curl -fsSL "https://github.com/kubernetes-sigs/kustomize/releases/download/$${K_
 tar -xzf /tmp/kustomize.tgz -C /usr/local/bin/ || true
 kustomize version || true
 
-# --- Kubeconfig (for ssm-user) ---
-echo "Bootstrapping kubeconfig for ${CLUSTER} in ${REGION} (writing to ssm-user HOME)..."
+# --- Kubeconfig (defer to first login) ---
+echo "Installing first-login kubeconfig hook..."
 
-# Ensure ssm-user's kube dir exists and is owned correctly
-install -d -m 700 -o ssm-user -g ssm-user /home/ssm-user/.kube
+# Writes a helper that will create kubeconfig for the *current* user on first login
+# Values below are baked in at template time
+cat >/usr/local/bin/eks-kubeconfig-onlogin.sh <<EOF
+#!/usr/bin/env bash
+set -euo pipefail
 
-# IMPORTANT:
-# - This runs as ssm-user so the kubeconfig goes to /home/ssm-user/.kube/config
-# - Bastion role MUST have eks:DescribeCluster on the cluster ARN
-# - --role is the role the aws-iam-authenticator will assume when kubectl requests a token
-runuser -l ssm-user -c "aws eks update-kubeconfig \
-  --name '${CLUSTER}' \
-  --region '${REGION}' \
-  --role 'arn:aws:iam::${ACCOUNT_ID}:role/${ENV}-ops-admin'"
+REGION="${REGION}"
+CLUSTER="${CLUSTER}"
+ENV="${ENV}"
+ACCOUNT_ID="${ACCOUNT_ID}"
 
-# Normalize client auth API to v1 in ssm-user's kubeconfig
-runuser -l ssm-user -c \"sed -i 's#client.authentication.k8s.io/v1beta1#client.authentication.k8s.io/v1#g' ~/.kube/config\"
+KUBEDIR="\${HOME}/.kube"
+KUBECONFIG_PATH="\${KUBEDIR}/config"
 
-# Insert 'interactiveMode: Never' precisely under 'command: aws' if missing
-runuser -l ssm-user -c "awk '
-  {
-    print
-    if (!added && \$0 ~ /^[[:space:]]*command:[[:space:]]aws$/) {
-      match(\$0, /^[[:space:]]*/); pad=substr(\$0,1,RLENGTH);
-      print pad \"interactiveMode: Never\"
-      added=1
+# Only run once per user
+if [ ! -f "\${KUBECONFIG_PATH}" ]; then
+  mkdir -p "\${KUBEDIR}"
+
+  aws eks update-kubeconfig \
+    --name "\${CLUSTER}" \
+    --region "\${REGION}" \
+    --role "arn:aws:iam::\${ACCOUNT_ID}:role/\${ENV}-ops-admin"
+
+  # Normalize exec API to v1
+  if grep -q 'client.authentication.k8s.io/v1beta1' "\${KUBECONFIG_PATH}"; then
+    sed -i 's#client.authentication.k8s.io/v1beta1#client.authentication.k8s.io/v1#g' "\${KUBECONFIG_PATH}"
+  fi
+
+  # Insert 'interactiveMode: Never' immediately under 'command: aws' if missing
+  awk '
+    {
+      print
+      if (!added && \$0 ~ /^[[:space:]]*command:[[:space:]]aws$/) {
+        match(\$0, /^[[:space:]]*/); pad=substr(\$0,1,RLENGTH);
+        print pad "interactiveMode: Never"
+        added=1
+      }
     }
-  }
-' ~/.kube/config > ~/.kube/config.new && mv ~/.kube/config.new ~/.kube/config"
+  ' "\${KUBECONFIG_PATH}" > "\${KUBECONFIG_PATH}.new" && mv "\${KUBECONFIG_PATH}.new" "\${KUBECONFIG_PATH}"
+fi
+EOF
+chmod +x /usr/local/bin/eks-kubeconfig-onlogin.sh
+
+# Profile hook: run the helper on each login if kubeconfig is missing
+cat >/etc/profile.d/10-eks-kubeconfig.sh <<'EOF'
+# Create EKS kubeconfig on first login (SSM or SSH) if missing
+if command -v aws >/dev/null 2>&1; then
+  if [ ! -f "${HOME}/.kube/config" ]; then
+    /usr/local/bin/eks-kubeconfig-onlogin.sh || true
+  fi
+fi
+EOF
+chmod 644 /etc/profile.d/10-eks-kubeconfig.sh
+
+echo "Kubeconfig will be generated on first login for the current user."
