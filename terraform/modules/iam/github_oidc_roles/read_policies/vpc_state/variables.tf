@@ -21,7 +21,6 @@ variable "state_lock_table_name" {
 variable "policy_name" {
   type        = string
   description = "Policy name"
-
 }
 
 variable "policy_description" {
