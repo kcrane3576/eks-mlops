@@ -58,7 +58,7 @@ jobs:
             -backend-config="key=${{ secrets.TF_VAR_STATE_BUCKET_KEY }}" \
             -backend-config="region=${{ secrets.TF_VAR_DEV_REGION }}" \
             -backend-config="encrypt=true" \
-            -backend-config="dynamodb_table=${{ secrets.TF_VAR_DEV_STATE_LOCK_TABLE_NAME }}"
+            -backend-config="use_lockfile=true"
 
       - name: Terraform Validate
         run: terraform validate
