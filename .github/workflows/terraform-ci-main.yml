@@ -21,7 +21,7 @@ jobs:
       TF_VAR_repo_name: ${{ vars.TF_VAR_REPO_NAME }}
       TF_VAR_enable_vpc_flow_logs: ${{ secrets.TF_VAR_ENABLE_VPC_FLOW_LOGS }}
       TF_VAR_tags: ${{ secrets.TF_VAR_TAGS }}
-      TF_VAR_s3_bucket_key: ${{ secrets.TF_VAR_S3_BUCKET_KEY }}
+      TF_VAR_state_bucket_key: ${{ secrets.TF_VAR_STATE_BUCKET_KEY }}
       TF_VAR_kubernetes_minor_version: ${{ secrets.TF_VAR_KUBERNETES_MINOR_VERSION }}
 
       TF_VAR_region: ${{ secrets.TF_VAR_DEV_REGION }}
@@ -54,11 +54,11 @@ jobs:
       - name: Terraform Init
         run: |
           TF_LOG=debug terraform init \
-            -backend-config="bucket=${{ secrets.TF_VAR_DEV_S3_BUCKET_NAME }}" \
+            -backend-config="bucket=${{ secrets.TF_VAR_DEV_STATE_BUCKET_NAME }}" \
             -backend-config="key=${{ secrets.TF_VAR_STATE_BUCKET_KEY }}" \
             -backend-config="region=${{ secrets.TF_VAR_DEV_REGION }}" \
             -backend-config="encrypt=true" \
-            -backend-config="use_lockfile=true"
+            -backend-config="use_lockfile=${{ secrets.TF_VAR_DEV_STATE_LOCK_TABLE_NAME }}"
 
       - name: Terraform Validate
         run: terraform validate
