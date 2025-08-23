@@ -2,9 +2,14 @@ name: Terraform CI - PR (dev)
 
 on:
   pull_request:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: "Type 'destroy' to confirm destroying the *dev* stack"
+        required: true
 
 jobs:
-  terraform:
+  apply-dev:
     if: >
       github.repository == vars.REPO_CAN_RUN_CI &&
       github.event.pull_request.base.ref == 'main' &&
@@ -63,8 +68,6 @@ jobs:
             -backend-config="encrypt=true" \
             -backend-config="dynamodb_table=${{ secrets.TF_VAR_DEV_STATE_LOCK_TABLE_NAME }}"
 
-          terraform force-unlock -force 1ab7773d-8711-fe56-d539-bb7c21448e3d
-
       - name: Terraform Validate
         run: terraform validate
 
@@ -73,3 +76,56 @@ jobs:
 
       - name: Terraform Apply
         run: terraform apply -auto-approve
+
+
+  destroy-dev:
+    name: Destroy (dev) - manual
+    if: >
+      github.repository == vars.REPO_CAN_RUN_CI &&
+      github.event.pull_request.base.ref == 'main' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    concurrency:
+      group: tf-dev-pr-${{ github.event.pull_request.number }}-destroy
+      cancel-in-progress: false
+    defaults:
+      run:
+        working-directory: terraform/envs/dev
+    env:
+      TF_IN_AUTOMATION: true
+      TF_VAR_environment: dev
+      TF_VAR_repo_name: ${{ vars.TF_VAR_REPO_NAME }}
+      TF_VAR_region: ${{ secrets.TF_VAR_DEV_REGION }}
+      TF_VAR_state_bucket_name: ${{ secrets.TF_VAR_DEV_STATE_BUCKET_NAME }}
+      TF_VAR_state_bucket_key: ${{ secrets.TF_VAR_STATE_BUCKET_KEY }}
+      TF_VAR_state_lock_table_name: ${{ secrets.TF_VAR_DEV_STATE_LOCK_TABLE_NAME }}
+      TF_VAR_ci_write_role_arn: ${{ secrets.TF_VAR_DEV_WRITE_ROLE_ARN }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (dev WRITE)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.TF_VAR_ci_write_role_arn }}
+          aws-region: ${{ env.TF_VAR_region }}
+
+      - uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: |
+          terraform init -reconfigure \
+            -backend-config="bucket=${{ secrets.TF_VAR_DEV_STATE_BUCKET_NAME }}" \
+            -backend-config="key=${{ secrets.TF_VAR_STATE_BUCKET_KEY }}" \
+            -backend-config="region=${{ secrets.TF_VAR_DEV_REGION }}" \
+            -backend-config="encrypt=true" \
+            -backend-config="dynamodb_table=${{ secrets.TF_VAR_DEV_STATE_LOCK_TABLE_NAME }}"
+
+      - name: Terraform Plan (destroy)
+        run: terraform plan -destroy -input=false -lock-timeout=5m
+
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve -input=false -lock-timeout=5m
