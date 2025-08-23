@@ -1,7 +1,7 @@
 output "policy_arn" {
-  value = aws_iam_policy.policy.arn
+  value = aws_iam_policy.gh_ci_vpc_state_read.policy.arn
 }
 
 output "policy_name" {
-  value = aws_iam_policy.policy.name
+  value = aws_iam_policy.gh_ci_vpc_state_read.policy.name
 }
