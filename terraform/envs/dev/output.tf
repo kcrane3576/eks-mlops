@@ -36,7 +36,7 @@ output "node_security_group_id" {
 
 output "cluster_certificate_authority_data" {
   sensitive = true
-  value = module.eks.cluster_certificate_authority_data
+  value     = module.eks.cluster_certificate_authority_data
 }
 
 output "instance_id" {
