@@ -20,7 +20,7 @@ jobs:
       contents: read
     concurrency:
       group: tf-dev-pr-${{ github.event.pull_request.number }}
-      cancel-in-progress: true
+      cancel-in-progress: false
     defaults:
       run:
         working-directory: terraform/envs/dev
