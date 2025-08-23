@@ -37,6 +37,7 @@ jobs:
       TF_VAR_bastion_name: ${{ secrets.TF_VAR_DEV_BASTION_NAME }}
       TF_VAR_state_bucket_name: ${{ secrets.TF_VAR_DEV_STATE_BUCKET_NAME }}
       TF_VAR_state_lock_table_name: ${{ secrets.TF_VAR_DEV_STATE_LOCK_TABLE_NAME }}
+      TF_VAR_ci_read_role_arn: ${{ secrets.TF_VAR_DEV_READ_ROLE_ARN }}
       TF_VAR_ci_write_role_arn: ${{ secrets.TF_VAR_DEV_WRITE_ROLE_ARN }}
       TF_VAR_enable_k8s_bootstrap: false
 
@@ -61,8 +62,6 @@ jobs:
             -backend-config="region=${{ secrets.TF_VAR_DEV_REGION }}" \
             -backend-config="encrypt=true" \
             -backend-config="dynamodb_table=${{ secrets.TF_VAR_DEV_STATE_LOCK_TABLE_NAME }}"
-
-          terraform force-unlock -force 20864235-3bfb-c985-59ff-05ab7a7ec37f
 
       - name: Terraform Validate
         run: terraform validate
