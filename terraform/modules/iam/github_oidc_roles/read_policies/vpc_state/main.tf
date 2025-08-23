@@ -3,7 +3,7 @@
 data "aws_caller_identity" "current_account" {}
 
 locals {
-  account_id          = data.aws_caller_identity.current.account_id
+  account_id          = data.aws_caller_identity.current_account.account_id
   s3_bucket_arn       = "arn:aws:s3:::${var.state_bucket_name}"
   s3_objs_arn         = "${local.s3_bucket_arn}/*"
   dynamodb_table_arn  = "arn:aws:dynamodb:${var.region}:${local.account_id}:table/${var.state_lock_table_name}"
