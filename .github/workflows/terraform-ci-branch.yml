@@ -1,4 +1,4 @@
-name: Terraform CI - branches/PRs
+name: Terraform CI - PR (dev)
 
 on:
   pull_request:
@@ -7,12 +7,15 @@ jobs:
   terraform:
     if: >
       github.repository == vars.REPO_CAN_RUN_CI &&
-      github.event_name == 'pull_request' &&
-      github.event.pull_request.base.ref == 'main'
+      github.event.pull_request.base.ref == 'main' &&
+      github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     permissions:
       id-token: write
       contents: read
+    concurrency:
+      group: tf-dev-pr-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
     defaults:
       run:
         working-directory: terraform/envs/dev
@@ -34,17 +37,17 @@ jobs:
       TF_VAR_bastion_name: ${{ secrets.TF_VAR_DEV_BASTION_NAME }}
       TF_VAR_state_bucket_name: ${{ secrets.TF_VAR_DEV_STATE_BUCKET_NAME }}
       TF_VAR_state_lock_table_name: ${{ secrets.TF_VAR_DEV_STATE_LOCK_TABLE_NAME }}
-      TF_VAR_ci_read_role_arn: ${{ secrets.TF_VAR_DEV_READ_ROLE_ARN }}
+      TF_VAR_ci_write_role_arn: ${{ secrets.TF_VAR_DEV_WRITE_ROLE_ARN }}
       TF_VAR_enable_k8s_bootstrap: false
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Configure AWS credentials (Read)
-        uses: aws-actions/configure-aws-credentials@v2
+      - name: Configure AWS credentials (dev WRITE)
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ env.TF_VAR_ci_read_role_arn }}
+          role-to-assume: ${{ env.TF_VAR_ci_write_role_arn }}
           aws-region: ${{ env.TF_VAR_region }}
 
       - name: Setup Terraform
@@ -52,7 +55,7 @@ jobs:
 
       - name: Terraform Init
         run: |
-          TF_LOG=debug terraform init \
+          TF_LOG=debug terraform init -reconfigure \
             -backend-config="bucket=${{ secrets.TF_VAR_DEV_STATE_BUCKET_NAME }}" \
             -backend-config="key=${{ secrets.TF_VAR_STATE_BUCKET_KEY }}" \
             -backend-config="region=${{ secrets.TF_VAR_DEV_REGION }}" \
@@ -62,5 +65,8 @@ jobs:
       - name: Terraform Validate
         run: terraform validate
 
-      - name: Terraform Plan (no lock)
-        run: terraform plan -lock=false
+      - name: Terraform Plan
+        run: terraform plan
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
