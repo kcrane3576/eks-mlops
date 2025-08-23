@@ -1,6 +1,21 @@
+variable "environment" {
+  type        = string
+  description = "Environment name (e.g., dev, test, prod) for tagging and IAM scoping"
+}
+
 variable "region" {
   type        = string
   description = "AWS region"
+}
+
+variable "state_bucket_name" {
+  type        = string
+  description = "Terraform state bucket name"
+
+}
+variable "state_lock_table_name" {
+  type        = string
+  description = "Terraform state dynamoDB table name"
 }
 
 variable "ci_write_role_arn" {
@@ -67,11 +82,6 @@ variable "enable_k8s_bootstrap" {
 variable "bastion_name" {
   type        = string
   description = "Bastion name for tags"
-}
-
-variable "environment" {
-  type        = string
-  description = "Environment name (e.g., dev, test, prod) for tagging and IAM scoping"
 }
 
 variable "repo_name" {

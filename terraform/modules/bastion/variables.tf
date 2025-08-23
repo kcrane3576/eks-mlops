@@ -1,11 +1,11 @@
-variable "region" {
-  type        = string
-  description = "AWS region"
-}
-
 variable "environment" {
   type        = string
   description = "Environment name (e.g., dev, test, prod) for tagging and IAM scoping"
+}
+
+variable "region" {
+  type        = string
+  description = "AWS region"
 }
 
 variable "vpc_id" {
