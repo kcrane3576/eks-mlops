@@ -63,6 +63,8 @@ jobs:
             -backend-config="encrypt=true" \
             -backend-config="dynamodb_table=${{ secrets.TF_VAR_DEV_STATE_LOCK_TABLE_NAME }}"
 
+          terraform force-unlock -force 1ab7773d-8711-fe56-d539-bb7c21448e3d
+
       - name: Terraform Validate
         run: terraform validate
 
