@@ -1,5 +1,5 @@
 locals {
-    provider_external_id = "ci-orchestrator-dev"
+  provider_external_id = "ci-orchestrator-dev"
 }
 
 provider "aws" {
