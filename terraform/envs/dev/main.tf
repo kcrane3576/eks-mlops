@@ -35,6 +35,11 @@ module "networking" {
   repo_name            = var.repo_name
 
   tags = local.default_tags
+
+  depends_on = [
+    module.gh_ci_read_vpc_state,
+    aws_iam_role_policy_attachment.attach_ci_read_vpc_state
+  ]
 }
 
 module "access_analyzer" {
@@ -46,6 +51,8 @@ module "access_analyzer" {
   access_analyzer_name = "${var.repo_name}-access-analyzer"
 
   tags = local.default_tags
+
+  depends_on = [module.networking]
 }
 
 
