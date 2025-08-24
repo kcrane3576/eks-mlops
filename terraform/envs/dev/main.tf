@@ -90,4 +90,11 @@ locals {
     Environment = var.environment
     Repo        = var.repo_name
   }
+  policy_tags = merge(
+    local.default_tags,
+    {
+      owner   = "platform",
+      purpose = "ci"
+    }
+  )
 }
