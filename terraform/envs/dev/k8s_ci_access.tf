@@ -1,5 +1,6 @@
 # PR role: view-only
 resource "aws_eks_access_entry" "ci_read" {
+  provider      = aws.ci_write_role
   cluster_name  = module.eks.cluster_name
   principal_arn = var.ci_read_role_arn
   type          = "STANDARD"
@@ -15,6 +16,7 @@ resource "aws_eks_access_policy_association" "ci_read_view" {
 
 # Main role: cluster-admin (for bootstrapping controllers)
 resource "aws_eks_access_entry" "ci_write" {
+  provider      = aws.ci_write_role
   count         = var.ci_write_role_arn != "" ? 1 : 0
   cluster_name  = module.eks.cluster_name
   principal_arn = var.ci_write_role_arn
