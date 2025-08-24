@@ -43,6 +43,7 @@ jobs:
       TF_VAR_state_lock_table_name: ${{ secrets.TF_VAR_DEV_STATE_LOCK_TABLE_NAME }}
       TF_VAR_ci_read_role_arn: ${{ secrets.TF_VAR_DEV_READ_ROLE_ARN }}
       TF_VAR_ci_write_role_arn: ${{ secrets.TF_VAR_DEV_WRITE_ROLE_ARN }}
+      TF_VAR_ci_orchestrator_role_arn: ${{ secrets.TF_VAR_DEV_ORCHESTRATOR_ROLE_ARN }}
       TF_VAR_enable_k8s_bootstrap: false
 
     steps:
@@ -52,7 +53,7 @@ jobs:
       - name: Configure AWS credentials (dev WRITE)
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: ${{ env.TF_VAR_ci_write_role_arn }}
+          role-to-assume: ${{ env.TF_VAR_ci_orchestrator_role_arn }}
           aws-region: ${{ env.TF_VAR_region }}
 
       - name: Setup Terraform
