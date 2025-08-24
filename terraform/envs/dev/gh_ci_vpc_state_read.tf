@@ -28,7 +28,7 @@ module "gh_ci_read_vpc_state" {
 }
 
 resource "aws_iam_role_policy_attachment" "attach_ci_read_vpc_state" {
-  provider = aws.ci_write_role
+  provider   = aws.ci_write_role
   for_each   = local.ci_roles_to_attach
   role       = each.value
   policy_arn = module.gh_ci_read_vpc_state.policy_arn
