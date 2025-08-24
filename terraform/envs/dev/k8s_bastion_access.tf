@@ -9,6 +9,7 @@ data "aws_iam_policy_document" "ops_admin_trust" {
 }
 
 resource "aws_iam_role" "ops_admin" {
+  provider           = aws.ci_write_role
   name               = "${var.environment}-ops-admin"
   assume_role_policy = data.aws_iam_policy_document.ops_admin_trust.json
   tags = merge(
@@ -31,8 +32,10 @@ data "aws_iam_policy_document" "ops_admin_read" {
 }
 
 resource "aws_iam_policy" "ops_admin_read" {
-  name   = "${var.environment}-ops-admin-read"
-  policy = data.aws_iam_policy_document.ops_admin_read.json
+  provider = aws.ci_write_role
+  name     = "${var.environment}-ops-admin-read"
+  policy   = data.aws_iam_policy_document.ops_admin_read.json
+  tags     = local.policy_tags
 }
 
 resource "aws_iam_role_policy_attachment" "ops_admin_read_attach" {
