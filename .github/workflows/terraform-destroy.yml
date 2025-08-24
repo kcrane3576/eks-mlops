@@ -1,21 +1,25 @@
-name: Terraform Destroy
+name: Destroy (dev)
 
 on:
   workflow_dispatch:
     inputs:
       confirm:
-        description: "Type 'destroy' to confirm"
+        description: "Type 'destroy' to confirm tearing down the *dev* stack"
         required: true
 
 jobs:
   terraform:
     if: >
-      github.event.inputs.confirm == 'destroy' &&
-      github.repository == vars.REPO_CAN_RUN_CI
+      github.repository == vars.REPO_CAN_RUN_CI &&
+      github.event.inputs.confirm == 'destroy'
+
     runs-on: ubuntu-latest
     permissions:
       id-token: write
       contents: read
+    concurrency:
+      group: tf-dev
+      cancel-in-progress: false
     defaults:
       run:
         working-directory: terraform/envs/dev
@@ -43,9 +47,9 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Configure AWS credentials (Write)
+      - name: Configure AWS credentials (dev WRITE)
         uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: ${{ env.TF_VAR_ci_write_role_arn }}
@@ -63,5 +67,8 @@ jobs:
             -backend-config="encrypt=true" \
             -backend-config="dynamodb_table=${{ secrets.TF_VAR_DEV_STATE_LOCK_TABLE_NAME }}"
 
+      - name: Terraform Plan
+        run: terraform plan -destroy -lock-timeout=5m
+
       - name: Terraform Destroy
-        run: terraform destroy -auto-approve
+        run: terraform destroy -auto-approve -lock-timeout=5m
