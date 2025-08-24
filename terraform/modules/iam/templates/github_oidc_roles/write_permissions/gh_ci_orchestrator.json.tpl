@@ -67,12 +67,6 @@
                 "StringEquals": {
                     "aws:RequestTag/owner": "platform",
                     "aws:RequestTag/purpose": "ci"
-                },
-                "ForAllValues:StringEquals": {
-                    "aws:TagKeys": [
-                        "owner",
-                        "purpose"
-                    ]
                 }
             }
         },
