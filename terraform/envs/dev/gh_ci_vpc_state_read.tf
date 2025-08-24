@@ -15,9 +15,6 @@ locals {
 
 module "gh_ci_read_vpc_state" {
   source = "../../modules/iam/github_oidc_roles/read_policies/vpc_state"
-  providers = {
-    aws = aws.ci_write_role
-  }
 
   region                = var.region
   environment           = var.environment
