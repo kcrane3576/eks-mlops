@@ -1,4 +1,4 @@
-name: Terraform CI - PR (dev)
+name: Deploy - PR (dev)
 
 on:
   pull_request:
