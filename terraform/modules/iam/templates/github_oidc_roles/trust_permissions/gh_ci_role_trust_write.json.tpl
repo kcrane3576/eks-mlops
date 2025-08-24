@@ -18,6 +18,19 @@
 					]
 				}
 			}
-		}
+		},
+		{
+			"Sid": "AllowAssumeFromOrchestrator",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "${ORCHESTRATOR_ROLE_ARN}"
+            },
+            "Action": "sts:AssumeRole",
+            "Condition": {
+                "StringEquals": {
+                    "sts:ExternalId": "ci-orchestrator-dev"
+                }
+            }
+        }
 	]
 }
