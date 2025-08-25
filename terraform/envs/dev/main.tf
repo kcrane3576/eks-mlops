@@ -17,6 +17,11 @@ terraform {
   }
 }
 
+resource "time_sleep" "after_ci_policy_attach" {
+  create_duration = "20s"
+  depends_on      = [aws_iam_role_policy_attachment.attach_ci_read_vpc_state]
+}
+
 module "networking" {
   source = "../../modules/networking"
   providers = {
@@ -38,7 +43,8 @@ module "networking" {
 
   depends_on = [
     module.gh_ci_read_vpc_state,
-    aws_iam_role_policy_attachment.attach_ci_read_vpc_state
+    aws_iam_role_policy_attachment.attach_ci_read_vpc_state,
+    time_sleep.after_ci_policy_attach
   ]
 }
 
