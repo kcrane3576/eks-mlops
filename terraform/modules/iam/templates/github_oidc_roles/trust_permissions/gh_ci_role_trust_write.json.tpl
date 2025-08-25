@@ -9,10 +9,28 @@
 			"Action": "sts:AssumeRoleWithWebIdentity",
 			"Condition": {
 				"StringEquals": {
-					"token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
-                    "token.actions.githubusercontent.com:sub": "repo:${REPO_OWNER}/${REPO_NAME}:ref:refs/heads/${DEFAULT_BRANCH}"
+					"token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
+				},
+				"StringLike": {
+					"token.actions.githubusercontent.com:sub": [
+						"repo:${REPO_OWNER}/${REPO_NAME}:pull_request",
+						"repo:${REPO_OWNER}/${REPO_NAME}:ref:refs/heads/main"
+					]
 				}
 			}
-		}
+		},
+		{
+			"Sid": "AllowAssumeFromOrchestrator",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "${ORCHESTRATOR_ROLE_ARN}"
+            },
+            "Action": "sts:AssumeRole",
+            "Condition": {
+                "StringEquals": {
+                    "sts:ExternalId": "ci-orchestrator-dev"
+                }
+            }
+        }
 	]
 }
