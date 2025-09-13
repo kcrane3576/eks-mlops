@@ -105,7 +105,7 @@
             "Sid": "AssumeCiWriteRole",
             "Effect": "Allow",
             "Action": "sts:AssumeRole",
-            "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/${WRITE_ROLE_NAME}"
+            "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/${WRITE_ROLE_NAME}",
             "Condition": {
                 "StringEquals": {
                     "sts:ExternalId": "ci-orchestrator-dev"
