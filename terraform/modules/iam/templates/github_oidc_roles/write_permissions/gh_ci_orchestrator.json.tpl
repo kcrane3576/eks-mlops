@@ -54,19 +54,32 @@
             "Action": [
                 "iam:CreatePolicy",
                 "iam:CreatePolicyVersion",
-                "iam:DeletePolicyVersion",
-                "iam:DeletePolicy",
                 "iam:TagPolicy",
-                "iam:UntagPolicy",
-                "iam:GetPolicy",
-                "iam:GetPolicyVersion",
-                "iam:ListPolicyVersions"
+                "iam:UntagPolicy"
             ],
             "Resource": "*",
             "Condition": {
                 "StringEquals": {
                     "aws:RequestTag/owner": "platform",
                     "aws:RequestTag/purpose": "ci"
+                }
+            }
+        },
+        {
+            "Sid": "ManageCiPoliciesWithResourceTags",
+            "Effect": "Allow",
+            "Action": [
+                "iam:DeletePolicy",
+                "iam:DeletePolicyVersion",
+                "iam:GetPolicy",
+                "iam:GetPolicyVersion",
+                "iam:ListPolicyVersions"
+            ],
+            "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/platform/ci/*",
+            "Condition": {
+                "StringEquals": {
+                    "aws:ResourceTag/owner": "platform",
+                    "aws:ResourceTag/purpose": "ci"
                 }
             }
         },
