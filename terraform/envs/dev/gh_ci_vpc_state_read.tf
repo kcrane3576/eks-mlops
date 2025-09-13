@@ -11,6 +11,13 @@ locals {
   policy_name        = "gh_ci_vpc_state_read"
   policy_description = "Read-only access for CI to Terraform state (S3/DynamoDB) + VPC flow log IAM reads"
   policy_path        = "/platform/ci/vpc/"
+  policy_tags = merge(
+    local.default_tags,
+    {
+      owner   = "platform",
+      purpose = "ci"
+    }
+  )
 }
 
 module "gh_ci_read_vpc_state" {
