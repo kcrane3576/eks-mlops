@@ -11,8 +11,8 @@
                 "s3:DeleteObject"
             ],
             "Resource": [
-                "arn:aws:s3:::dev-eks-mlops-tfstate",
-                "arn:aws:s3:::dev-eks-mlops-tfstate/*"
+                "arn:aws:s3:::${STATE_BUCKET_NAME}",
+                "arn:aws:s3:::${STATE_BUCKET_NAME}/*"
             ]
         },
         {
@@ -24,10 +24,10 @@
                 "dynamodb:PutItem",
                 "dynamodb:DeleteItem"
             ],
-            "Resource": "arn:aws:dynamodb:us-east-1:${AWS_ACCOUNT_ID}:table/dev-eks-mlops-tfstate-lock",
+            "Resource": "arn:aws:dynamodb:${REGION}:${AWS_ACCOUNT_ID}:table/${STATE_LOCK_TABLE_NAME}",
             "Condition": {
                 "StringEquals": {
-                    "aws:ResourceTag/Environment": "dev"
+                    "aws:ResourceTag/Environment": "${ENVIRONMENT}"
                 }
             }
         },
@@ -92,8 +92,8 @@
                 "iam:ListAttachedRolePolicies"
             ],
             "Resource": [
-                "arn:aws:iam::${AWS_ACCOUNT_ID}:role/GithubCIReadRoleDev",
-                "arn:aws:iam::${AWS_ACCOUNT_ID}:role/GithubCIWriteRoleDev"
+                "${READ_ROLE_ARN}",
+                "${WRITE_ROLE_ARN}"
             ],
             "Condition": {
                 "StringLike": {
@@ -105,7 +105,7 @@
             "Sid": "AssumeCiWriteRole",
             "Effect": "Allow",
             "Action": "sts:AssumeRole",
-            "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/GithubCIWriteRoleDev",
+            "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/${WRITE_ROLE_NAME}"
             "Condition": {
                 "StringEquals": {
                     "sts:ExternalId": "ci-orchestrator-dev"
