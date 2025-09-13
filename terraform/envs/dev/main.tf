@@ -17,12 +17,16 @@ terraform {
   }
 }
 
-provider "aws" {
-  region = var.region
+resource "time_sleep" "after_ci_policy_attach" {
+  create_duration = "20s"
+  depends_on      = [aws_iam_role_policy_attachment.attach_ci_read_vpc_state]
 }
 
 module "networking" {
   source = "../../modules/networking"
+  providers = {
+    aws = aws.ci_write_role
+  }
 
   vpc_name             = var.vpc_name
   region               = var.region
@@ -36,19 +40,33 @@ module "networking" {
   repo_name            = var.repo_name
 
   tags = local.default_tags
+
+  depends_on = [
+    module.gh_ci_read_vpc_state,
+    aws_iam_role_policy_attachment.attach_ci_read_vpc_state,
+    time_sleep.after_ci_policy_attach
+  ]
 }
 
 module "access_analyzer" {
   source = "../../modules/iam/access_analyzer"
+  providers = {
+    aws = aws.ci_write_role
+  }
 
   access_analyzer_name = "${var.repo_name}-access-analyzer"
 
   tags = local.default_tags
+
+  depends_on = [module.networking]
 }
 
 
 module "eks" {
   source = "../../modules/eks"
+  providers = {
+    aws = aws.ci_write_role
+  }
 
   kubernetes_minor_version = var.kubernetes_minor_version
   cluster_name             = var.cluster_name
@@ -60,6 +78,9 @@ module "eks" {
 
 module "bastion" {
   source = "../../modules/bastion"
+  providers = {
+    aws = aws.ci_write_role
+  }
 
   name                              = var.bastion_name
   region                            = var.region
@@ -82,4 +103,11 @@ locals {
     Environment = var.environment
     Repo        = var.repo_name
   }
+  policy_tags = merge(
+    local.default_tags,
+    {
+      owner   = "platform",
+      purpose = "ci"
+    }
+  )
 }

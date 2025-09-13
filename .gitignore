@@ -29,3 +29,6 @@ terraform/modules/iam/templates/generated/
 
 # Git directory placeholders
 **/.keep
+
+# local temp file
+temp.json

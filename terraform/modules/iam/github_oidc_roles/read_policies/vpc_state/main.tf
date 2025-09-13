@@ -7,8 +7,8 @@ locals {
   s3_bucket_arn       = "arn:aws:s3:::${var.state_bucket_name}"
   s3_objs_arn         = "${local.s3_bucket_arn}/*"
   dynamodb_table_arn  = "arn:aws:dynamodb:${var.region}:${local.account_id}:table/${var.state_lock_table_name}"
-  flow_log_role_arn   = "arn:aws:iam::${local.account_id}:role/vpc-flow-log-role-*"
-  flow_log_policy_arn = "arn:aws:iam::${local.account_id}:policy/vpc-flow-log-to-cloudwatch-*"
+  flow_log_role_arn   = "arn:aws:iam::${local.account_id}:role/*"
+  flow_log_policy_arn = "arn:aws:iam::${local.account_id}:policy/*"
 }
 
 data "aws_iam_policy_document" "s3_read_state" {
