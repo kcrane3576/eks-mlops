@@ -11,8 +11,8 @@
                 "s3:DeleteObject"
             ],
             "Resource": [
-                "arn:aws:s3:::${STATE_BUCKET_NAME}",
-                "arn:aws:s3:::${STATE_BUCKET_NAME}/*"
+                "arn:aws:s3:::dev-eks-mlops-tfstate",
+                "arn:aws:s3:::dev-eks-mlops-tfstate/*"
             ]
         },
         {
@@ -24,10 +24,10 @@
                 "dynamodb:PutItem",
                 "dynamodb:DeleteItem"
             ],
-            "Resource": "arn:aws:dynamodb:${REGION}:${AWS_ACCOUNT_ID}:table/${STATE_LOCK_TABLE_NAME}",
+            "Resource": "arn:aws:dynamodb:us-east-1:${AWS_ACCOUNT_ID}:table/dev-eks-mlops-tfstate-lock",
             "Condition": {
                 "StringEquals": {
-                    "aws:ResourceTag/Environment": "${ENVIRONMENT}"
+                    "aws:ResourceTag/Environment": "dev"
                 }
             }
         },
@@ -54,19 +54,32 @@
             "Action": [
                 "iam:CreatePolicy",
                 "iam:CreatePolicyVersion",
-                "iam:DeletePolicyVersion",
-                "iam:DeletePolicy",
                 "iam:TagPolicy",
-                "iam:UntagPolicy",
-                "iam:GetPolicy",
-                "iam:GetPolicyVersion",
-                "iam:ListPolicyVersions"
+                "iam:UntagPolicy"
             ],
             "Resource": "*",
             "Condition": {
                 "StringEquals": {
                     "aws:RequestTag/owner": "platform",
                     "aws:RequestTag/purpose": "ci"
+                }
+            }
+        },
+        {
+            "Sid": "ManageCiPoliciesWithResourceTags",
+            "Effect": "Allow",
+            "Action": [
+                "iam:DeletePolicy",
+                "iam:DeletePolicyVersion",
+                "iam:GetPolicy",
+                "iam:GetPolicyVersion",
+                "iam:ListPolicyVersions"
+            ],
+            "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/platform/ci/*",
+            "Condition": {
+                "StringEquals": {
+                    "aws:ResourceTag/owner": "platform",
+                    "aws:ResourceTag/purpose": "ci"
                 }
             }
         },
@@ -79,8 +92,8 @@
                 "iam:ListAttachedRolePolicies"
             ],
             "Resource": [
-                "${READ_ROLE_ARN}",
-                "${WRITE_ROLE_ARN}"
+                "arn:aws:iam::${AWS_ACCOUNT_ID}:role/GithubCIReadRoleDev",
+                "arn:aws:iam::${AWS_ACCOUNT_ID}:role/GithubCIWriteRoleDev"
             ],
             "Condition": {
                 "StringLike": {
@@ -92,7 +105,7 @@
             "Sid": "AssumeCiWriteRole",
             "Effect": "Allow",
             "Action": "sts:AssumeRole",
-            "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/${WRITE_ROLE_NAME}",
+            "Resource": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/GithubCIWriteRoleDev",
             "Condition": {
                 "StringEquals": {
                     "sts:ExternalId": "ci-orchestrator-dev"
