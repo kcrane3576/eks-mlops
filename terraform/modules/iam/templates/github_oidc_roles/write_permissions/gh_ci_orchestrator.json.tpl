@@ -44,8 +44,8 @@
                 "iam:ListPolicyVersions"
             ],
             "Resource": [
-                "arn:aws:iam::728852640881:role/*",
-                "arn:aws:iam::728852640881:policy/*"
+                "arn:aws:iam::${AWS_ACCOUNT_ID}:role/*",
+                "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/*"
             ]
         },
         {
