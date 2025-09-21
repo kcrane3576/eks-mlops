@@ -2,6 +2,34 @@
 A streamlined, security-aware, GitOps-based setup for provisioning and managing an EKS cluster using Terraform, GitHub Actions, and the AWS Well-Architected Framework as a guide.
 
 ---
+## Step 0 (Recommended)
+### Repository Rulesets (Branch Protection)
+
+This repo ships with two small helper scripts to create **GitHub Rulesets** for branch protection:
+
+- `scripts/ruleset-main.sh` → targets the **default branch** (`~DEFAULT_BRANCH`, typically `main`)
+- `scripts/ruleset-dev.sh`  → targets only **`refs/heads/dev`**
+
+**What they enforce (both rulesets):**
+- Prevent branch deletion
+- Prevent non fast-forward merges
+- Require pull requests to merge
+  - Dismiss stale reviews on push
+  - Require **1** approving review
+  - Allowed merge methods: `merge`, `squash`, `rebase`
+- Admin bypass via pull request (Repository Admin role)
+
+**Prereqs**
+- Install & auth GitHub CLI
+- You must be an **admin** on the target repo.
+- Create `dev` branch
+
+**Apply the rulesets**
+```bash
+chmod +x scripts/github-ruleset-main.sh scripts/github-ruleset-dev.sh
+./scripts/github-ruleset-main.sh OWNER/REPO
+./scripts/github-ruleset-dev.sh  OWNER/REPO
+```
 
 ## Step 1
 ### Environment Configuration (Required for Policy Generation and CI/CD)
@@ -125,5 +153,5 @@ Branch template
 ```shell
     git checkout main && \
     git pull origin main && \
-    git checkout -b <branch>
+    git checkout -b rollback-to-pr-plan
 ```
