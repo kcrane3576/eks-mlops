@@ -1,4 +1,4 @@
-name: Plan - PR (dev)
+name: Plan - dev
 
 on:
   pull_request:
