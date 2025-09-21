@@ -11,7 +11,7 @@ jobs:
   terraform:
     if: >
       github.repository == vars.REPO_CAN_RUN_CI &&
-      github.event.inputs.confirm == 'destroy'
+      github.event.inputs.confirm == 'destroy' &&
       github.ref == 'refs/heads/dev'
 
     runs-on: ubuntu-latest
