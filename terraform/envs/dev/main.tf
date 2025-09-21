@@ -24,9 +24,6 @@ resource "time_sleep" "after_ci_policy_attach" {
 
 module "networking" {
   source = "../../modules/networking"
-  providers = {
-    aws = aws.ci_write_role
-  }
 
   vpc_name             = var.vpc_name
   region               = var.region
@@ -50,9 +47,6 @@ module "networking" {
 
 module "access_analyzer" {
   source = "../../modules/iam/access_analyzer"
-  providers = {
-    aws = aws.ci_write_role
-  }
 
   access_analyzer_name = "${var.repo_name}-access-analyzer"
 
@@ -64,9 +58,6 @@ module "access_analyzer" {
 
 module "eks" {
   source = "../../modules/eks"
-  providers = {
-    aws = aws.ci_write_role
-  }
 
   kubernetes_minor_version = var.kubernetes_minor_version
   cluster_name             = var.cluster_name
@@ -78,9 +69,6 @@ module "eks" {
 
 module "bastion" {
   source = "../../modules/bastion"
-  providers = {
-    aws = aws.ci_write_role
-  }
 
   name                              = var.bastion_name
   region                            = var.region

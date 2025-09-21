@@ -1,21 +1,22 @@
-name: Deploy - PR (dev)
+name: Plan - dev
 
 on:
   pull_request:
+    branches: [dev]
     types: [opened, synchronize, reopened]
 
 jobs:
-  apply-dev:
+  plan-dev:
+    name: terraform plan (dev)
     if: >
       github.repository == vars.REPO_CAN_RUN_CI &&
-      github.event.pull_request.base.ref == 'main' &&
       github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     permissions:
       id-token: write
       contents: read
     concurrency:
-      group: tf-dev
+      group: tf-plan-dev
       cancel-in-progress: false
     defaults:
       run:
@@ -40,17 +41,16 @@ jobs:
       TF_VAR_state_lock_table_name: ${{ secrets.TF_VAR_DEV_STATE_LOCK_TABLE_NAME }}
       TF_VAR_ci_read_role_arn: ${{ secrets.TF_VAR_DEV_READ_ROLE_ARN }}
       TF_VAR_ci_write_role_arn: ${{ secrets.TF_VAR_DEV_WRITE_ROLE_ARN }}
-      TF_VAR_ci_orchestrator_role_arn: ${{ secrets.TF_VAR_DEV_ORCHESTRATOR_ROLE_ARN }}
       TF_VAR_enable_k8s_bootstrap: false
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Configure AWS credentials (dev WRITE)
+      - name: Configure AWS credentials (dev READ)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ env.TF_VAR_ci_orchestrator_role_arn }}
+          role-to-assume: ${{ env.TF_VAR_ci_read_role_arn }}
           aws-region: ${{ env.TF_VAR_region }}
 
       - name: Setup Terraform
@@ -70,6 +70,3 @@ jobs:
 
       - name: Terraform Plan
         run: terraform plan -lock-timeout=5m
-
-      - name: Terraform Apply
-        run: terraform apply -auto-approve -lock-timeout=5m
