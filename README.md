@@ -151,7 +151,5 @@ make format
 ### Git Tips
 Branch template
 ```shell
-    git checkout main && \
-    git pull origin main && \
-    git checkout -b <branch>
+    git checkout dev && git pull origin dev && git checkout main && git pull origin main && git checkout -b <branch> && git merge dev
 ```
