@@ -153,5 +153,5 @@ Branch template
 ```shell
     git checkout main && \
     git pull origin main && \
-    git checkout -b rollback-to-pr-plan
+    git checkout -b <branch>
 ```
